@@ -1,4 +1,4 @@
-package www.innocentius.net.cjfw;
+package innocentius.net.cjfw;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,8 +50,8 @@ public final class CJFWmain extends JavaPlugin
 					sender.sendMessage(ChatColor.GREEN+"Initializing Desert Base Defend... Standby.");
 					game.init();
 					sender.sendMessage(ChatColor.GOLD+"Successfully initialized!");
-					sender.sendMessage("Total Player : " + Bukkit.getOnlinePlayers().length);
-					sender.sendMessage("Base_HP = " + game.counthp(Bukkit.getOnlinePlayers().length));
+					sender.sendMessage("Total Player : " + Bukkit.getOnlinePlayers().size());
+					sender.sendMessage("Base_HP = " + game.counthp(Bukkit.getOnlinePlayers().size()));
 					return true;
 				}
 				else if(args[0].equalsIgnoreCase("showhp"))

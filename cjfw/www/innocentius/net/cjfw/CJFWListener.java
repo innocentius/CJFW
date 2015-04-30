@@ -1,4 +1,4 @@
-package www.innocentius.net.cjfw;
+package innocentius.net.cjfw;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,26 +6,24 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import net.minecraft.server.v1_7_R2.AttributeInstance;
-import net.minecraft.server.v1_7_R2.AttributeModifier;
-import net.minecraft.server.v1_7_R2.Enchantment;
-import net.minecraft.server.v1_7_R2.EntityGiantZombie;
-import net.minecraft.server.v1_7_R2.EntityInsentient;
-import net.minecraft.server.v1_7_R2.EntitySkeleton;
-import net.minecraft.server.v1_7_R2.EntityZombie;
-import net.minecraft.server.v1_7_R2.GenericAttributes;
-import net.minecraft.server.v1_7_R2.Item;
-import net.minecraft.server.v1_7_R2.ItemStack;
+import net.minecraft.server.v1_8_R2.AttributeInstance;
+import net.minecraft.server.v1_8_R2.AttributeModifier;
+import net.minecraft.server.v1_8_R2.Enchantment;
+import net.minecraft.server.v1_8_R2.EntityGiantZombie;
+import net.minecraft.server.v1_8_R2.EntityInsentient;
+import net.minecraft.server.v1_8_R2.EntitySkeleton;
+import net.minecraft.server.v1_8_R2.EntityZombie;
+import net.minecraft.server.v1_8_R2.GenericAttributes;
+import net.minecraft.server.v1_8_R2.Item;
+import net.minecraft.server.v1_8_R2.ItemStack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftGiant;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftSkeleton;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftZombie;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftSkeleton;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftZombie;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Damageable;
@@ -171,7 +169,7 @@ public class CJFWListener implements Listener
 		bonus_switch = false;
 		bonus_finish_switch = false;
 		sb = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
-		int i = Bukkit.getOnlinePlayers().length;
+		int i = Bukkit.getOnlinePlayers().size();
 		player_count = i;
 		last_boss_phase1 = false;
 		last_boss_phase2 = false;

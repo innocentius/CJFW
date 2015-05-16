@@ -22,6 +22,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftGiant;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftSkeleton;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftZombie;
 import org.bukkit.entity.CreatureType;
@@ -640,13 +642,13 @@ public class CJFWListener implements Listener
 							skel.setSkeletonType(SkeletonType.WITHER);
 							CraftSkeleton skelc = (CraftSkeleton)skel;
 					        EntitySkeleton skelMC = skelc.getHandle();
-							ItemStack item = new ItemStack(Item.d(261));
+							ItemStack item = new ItemStack(Item.getById(261));
 							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 					        skelMC.setEquipment(0, item);
-					        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-					        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-					        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-					        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 						}
 						temp = baselist.get("PURPLE").clone();
 						temp.add(0,0,-50);
@@ -657,13 +659,13 @@ public class CJFWListener implements Listener
 							skel.setSkeletonType(SkeletonType.WITHER);
 							CraftSkeleton skelc = (CraftSkeleton)skel;
 					        EntitySkeleton skelMC = skelc.getHandle();
-							ItemStack item = new ItemStack(Item.d(261));
+							ItemStack item = new ItemStack(Item.getById(261));
 							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 					        skelMC.setEquipment(0, item);
-					        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-					        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-					        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-					        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 						}
 					}
 				}
@@ -737,13 +739,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.d(261));
+					ItemStack item = new ItemStack(Item.getById(261));
 					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
@@ -754,13 +756,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(-20,0,-30);
@@ -773,13 +775,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.d(261));
+					ItemStack item = new ItemStack(Item.getById(261));
 					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
@@ -790,13 +792,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20,0,-30);
@@ -809,13 +811,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.d(261));
+					ItemStack item = new ItemStack(Item.getById(261));
 					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				for(int i = 0; i < 1.0 * player_count * difficulty; i++)
 				{
@@ -826,13 +828,13 @@ public class CJFWListener implements Listener
 					skel.setSkeletonType(SkeletonType.WITHER);
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 			}
 			if(wave == 8 && wave_time > 0 && wave_time < 200 && wave_time % 5 == 0)
@@ -889,10 +891,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
@@ -900,10 +902,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-45);
@@ -913,10 +915,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
@@ -924,10 +926,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-45);
@@ -937,10 +939,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
@@ -948,10 +950,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 			}
 			if(wave == 7 && wave_time == 200)
@@ -964,10 +966,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
@@ -975,10 +977,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
@@ -998,10 +1000,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
@@ -1009,10 +1011,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
@@ -1032,10 +1034,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
@@ -1043,10 +1045,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
 				{
@@ -1074,14 +1076,14 @@ public class CJFWListener implements Listener
 				skel.setSkeletonType(SkeletonType.WITHER);
 				CraftSkeleton skelc = (CraftSkeleton)skel;
 				EntitySkeleton skelMC = skelc.getHandle();
-				ItemStack item = new ItemStack(Item.d(276));
+				ItemStack item = new ItemStack(Item.getById(276));
 				item.addEnchantment(Enchantment.KNOCKBACK, 2);
 				item.addEnchantment(Enchantment.FIRE_ASPECT, 1);
 				skelMC.setEquipment(0, item);
-				skelMC.setEquipment(1, new ItemStack(Item.d(309)));
-				skelMC.setEquipment(2, new ItemStack(Item.d(308)));
-				skelMC.setEquipment(4, new ItemStack(Item.d(306)));
-				item = new ItemStack(Item.d(307));
+				skelMC.setEquipment(1, new ItemStack(Item.getById(309)));
+				skelMC.setEquipment(2, new ItemStack(Item.getById(308)));
+				skelMC.setEquipment(4, new ItemStack(Item.getById(306)));
+				item = new ItemStack(Item.getById(307));
 				item.addEnchantment(Enchantment.THORNS, 2);
 				skelMC.setEquipment(3, item);
 			}
@@ -1095,10 +1097,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
@@ -1106,10 +1108,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
 				{
@@ -1129,10 +1131,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
@@ -1140,10 +1142,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
 				{
@@ -1163,10 +1165,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
@@ -1174,10 +1176,10 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
 				{
@@ -1227,10 +1229,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-40);
@@ -1242,10 +1244,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-40);
@@ -1257,10 +1259,10 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
 				}
 			}
 			if(wave == 7 && wave_time > 0 && wave_time < 70 && wave_time % 5 == 0)
@@ -1309,11 +1311,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
@@ -1322,11 +1324,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 6 && wave_time == 235)
@@ -1340,11 +1342,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
@@ -1353,11 +1355,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20,0,-35);
@@ -1368,11 +1370,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
@@ -1381,11 +1383,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 6 && wave_time == 215)
@@ -1399,11 +1401,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
@@ -1412,11 +1414,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(-20,0,-35);
@@ -1427,11 +1429,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
@@ -1440,11 +1442,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20,0,-35);
@@ -1455,11 +1457,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
@@ -1468,11 +1470,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 6 && wave_time == 180)
@@ -1486,11 +1488,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 1.9 * difficulty; i++)
 				{
@@ -1499,11 +1501,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
@@ -1521,13 +1523,13 @@ public class CJFWListener implements Listener
 				Giant gian = (Giant)e;
 				CraftGiant skelc = (CraftGiant)gian;
 		        EntityGiantZombie skelMC = skelc.getHandle();
-		        ItemStack item = new ItemStack(Item.d(261));
+		        ItemStack item = new ItemStack(Item.getById(261));
 		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
 		        skelMC.setEquipment(0, item);
-		        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-		        skelMC.setEquipment(2, new ItemStack(Item.d(316)));
-		        skelMC.setEquipment(3, new ItemStack(Item.d(315)));
-		        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 		        temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-50);
 				e = summonCreatures("PURPLE", CreatureType.GIANT, ChatColor.DARK_PURPLE+"¸¯ÈâÉ½ÐÍ°ÍÌØÀÕ", temp, true);
@@ -1537,13 +1539,13 @@ public class CJFWListener implements Listener
 				gian = (Giant)e;
 				skelc = (CraftGiant)gian;
 		        skelMC = skelc.getHandle();
-		        item = new ItemStack(Item.d(261));
+		        item = new ItemStack(Item.getById(261));
 		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
 		        skelMC.setEquipment(0, item);
-		        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-		        skelMC.setEquipment(2, new ItemStack(Item.d(316)));
-		        skelMC.setEquipment(3, new ItemStack(Item.d(315)));
-		        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 			}
 			if(wave == 6 && wave_time == 120)
 			{
@@ -1556,11 +1558,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 1.6 * difficulty; i++)
 				{
@@ -1569,11 +1571,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
@@ -1591,11 +1593,11 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(261));
+			        ItemStack item = new ItemStack(Item.getById(261));
 			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
 			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.8 * difficulty; i++)
 				{
@@ -1604,11 +1606,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.d(272));
+			        ItemStack item = new ItemStack(Item.getById(272));
 			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
 			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.d(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 6 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
@@ -1689,14 +1691,14 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-				ItemStack item = new ItemStack(Item.d(267));
+				ItemStack item = new ItemStack(Item.getById(267));
 				item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 				item.addEnchantment(Enchantment.KNOCKBACK, 1);
 				zombMC.setEquipment(0, item);
-				zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-				zombMC.setEquipment(2, new ItemStack(Item.d(308)));
-				zombMC.setEquipment(3, new ItemStack(Item.d(307)));
-				zombMC.setEquipment(4, new ItemStack(Item.d(306)));
+				zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+				zombMC.setEquipment(2, new ItemStack(Item.getById(308)));
+				zombMC.setEquipment(3, new ItemStack(Item.getById(307)));
+				zombMC.setEquipment(4, new ItemStack(Item.getById(306)));
 			}
 			if(wave == 5 && wave_time == 205)
 			{
@@ -1709,9 +1711,9 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.d(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
@@ -1720,11 +1722,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("BLUE").clone();
 				temp.add(0,0,-45);
@@ -1735,9 +1737,9 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.d(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
@@ -1746,11 +1748,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-40);
@@ -1761,9 +1763,9 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.d(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
@@ -1772,11 +1774,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 5 && wave_time == 160)
@@ -1790,11 +1792,11 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.d(267)));
-		        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-		        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-		        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-		        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-40);
@@ -1805,11 +1807,11 @@ public class CJFWListener implements Listener
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
 		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.d(267)));
-		        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-		        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-		        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-		        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 5 && wave_time == 110)
@@ -1823,11 +1825,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(267)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
@@ -1836,11 +1838,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 5 & wave_time == 80)
@@ -1854,11 +1856,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(267)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
@@ -1867,11 +1869,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 5 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
@@ -1938,9 +1940,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
@@ -1949,9 +1951,9 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
@@ -1961,9 +1963,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 			}
 			if(wave == 4 && wave_time == 140)
@@ -1977,9 +1979,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
@@ -1987,9 +1989,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 			}
 			if(wave == 4 && wave_time == 110)
@@ -2007,9 +2009,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
@@ -2018,9 +2020,9 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
@@ -2030,9 +2032,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 			}
 			if(wave == 4 && wave_time == 100)
@@ -2046,9 +2048,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
@@ -2056,9 +2058,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 			}
 			if(wave == 4 && wave_time == 70)
@@ -2076,9 +2078,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
@@ -2087,9 +2089,9 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
@@ -2099,9 +2101,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 			}
 			if(wave == 4 && wave_time == 60)
@@ -2115,9 +2117,9 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(272)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
@@ -2125,9 +2127,9 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.d(270)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
 				}
 			}
 			if(wave == 4 && wave_time > 0 && wave_time < 50 && wave_time % 5 == 0)
@@ -2195,7 +2197,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
@@ -2204,11 +2206,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(268)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(268)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				} 
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
@@ -2230,11 +2232,11 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.d(283)));
-			        zombMC.setEquipment(1, new ItemStack(Item.d(301)));
-			        zombMC.setEquipment(2, new ItemStack(Item.d(300)));
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.d(298)));
+			        zombMC.setEquipment(0, new ItemStack(Item.getById(283)));
+			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
+			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
@@ -2257,8 +2259,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
@@ -2275,7 +2277,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
 				}
 				temp.add(20,0,-15);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
@@ -2290,7 +2292,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.d(299)));
+			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
 				}
 				temp.add(-20,0,-15);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
@@ -2317,13 +2319,13 @@ public class CJFWListener implements Listener
 				Skeleton skel = (Skeleton)e;
 				CraftSkeleton skelc = (CraftSkeleton)skel;
 				EntitySkeleton skelMC = skelc.getHandle();
-				ItemStack item = new ItemStack(Item.d(283));
+				ItemStack item = new ItemStack(Item.getById(283));
 				item.addEnchantment(Enchantment.DAMAGE_ALL, 3);
 				skelMC.setEquipment(0, item);
-				skelMC.setEquipment(1, new ItemStack(Item.d(317)));
-				skelMC.setEquipment(2, new ItemStack(Item.d(316)));
-				skelMC.setEquipment(3, new ItemStack(Item.d(315)));
-				skelMC.setEquipment(4, new ItemStack(Item.d(314)));
+				skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+				skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+				skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+				skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				 
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
@@ -2336,8 +2338,8 @@ public class CJFWListener implements Listener
 					skel = (Skeleton)e;
 					skelc = (CraftSkeleton)skel;
 					skelMC = skelc.getHandle();
-					skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-					skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+					skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+					skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
@@ -2359,8 +2361,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 			}
 			if(wave == 3 && wave_time == 40)
@@ -2437,7 +2439,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0, 0, -40);
@@ -2447,7 +2449,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0, 0, -40);
@@ -2458,7 +2460,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 2 && wave_time == 120)
@@ -2471,7 +2473,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
@@ -2479,8 +2481,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(-20, 0, -30);
@@ -2490,7 +2492,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
@@ -2498,8 +2500,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20, 0, -30);
@@ -2509,7 +2511,7 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
@@ -2517,8 +2519,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(261)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
 				}
 			}
 			if(wave == 2 && wave_time == 90)
@@ -2532,7 +2534,7 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0, 0, -40);
@@ -2543,7 +2545,7 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0, 0, -40);
@@ -2554,7 +2556,7 @@ public class CJFWListener implements Listener
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.d(314)));
+			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
 				}
 			}
 			if(wave == 2 && wave_time == 60)
@@ -2567,8 +2569,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(268)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
 				}
 				temp = baselist.get("BLUE").clone();
 				temp.add(0, 0, -40);
@@ -2578,8 +2580,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(268)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(-20, 0, -30);
@@ -2589,8 +2591,8 @@ public class CJFWListener implements Listener
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.d(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.d(268)));
+			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
 				}
 			}
 			if(wave == 2 && wave_time > 0 && wave_time < 55 && wave_time % 5 == 0)
@@ -2868,21 +2870,21 @@ public class CJFWListener implements Listener
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack i = new ItemStack(Item.d(276));
+			        ItemStack i = new ItemStack(Item.getById(276));
 			        i.addEnchantment(Enchantment.DAMAGE_ALL, 5);
 			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
 			        i.addEnchantment(Enchantment.KNOCKBACK, 4);
 			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.d(305));
+			        i = new ItemStack(Item.getById(305));
 			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.d(304));
+			        i = new ItemStack(Item.getById(304));
 			        i.addEnchantment(Enchantment.PROTECTION_FIRE, 1);
 			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.d(303));
+			        i = new ItemStack(Item.getById(303));
 			        i.addEnchantment(Enchantment.THORNS, 2);
 			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.d(302));
+			        i = new ItemStack(Item.getById(302));
 			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 			        zombMC.setEquipment(4, i);
 				}
@@ -2933,17 +2935,17 @@ public class CJFWListener implements Listener
 					last_boss1 = zomb;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
-					ItemStack i = new ItemStack(Item.d(276));
+					ItemStack i = new ItemStack(Item.getById(276));
 			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 			        i.addEnchantment(Enchantment.KNOCKBACK, 3);
 			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.d(305));
+			        i = new ItemStack(Item.getById(305));
 			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.d(304));
+			        i = new ItemStack(Item.getById(304));
 			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.d(303));
+			        i = new ItemStack(Item.getById(303));
 			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.d(302));
+			        i = new ItemStack(Item.getById(302));
 			        zombMC.setEquipment(4, i);
 			        e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.DARK_GREEN+"É­Ä¾", last_boss.getLocation(), true);
 					e.setMaxHealth(40 * player_count * difficulty);
@@ -2952,17 +2954,17 @@ public class CJFWListener implements Listener
 					last_boss2 = zomb;
 					zombc = (CraftZombie)zomb;
 			        zombMC = zombc.getHandle();
-					i = new ItemStack(Item.d(276));
+					i = new ItemStack(Item.getById(276));
 			        i.addEnchantment(Enchantment.DAMAGE_ALL, 3);
 			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.d(305));
+			        i = new ItemStack(Item.getById(305));
 			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.d(304));
+			        i = new ItemStack(Item.getById(304));
 			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.d(303));
+			        i = new ItemStack(Item.getById(303));
 			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.d(302));
+			        i = new ItemStack(Item.getById(302));
 			        zombMC.setEquipment(4, i);
 			        e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.RED+"ìÍÄ§", last_boss.getLocation(), true);
 					e.setMaxHealth(40 * player_count * difficulty);
@@ -2971,18 +2973,18 @@ public class CJFWListener implements Listener
 					last_boss3 = zomb;
 					zombc = (CraftZombie)zomb;
 			        zombMC = zombc.getHandle();
-					i = new ItemStack(Item.d(276));
+					i = new ItemStack(Item.getById(276));
 			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
 			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
 			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
 			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.d(305));
+			        i = new ItemStack(Item.getById(305));
 			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.d(304));
+			        i = new ItemStack(Item.getById(304));
 			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.d(303));
+			        i = new ItemStack(Item.getById(303));
 			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.d(302));
+			        i = new ItemStack(Item.getById(302));
 			        zombMC.setEquipment(4, i);
 			        
 				}

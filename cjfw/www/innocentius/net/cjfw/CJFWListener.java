@@ -164,6 +164,7 @@ public class CJFWListener implements Listener
 	public void init() 
 	{
 		reset();
+		Fileloader gameevent = new Fileloader();
 		wave = 0;
 		wave_time = -1;
 		finish = false;

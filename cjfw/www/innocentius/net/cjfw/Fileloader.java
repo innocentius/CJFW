@@ -1,7 +1,6 @@
 package innocentius.net.cjfw;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -10,7 +9,6 @@ public class Fileloader {
 	/**
 	 * only load one file into the directory.
 	 */
-	File a;
 	LinkedHashMap<WaveTime, String> serversayevent;
 	LinkedHashMap<WaveTime, String> spawnmobevent;
 	LinkedHashMap<WaveTime, String> backgroundmusicevent;
@@ -20,7 +18,6 @@ public class Fileloader {
 	 */
 	public Fileloader()
 	{
-	  a = new File("CJFWdata.txt");
       serversayevent = new LinkedHashMap<WaveTime, String>();
       spawnmobevent = new LinkedHashMap<WaveTime, String>();
 	  backgroundmusicevent = new LinkedHashMap<WaveTime, String>();

@@ -28,7 +28,7 @@ public class CreatureHandler {
 		random = new Random();
 	}
 	@SuppressWarnings("deprecation")
-	public static LivingEntity summonCreatures(Map<String, Location> baselist, String base_name, CreatureType x, String name, Location spawnarea, boolean namevisible)
+	public LivingEntity summonCreatures(Map<String, Location> baselist, String base_name, CreatureType x, String name, Location spawnarea, boolean namevisible)
 	{
 			LivingEntity temp_eni;
 			temp_eni = baselist.get(base_name).getWorld().spawnCreature(spawnarea, x);
@@ -38,11 +38,25 @@ public class CreatureHandler {
 			changerange(temp_eni);
 			return temp_eni;
 	}
-	public static void changerange(LivingEntity temp_eni) 
+	public void changerange(LivingEntity temp_eni) 
 	{
 		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
 		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.b);
 		x = UUID.randomUUID();
 		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 60D, 0));
+	}
+	public void changespeed(LivingEntity temp_eni)
+	{
+		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
+		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.d);
+		x = UUID.randomUUID();
+		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 0.2, 1));
+	}
+	public void changeattack(LivingEntity temp_eni)
+	{
+		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
+		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.e);
+		x = UUID.randomUUID();
+		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 0.3, 1));
 	}
 }

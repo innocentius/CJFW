@@ -1,7 +1,12 @@
 package innocentius.net.cjfw;
 
+import net.minecraft.server.v1_8_R2.Enchantment;
+import net.minecraft.server.v1_8_R2.Item;
+import net.minecraft.server.v1_8_R2.ItemStack;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -41,6 +46,12 @@ public final class CJFWmain extends JavaPlugin
 			}
 			else if(args.length == 1)
 			{
+				if(args[0].equalsIgnoreCase("test"))
+				{
+					org.bukkit.inventory.ItemStack weapon = new org.bukkit.inventory.ItemStack(Material.DIAMOND_SWORD,1);
+					weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
+					sender.getServer().getPlayer(sender.getName()).getInventory().addItem(weapon);
+				}
 				if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game
 					// The initialize will 100% succeed

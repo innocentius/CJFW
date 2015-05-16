@@ -18,6 +18,9 @@ public class Fileloader {
 	 */
 	private void readfile(String path) {
 		
-		
+		//server report
+		//spawn creature
+		//BGM play
+		//push player rank
 	}
 }

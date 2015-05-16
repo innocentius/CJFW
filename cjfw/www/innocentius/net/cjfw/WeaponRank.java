@@ -188,6 +188,7 @@ public class WeaponRank {
 			case 14:
 				e.setSkeletonType(1);
 				weapon = new ItemStack(Item.getById(276));
+				weapon.addEnchantment(Enchantment.DURABILITY, 10);
 				weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
 				weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
 				weapon.addEnchantment(Enchantment.KNOCKBACK, 2);

@@ -196,7 +196,8 @@ public final class CJFWmain extends JavaPlugin
 				{
 					try
 					{
-						if(Integer.parseInt(args[1]) > 3 || Integer.parseInt(args[1]) <= 0)
+						//v2.0 note: change tower total to four
+						if(Integer.parseInt(args[1]) > 4 || Integer.parseInt(args[1]) <= 0)
 						{
 							sender.sendMessage("Please enter the correct parameter!");
 							return false;

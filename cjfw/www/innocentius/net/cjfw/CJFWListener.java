@@ -322,25 +322,37 @@ public class CJFWListener implements Listener
 	public void setbaselocation(int basenum, Location i) 
 	{
 		String basekey;
+		LivingEntity e;
 		if(!on)
 			{
 			if(basenum == 1)
 			{
 				basekey = "BLUE";
+				baselist.put(basekey, i);
+				e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.VILLAGER, ChatColor.GOLD+"蓝塔守护者", i, false);
 			}
 			else if(basenum == 2)
 			{
 				basekey = "AQUA";
+				baselist.put(basekey, i);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.VILLAGER, ChatColor.GOLD+"青塔守护者", i, false);
 			}
 			else if(basenum == 3)
 			{
 				basekey = "PURPLE";
+				baselist.put(basekey, i);
+				e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.VILLAGER, ChatColor.GOLD+"紫塔守护者", i, false);
+			}
+			else if(basenum == 4)
+			{
+				basekey = "GREEN";
+				baselist.put(basekey, i);
+				e = CreatureHandler.summonCreatures(baselist, "GREEN", CreatureType.VILLAGER, ChatColor.GOLD+"绿塔守护者", i, false);
 			}
 			else
 			{
 				basekey = "FOO";
-			}
-			baselist.put(basekey, i);
+			}		
 		}
 	}
 	/**
@@ -557,16 +569,7 @@ public class CJFWListener implements Listener
 		}
 		return false;
 	}
-	private LivingEntity summonCreatures(String base_name, CreatureType x, String name, Location spawnarea, boolean namevisible)
-	{
-			LivingEntity temp_eni;
-			temp_eni = baselist.get(base_name).getWorld().spawnCreature(spawnarea, x);
-			temp_eni.setRemoveWhenFarAway(false);
-			temp_eni.setCustomName(name);
-			temp_eni.setCustomNameVisible(namevisible);
-			changerange(temp_eni);
-			return temp_eni;
-	}
+	
 	/**
 	 * The whole progress of game will be generated here.
 	 * @param time
@@ -622,7 +625,7 @@ public class CJFWListener implements Listener
 				a.setRemoveWhenFarAway(false);
 				a.setCustomName(ChatColor.RED+"第二型巴特勒");
 				a.setCustomNameVisible(true);
-				changerange(a); 
+				CreatureHandler.changerange(a); 
 				a.setMaxHealth(200 * player_count * difficulty);
 				a.setHealth(200 * player_count * difficulty);
 				final_boss = (Wither)a;
@@ -638,7 +641,7 @@ public class CJFWListener implements Listener
 						temp.add(0,0,-50);
 						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
 						{
-							e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+							e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
 							Skeleton skel = (Skeleton)e;
 							skel.setSkeletonType(SkeletonType.WITHER);
 							CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -655,7 +658,7 @@ public class CJFWListener implements Listener
 						temp.add(0,0,-50);
 						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
 						{
-							e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+							e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 							Skeleton skel = (Skeleton)e;
 							skel.setSkeletonType(SkeletonType.WITHER);
 							CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -716,24 +719,24 @@ public class CJFWListener implements Listener
 				}
 				temp = baselist.get("BLUE").clone();
 				temp.add(0,10,-45);
-				e = summonCreatures("BLUE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
 				e.setMaxHealth(2000 * player_count * difficulty);
 				e.setHealth(2000 * player_count * difficulty);
 				temp = baselist.get("AQUA").clone();
 				temp.add(-20,10,-45);
-				e = summonCreatures("AQUA", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
 				e.setMaxHealth(2000 * player_count * difficulty);
 				e.setHealth(2000 * player_count * difficulty);
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20,10,-45);
-				e = summonCreatures("PURPLE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
 				e.setMaxHealth(2000 * player_count * difficulty);
 				e.setHealth(200 * player_count * difficulty);
 				temp = baselist.get("BLUE").clone();
 				temp.add(0,0,-40);
 				for(int i = 0; i < 0.5 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(80D);
 					e.setHealth(80D);
 					Skeleton skel = (Skeleton)e;
@@ -750,7 +753,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(100D);
 					e.setHealth(100D);
 					Skeleton skel = (Skeleton)e;
@@ -769,7 +772,7 @@ public class CJFWListener implements Listener
 				temp.add(-20,0,-30);
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(80D);
 					e.setHealth(80D);
 					Skeleton skel = (Skeleton)e;
@@ -786,7 +789,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(100D);
 					e.setHealth(100D);
 					Skeleton skel = (Skeleton)e;
@@ -805,7 +808,7 @@ public class CJFWListener implements Listener
 				temp.add(20,0,-30);
 				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(80D);
 					e.setHealth(80D);
 					Skeleton skel = (Skeleton)e;
@@ -822,7 +825,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < 1.0 * player_count * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
 					e.setMaxHealth(100D);
 					e.setHealth(100D);
 					Skeleton skel = (Skeleton)e;
@@ -888,7 +891,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -899,7 +902,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -912,7 +915,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -923,7 +926,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -936,7 +939,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -947,7 +950,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -963,7 +966,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -974,7 +977,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -991,13 +994,13 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName("凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1008,7 +1011,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1025,13 +1028,13 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1042,7 +1045,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1059,7 +1062,7 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 			}
 			if(wave == 7 && wave_time == 185)
@@ -1070,7 +1073,7 @@ public class CJFWListener implements Listener
 				}
 				temp = baselist.get("BLUE").clone();
 				temp.add(0,0,-40);
-				e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.BLACK+"凋零型巴特勒", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.BLACK+"凋零型巴特勒", temp, true);
 				e.setMaxHealth(250 * player_count * difficulty);
 				e.setHealth(250 * player_count * difficulty);
 				Skeleton skel = (Skeleton)e;
@@ -1094,7 +1097,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1105,7 +1108,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1122,13 +1125,13 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName("凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1139,7 +1142,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1156,13 +1159,13 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1173,7 +1176,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1190,7 +1193,7 @@ public class CJFWListener implements Listener
 					a.setRemoveWhenFarAway(false);
 					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
 					a.setCustomNameVisible(true);
-					changerange(a); 
+					CreatureHandler.changerange(a); 
 				}
 			}
 			if(wave == 7 && wave_time == 120)
@@ -1203,19 +1206,19 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-32);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
 				}
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-32);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-32);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
 				}
 			}
 			if(wave == 7 && wave_time == 110)
@@ -1224,7 +1227,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
 					e.setMaxHealth(38D);
 					e.setHealth(38D);
 					Skeleton skel = (Skeleton)e;
@@ -1239,7 +1242,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
 					e.setMaxHealth(38D);
 					e.setHealth(38D);
 					Skeleton skel = (Skeleton)e;
@@ -1254,7 +1257,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
 					e.setMaxHealth(38D);
 					e.setHealth(38D);
 					Skeleton skel = (Skeleton)e;
@@ -1307,7 +1310,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1320,7 +1323,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1338,7 +1341,7 @@ public class CJFWListener implements Listener
 				temp.add(-20,0,-35);
 				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1351,7 +1354,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1366,7 +1369,7 @@ public class CJFWListener implements Listener
 				temp.add(20,0,-35);
 				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1379,7 +1382,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1397,7 +1400,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-50);
 				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程小兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程小兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1410,7 +1413,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1425,7 +1428,7 @@ public class CJFWListener implements Listener
 				temp.add(-20,0,-35);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1438,7 +1441,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1453,7 +1456,7 @@ public class CJFWListener implements Listener
 				temp.add(20,0,-35);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1466,7 +1469,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1484,7 +1487,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-50);
 				for(int i = 0; i < player_count * 0.9 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1497,7 +1500,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 1.9 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1510,14 +1513,14 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
 				}
 			}
 			if(wave == 6 && wave_time == 160)
 			{
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-50);
-				e = summonCreatures("AQUA", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
 				e.setMaxHealth(100 * player_count * difficulty);
 				e.setHealth(100 * player_count * difficulty);
 				changeattack(e);
@@ -1533,7 +1536,7 @@ public class CJFWListener implements Listener
 		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
 		        temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-50);
-				e = summonCreatures("PURPLE", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
 				e.setMaxHealth(100 * player_count * difficulty);
 				e.setHealth(100 * player_count * difficulty);
 				changeattack(e);
@@ -1554,7 +1557,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-50);
 				for(int i = 0; i < player_count * 0.8 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1567,7 +1570,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 1.6 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1580,7 +1583,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
 				}
 			}
 			if(wave == 6 && wave_time == 80)
@@ -1589,7 +1592,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-50);
 				for(int i = 0; i < player_count * 0.4 * difficulty; i ++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
 					changeattack(e);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
@@ -1602,7 +1605,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.8 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1684,7 +1687,7 @@ public class CJFWListener implements Listener
 				temp = baselist.get("AQUA").clone();
 				temp.add(0,0,-40);
 				temp.getWorld().strikeLightningEffect(temp);
-				e = summonCreatures("AQUA" , CreatureType.ZOMBIE, ChatColor.RED+"Yan's WIFI", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA" , CreatureType.ZOMBIE, ChatColor.RED+"Yan's WIFI", temp, true);
 				
 				e.setMaxHealth(200 * player_count * difficulty);
 				e.setHealth(200 * player_count * difficulty);
@@ -1707,7 +1710,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1 * difficulty; i ++)
 				{
-				e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 				changespeed(e);
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
@@ -1718,7 +1721,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1733,7 +1736,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-45);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
 				{
-				e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+				e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 				changespeed(e);
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
@@ -1744,7 +1747,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1759,7 +1762,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
 				{
-				e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+				e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
 				changespeed(e);
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
@@ -1770,7 +1773,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1788,7 +1791,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1 * difficulty; i ++)
 				{
-				e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+				e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
 				changespeed(e);
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
@@ -1803,7 +1806,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1 * difficulty; i ++)
 				{
-				e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+				e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
 				changespeed(e);
 				Zombie zomb = (Zombie)e;
 				CraftZombie zombc = (CraftZombie)zomb;
@@ -1821,7 +1824,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1834,7 +1837,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1852,7 +1855,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1865,7 +1868,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
 					changespeed(e);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1937,7 +1940,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -1948,7 +1951,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"防空(假的)步兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"防空(假的)步兵", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -1959,7 +1962,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1975,7 +1978,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -1986,7 +1989,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2006,7 +2009,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"重装大兵(没穿鞋的)", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"重装大兵(没穿鞋的)", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2017,7 +2020,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"美国大(新)兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"美国大(新)兵", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2028,7 +2031,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2044,7 +2047,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2055,7 +2058,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"美国大(新)兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"美国大(新)兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2075,7 +2078,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡(被)控制人", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡(被)控制人", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2086,7 +2089,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"尤裡新兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"尤裡新兵", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2097,7 +2100,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,5);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"（回收用）市民", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"（回收用）市民", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2113,7 +2116,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡敢死隊", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡敢死隊", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2124,7 +2127,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡老(真的很老)兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡老(真的很老)兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2194,7 +2197,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -30);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2203,7 +2206,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2216,20 +2219,20 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(0,0,-30);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2242,7 +2245,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 			}
 			if(wave == 3 && wave_time == 160)
@@ -2251,12 +2254,12 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2265,7 +2268,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 			}
 			if(wave == 3 && wave_time == 150)
@@ -2274,7 +2277,7 @@ public class CJFWListener implements Listener
 				temp.add(-20,0,-30);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2283,13 +2286,13 @@ public class CJFWListener implements Listener
 				temp.add(20,0,-15);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 				temp = baselist.get("PURPLE").clone();
 				temp.add(20,0,-30);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2298,7 +2301,7 @@ public class CJFWListener implements Listener
 				temp.add(-20,0,-15);
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 			}
 			if(wave == 3 && wave_time == 124)
@@ -2314,7 +2317,7 @@ public class CJFWListener implements Listener
 				baselist.get("BLUE").getWorld().setStorm(true);
 				temp = baselist.get("BLUE").clone();
 				temp.add(0,0,-40);
-				e = summonCreatures("BLUE" , CreatureType.SKELETON, ChatColor.RED+"变异型巴特勒", temp, true);
+				e = CreatureHandler.summonCreatures(baselist, "BLUE" , CreatureType.SKELETON, ChatColor.RED+"变异型巴特勒", temp, true);
 				e.setMaxHealth(150 * player_count * difficulty);
 				e.setHealth(150 * player_count * difficulty);
 				Skeleton skel = (Skeleton)e;
@@ -2330,12 +2333,12 @@ public class CJFWListener implements Listener
 				 
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
 				}
 				temp.add(0,0,-5);
 				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
 					skel = (Skeleton)e;
 					skelc = (CraftSkeleton)skel;
 					skelMC = skelc.getHandle();
@@ -2344,7 +2347,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
 				}
 			        
 			}
@@ -2358,7 +2361,7 @@ public class CJFWListener implements Listener
 				temp.add(0,0,-40);
 				for(int i = 0; i < player_count * 3.5 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2436,7 +2439,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2446,7 +2449,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2457,7 +2460,7 @@ public class CJFWListener implements Listener
 				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
 				{
 					
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2470,7 +2473,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2478,7 +2481,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒工兵", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒工兵", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2489,7 +2492,7 @@ public class CJFWListener implements Listener
 				temp.add(-20, 0, -30);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2497,7 +2500,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2508,7 +2511,7 @@ public class CJFWListener implements Listener
 				temp.add(20, 0, -30);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
 					Zombie zomb = (Zombie)e;
 					CraftZombie zombc = (CraftZombie)zomb;
 			        EntityZombie zombMC = zombc.getHandle();
@@ -2516,7 +2519,7 @@ public class CJFWListener implements Listener
 				}
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2530,7 +2533,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2541,7 +2544,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2552,7 +2555,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
 					Zombie zomb = (Zombie)e;
 					zomb.setBaby(true);
 					CraftZombie zombc = (CraftZombie)zomb;
@@ -2566,7 +2569,7 @@ public class CJFWListener implements Listener
 				temp.add(20, 0, -30);
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("PURPLE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2577,7 +2580,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("BLUE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2588,7 +2591,7 @@ public class CJFWListener implements Listener
 				temp.add(-20, 0, -30);
 				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
 				{
-					e = summonCreatures("AQUA", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, "拿錯裝備的", temp, true);
 					Skeleton skel = (Skeleton)e;
 					CraftSkeleton skelc = (CraftSkeleton)skel;
 			        EntitySkeleton skelMC = skelc.getHandle();
@@ -2623,7 +2626,7 @@ public class CJFWListener implements Listener
 					temp.add(0, 0, -40);
 					for(int i = 0; i < player_count * 1.5 * difficulty; i++)
 					{
-						summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"渣渣", temp, false);
+						CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"渣渣", temp, false);
 					}
 			}
 			if(wave == 1 && wave_time == 110)
@@ -2632,7 +2635,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 1 * difficulty; i++)
 				{
-					summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"炮灰", temp, false);
+					CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"炮灰", temp, false);
 				}
 			}
 			if(wave == 1 && wave_time == 100)
@@ -2641,11 +2644,11 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -35);
 				for(int i = 0; i < player_count * 1 * difficulty; i++)
 				{
-					summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"菜鳥", temp, false);
+					CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"菜鳥", temp, false);
 				}
 				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
 				{
-					summonCreatures("PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"難民", temp, false);
+					CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"難民", temp, false);
 				}
 			}
 			if(wave == 1 && wave_time == 90)
@@ -2654,7 +2657,7 @@ public class CJFWListener implements Listener
 				temp.add(-20, 0 ,-30);
 				for(int i = 0; i < player_count * 0.75 * difficulty; i++)
 				{
-					summonCreatures("AQUA", CreatureType.SKELETON, ChatColor.GRAY+"雜魚", temp, false);
+					CreatureHandler.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"雜魚", temp, false);
 				}	
 			}
 			if(wave == 1 && wave_time == 80)
@@ -2663,7 +2666,7 @@ public class CJFWListener implements Listener
 				temp.add(0, 0, -40);
 				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
 				{
-					summonCreatures("BLUE", CreatureType.SKELETON, ChatColor.GRAY+"兵痞", temp, false);
+					CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"兵痞", temp, false);
 				}
 			}
 			if(wave == 1 && wave_time == 60)
@@ -2672,7 +2675,7 @@ public class CJFWListener implements Listener
 				temp.add(20, 0 , -30);
 				for(int i = 0; i < player_count * 1 * difficulty; i++)
 				{
-					summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
+					CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
 				}
 			}
 			if(wave == 1 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
@@ -2704,7 +2707,7 @@ public class CJFWListener implements Listener
 				}
 				//temp = baselist.get("PURPLE").clone();
 				//temp.add(20, 0 , -20);
-				//tp = summonCreatures("PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
+				//tp = CreatureHandler.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
 			}
 			if(wave == 0 && wave_time == 60)
 			{
@@ -2862,7 +2865,7 @@ public class CJFWListener implements Listener
 				{
 					temp = baselist.get("BLUE").clone();
 					temp.add(0, 0, -40);
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.DARK_RED+"烈焰魔王Innocentius", temp, true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_RED+"烈焰魔王Innocentius", temp, true);
 					e.setMaxHealth(300 * player_count * difficulty);
 					e.setHealth(300 * player_count * difficulty);
 					changespeed(e);
@@ -2929,7 +2932,7 @@ public class CJFWListener implements Listener
 				if(back_timer == 5 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
 				{
 					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 5), true);
-					e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.AQUA+"烈風", last_boss.getLocation(), true);
+					e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.AQUA+"烈風", last_boss.getLocation(), true);
 					e.setMaxHealth(40 * player_count * difficulty);
 					e.setHealth(40 * player_count * difficulty);
 					Zombie zomb = (Zombie)e;
@@ -2948,7 +2951,7 @@ public class CJFWListener implements Listener
 			        zombMC.setEquipment(3, i);
 			        i = new ItemStack(Item.getById(302));
 			        zombMC.setEquipment(4, i);
-			        e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.DARK_GREEN+"森木", last_boss.getLocation(), true);
+			        e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_GREEN+"森木", last_boss.getLocation(), true);
 					e.setMaxHealth(40 * player_count * difficulty);
 					e.setHealth(40 * player_count * difficulty);
 					zomb = (Zombie)e;
@@ -2967,7 +2970,7 @@ public class CJFWListener implements Listener
 			        zombMC.setEquipment(3, i);
 			        i = new ItemStack(Item.getById(302));
 			        zombMC.setEquipment(4, i);
-			        e = summonCreatures("BLUE", CreatureType.ZOMBIE, ChatColor.RED+"焱魔", last_boss.getLocation(), true);
+			        e = CreatureHandler.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.RED+"焱魔", last_boss.getLocation(), true);
 					e.setMaxHealth(40 * player_count * difficulty);
 					e.setHealth(40 * player_count * difficulty);
 					zomb = (Zombie)e;
@@ -3358,13 +3361,7 @@ public class CJFWListener implements Listener
 		Base_damageable.put(string, true);
 		
 	}
-	private void changerange(LivingEntity temp_eni) 
-	{
-		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
-		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.b);
-		x = UUID.randomUUID();
-		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 60D, 0));
-	}
+	
 	private void changespeed(LivingEntity temp_eni)
 	{
 		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();

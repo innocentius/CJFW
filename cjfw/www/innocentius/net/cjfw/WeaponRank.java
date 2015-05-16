@@ -90,6 +90,8 @@ public class WeaponRank {
 			weapon.addEnchantment(Enchantment.DURABILITY, 10);
 			e.setEquipment(0, weapon);
 			return;
+		default:
+			return;
 		}
 	}
 //	weapon rank 0: none -- ATK+0
@@ -98,16 +100,16 @@ public class WeaponRank {
 //	weapon rank 3: bow -- power 2 -- ATK+0~6
 //	weapon rank 4: wooden sword -- ATK+4
 //	weapon rank 5: bow -- power 3 -- ATK+0~7
-//	weapon rank 6: stone sowrd -- ATK+5
+//	weapon rank 6: stone sword -- ATK+5
 //	weapon rank 7: bow -- power 5 -- ATK+1~9.5
 //	weapon rank 8: diamond sword -- ATK+7
 //	weapon rank 9: bow -- power 5 flame 1 --ATK+1~9.5 + Fire
-//	weapon rank10: bow -- unbreak10 power 5 flame 1 punch 2 -- ATK+1~9,5+Fire+knockback 
+//	weapon rank10: bow -- power 5 flame 1 punch 2 -- ATK+1~9,5+Fire+knockback 
 //	weapon rank11: diamond sword -- enchant sharp 1 -- ATK+8~8.5
 //	weapon rank12: diamond sword -- enchant sharp 3 -- ATK+10~11.5
 //	weapon rank13: diamond sword -- enchant sharp 5 -- ATK+12~14.5
 //	weapon rank14: diamond sword -- enchant unbreak10 sharp 5 fire 2 knock 2 -- ATK+12~14.5 + Fire -- BOSS only
-//	PS: weapon rank 10+ automaticly set mob type to ender skeleton
+//	PS: weapon rank 10+ automatically set mob type to ender skeleton
 	/**
 	 * set the rank of weapon to an entityskeleton accordingly to the integer given
 	 * @param a
@@ -115,6 +117,85 @@ public class WeaponRank {
 	 */
 	public void setWeapon(int a, EntitySkeleton e)
 	{
-		
+		ItemStack weapon;
+		switch(a)
+		{
+			case 0:
+				return;
+			case 1:
+				e.setEquipment(0, new ItemStack(Item.getById(261)));
+				return;
+			case 2:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+				e.setEquipment(0, weapon);
+				return;
+			case 3:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 2);
+				e.setEquipment(0, weapon);
+				return;
+			case 4:
+				e.setEquipment(0, new ItemStack(Item.getById(268)));
+				return;
+			case 5:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 3);
+				e.setEquipment(0, weapon);
+				return;
+			case 6:
+				e.setEquipment(0, new ItemStack(Item.getById(272)));
+				return;
+			case 7:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+				e.setEquipment(0, weapon);
+				return;
+			case 8:
+				e.setEquipment(0, new ItemStack(Item.getById(276)));
+				return;
+			case 9:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+				weapon.addEnchantment(Enchantment.ARROW_FIRE, 1);
+				e.setEquipment(0, weapon);
+				return;
+			case 10:
+				weapon = new ItemStack(Item.getById(261));
+				weapon.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+				weapon.addEnchantment(Enchantment.ARROW_FIRE, 1);
+				weapon.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
+				e.setEquipment(0, weapon);
+				return;
+			case 11:
+				e.setSkeletonType(1);
+				weapon = new ItemStack(Item.getById(276));
+				weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+				e.setEquipment(0, weapon);
+				return;
+			case 12:
+				e.setSkeletonType(1);
+				weapon = new ItemStack(Item.getById(276));
+				weapon.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+				e.setEquipment(0, weapon);
+				return;
+			case 13:
+				e.setSkeletonType(1);
+				weapon = new ItemStack(Item.getById(276));
+				weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+				e.setEquipment(0, weapon);
+				return;
+			case 14:
+				e.setSkeletonType(1);
+				weapon = new ItemStack(Item.getById(276));
+				weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+				weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+				weapon.addEnchantment(Enchantment.KNOCKBACK, 2);
+				e.setEquipment(0, weapon);
+				return;
+			default:
+				return;
+				
+		}
 	}
 }

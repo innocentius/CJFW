@@ -41,7 +41,7 @@ public final class CJFWmain extends JavaPlugin
 				// If no argument, display a welcome signal
 				// also, return false to get usage
 			{
-				sender.sendMessage(ChatColor.AQUA+"This is the plugin for a game Desert Base Defence!");
+				sender.sendMessage(ChatColor.AQUA+"This is the plugin for a game Desert Base Defense!");
 				return false;
 			}
 			else if(args.length == 1)

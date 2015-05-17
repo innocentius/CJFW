@@ -12,6 +12,7 @@ import net.minecraft.server.v1_8_R2.GenericAttributes;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
 
 /**
@@ -27,7 +28,18 @@ public class CreatureHandler {
 	{
 		random = new Random();
 	}
-	@SuppressWarnings("deprecation")
+	/**
+	 * summon a creature
+	 * Automatically set remove when far off
+	 * automatically change range to 60
+	 * @param baselist
+	 * @param base_name
+	 * @param x
+	 * @param name
+	 * @param spawnarea
+	 * @param namevisible
+	 * @return
+	 */
 	public LivingEntity summonCreatures(Map<String, Location> baselist, String base_name, CreatureType x, String name, Location spawnarea, boolean namevisible)
 	{
 			LivingEntity temp_eni;
@@ -58,5 +70,10 @@ public class CreatureHandler {
 		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.e);
 		x = UUID.randomUUID();
 		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 0.3, 1));
+	}
+	public void sethealth(Damageable a, double b)
+	{
+		a.setMaxHealth(b);
+		a.setHealth(b);
 	}
 }

@@ -9,6 +9,7 @@ import java.util.UUID;
 import net.minecraft.server.v1_8_R2.Enchantment;
 import net.minecraft.server.v1_8_R2.EntityGiantZombie;
 import net.minecraft.server.v1_8_R2.EntitySkeleton;
+import net.minecraft.server.v1_8_R2.EntityVillager;
 import net.minecraft.server.v1_8_R2.EntityZombie;
 import net.minecraft.server.v1_8_R2.Item;
 import net.minecraft.server.v1_8_R2.ItemStack;
@@ -21,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftGiant;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftSkeleton;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftZombie;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftVillager;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Damageable;
@@ -34,6 +36,7 @@ import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Spider;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -70,6 +73,10 @@ public class CJFWListener implements Listener
 	int wave_time;
 	int bonus_time;
 	int back_timer;
+	Villager bluedef;
+	Villager aquadef;
+	Villager purpdef;
+	Villager greedef;
 	boolean finish;
 	boolean wave9_switch;
 	boolean bonus_switch;
@@ -182,9 +189,11 @@ public class CJFWListener implements Listener
 		Base_HP.put("BLUE", hpfull);
 		Base_HP.put("AQUA", hpfull);
 		Base_HP.put("PURPLE", hpfull);
+		Base_HP.put("GREEN", hpfull);
 		Base_damageable.put("BLUE", true);
 		Base_damageable.put("AQUA", true);
 		Base_damageable.put("PURPLE", true);
+		Base_damageable.put("GREEN", true);
 		try
 		{
 			sb.registerNewObjective("cjfw", "dummy");
@@ -204,6 +213,7 @@ public class CJFWListener implements Listener
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set BLUE cjfw " + Base_HP.get("BLUE"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set GREEN cjfw " + Base_HP.get("GREEN"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
 		init = true;
 	}
@@ -225,7 +235,7 @@ public class CJFWListener implements Listener
 				return false;
 			}
 			if(baselist.get("BLUE") == null || baselist.get("AQUA") == null ||
-						baselist.get("PURPLE") == null)
+						baselist.get("PURPLE") == null || baselist.get("GREEN") == null)
 			{
 				return false;
 			}
@@ -328,24 +338,36 @@ public class CJFWListener implements Listener
 				basekey = "BLUE";
 				baselist.put(basekey, i);
 				e = ch.summonCreatures(baselist, "BLUE", CreatureType.VILLAGER, ChatColor.GOLD+"蓝塔守护者", i, false);
+				ch.sethealth(e, 1000);
+				e.setNoDamageTicks(999999999);
+				bluedef = (Villager)e;
 			}
 			else if(basenum == 2)
 			{
 				basekey = "AQUA";
 				baselist.put(basekey, i);
 				e = ch.summonCreatures(baselist, "AQUA", CreatureType.VILLAGER, ChatColor.GOLD+"青塔守护者", i, false);
+				ch.sethealth(e, 1000);
+				e.setNoDamageTicks(999999999);
+				aquadef = (Villager)e;
 			}
 			else if(basenum == 3)
 			{
 				basekey = "PURPLE";
 				baselist.put(basekey, i);
 				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.VILLAGER, ChatColor.GOLD+"紫塔守护者", i, false);
+				ch.sethealth(e, 1000);
+				e.setNoDamageTicks(999999999);
+				purpdef = (Villager)e;
 			}
 			else if(basenum == 4)
 			{
 				basekey = "GREEN";
 				baselist.put(basekey, i);
 				e = ch.summonCreatures(baselist, "GREEN", CreatureType.VILLAGER, ChatColor.GOLD+"绿塔守护者", i, false);
+				ch.sethealth(e, 1000);
+				e.setNoDamageTicks(999999999);
+				greedef = (Villager)e;
 			}
 			else
 			{
@@ -374,6 +396,7 @@ public class CJFWListener implements Listener
 			sender.sendMessage("BLUE: " + Base_HP.get("BLUE").toString());
 			sender.sendMessage("AUQA: " + Base_HP.get("AQUA").toString());
 			sender.sendMessage("PURPLE :" + Base_HP.get("PURPLE").toString());
+			sender.sendMessage("GREEN" + Base_HP.get("GREEN").toString());
 		}
 	}
 	/**
@@ -408,12 +431,13 @@ public class CJFWListener implements Listener
 			if(boom.getEntity() instanceof Creeper)
 			{
 				if(baselist.get("BLUE") != null && baselist.get("AQUA") != null &&
-						baselist.get("PURPLE") != null)
+						baselist.get("PURPLE") != null && baselist.get("GREEN") != null)
 				{
 					Location a = boom.getLocation();
 					if(boom.getLocation().getWorld() == baselist.get("BLUE").getWorld()
 							&&boom.getLocation().getWorld() == baselist.get("AQUA").getWorld()
-							&&boom.getLocation().getWorld() == baselist.get("PURPLE").getWorld()) 
+							&&boom.getLocation().getWorld() == baselist.get("PURPLE").getWorld()
+							&&boom.getLocation().getWorld() == baselist.get("GREEN").getWorld())
 					{
 						if(Math.pow((a.getX() - baselist.get("AQUA").getX()), 2) + Math.pow((a.getZ() - baselist.get("AQUA").getZ()), 2) < 676 
 								&& Base_damageable.get("AQUA"))
@@ -430,6 +454,11 @@ public class CJFWListener implements Listener
 								&& Base_damageable.get("PURPLE"))
 						{
 							HPModify("PURPLE", -100);
+						}
+						if(Math.pow((a.getX() - baselist.get("GREEN").getX()), 2) + Math.pow((a.getZ() - baselist.get("GREEN").getZ()), 2) < 676
+								&& Base_damageable.get("GREEN"))
+						{
+							HPModify("GREEN", -100);
 						}
 					}
 				}
@@ -479,6 +508,7 @@ public class CJFWListener implements Listener
 	/**
 	 * The public method is called by main, then turn to private method
 	 * to check damage to tower by mobs.
+	 * TODO change to spawn point method
 	 */
 	public void checkdamage() {
 		
@@ -487,6 +517,7 @@ public class CJFWListener implements Listener
 			dodamage("BLUE");
 			dodamage("AQUA");
 			dodamage("PURPLE");
+			dodamage("GREEN");
 			if(Base_HP.get("BLUE") == 0)
 			{
 				baselist.put("BLUE", baselist.get("PURPLE").clone());

@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -32,6 +33,7 @@ public final class CJFWmain extends JavaPlugin
 	{
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, final String[] args)
 	{
 		//There is only one main command: cjfw
@@ -48,9 +50,11 @@ public final class CJFWmain extends JavaPlugin
 			{
 				if(args[0].equalsIgnoreCase("test"))
 				{
+					Player a = sender.getServer().getPlayer(sender.getName());
 					org.bukkit.inventory.ItemStack weapon = new org.bukkit.inventory.ItemStack(Material.DIAMOND_SWORD,1);
 					weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
-					sender.getServer().getPlayer(sender.getName()).getInventory().addItem(weapon);
+					a.getInventory().addItem(weapon);
+					a.playSound(a.getLocation(), "emergency_test", 1 , 1);
 				}
 				if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game

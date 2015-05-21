@@ -9,10 +9,10 @@ public class Fileloader {
 	/**
 	 * only load one file into the directory.
 	 */
-	LinkedHashMap<WaveTime, String> serversayevent;
-	LinkedHashMap<WaveTime, String> spawnmobevent;
-	LinkedHashMap<WaveTime, String> backgroundmusicevent;
-	ArrayList<WaveTime> showrankeventlist;
+	public LinkedHashMap<WaveTime, String> serversayevent;
+	public LinkedHashMap<WaveTime, String> spawnmobevent;
+	public LinkedHashMap<WaveTime, String> backgroundmusicevent;
+	public ArrayList<WaveTime> showrankeventlist;
 	/**
 	 * Load file into the system, current file directory is "CJFWdata.txt";
 	 */

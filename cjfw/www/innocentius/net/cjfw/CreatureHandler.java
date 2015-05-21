@@ -1,5 +1,6 @@
 package innocentius.net.cjfw;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -13,7 +14,10 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 
 /**
  * summarize all method for change mob status.
@@ -76,4 +80,58 @@ public class CreatureHandler {
 		a.setMaxHealth(b);
 		a.setHealth(b);
 	}
+	public boolean checkentitydata(Map<String, Location> baselist) 
+	{
+		Entity[] temp_dat;
+		temp_dat = getNearbyEntities(baselist.get("BLUE"), 70);
+		for(Entity ent:temp_dat)
+		{
+			if(ent instanceof Monster || ent instanceof EnderDragon)
+			{
+				return false;
+			}
+		}
+        temp_dat = getNearbyEntities(baselist.get("AQUA"), 70);
+        for(Entity ent:temp_dat)
+        {
+        	if(ent instanceof Monster || ent instanceof EnderDragon)
+        	{
+        		return false;
+        	}
+        	
+        }
+        temp_dat = getNearbyEntities(baselist.get("PURPLE"), 70);
+        for(Entity ent:temp_dat)
+        {
+        	if(ent instanceof Monster || ent instanceof EnderDragon)
+        	{
+        		return false;
+        	}
+        }
+        return true;
+	}
+	/**
+	 * The method check the area around the center location &l with a radius of &radius
+	 * @param l - the center location
+	 * @param radius - the radius of detect area
+	 * @return the list of entity without sort
+	 * @author At least not me
+	 */
+	public Entity[]  getNearbyEntities(Location l, int radius)
+	{
+		int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16))/16;
+		HashSet<Entity> radiusEntities = new HashSet<Entity>();
+		for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++)
+		{
+			for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++)
+			{
+				int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
+				for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities())
+				{
+					if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()) radiusEntities.add(e);
+				}
+			}
+		}
+        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
+    }
 }

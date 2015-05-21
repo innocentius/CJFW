@@ -53,8 +53,8 @@ public final class CJFWmain extends JavaPlugin
 					Player a = sender.getServer().getPlayer(sender.getName());
 					org.bukkit.inventory.ItemStack weapon = new org.bukkit.inventory.ItemStack(Material.DIAMOND_SWORD,1);
 					weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
-					a.getInventory().addItem(weapon);
-					a.playSound(a.getLocation(), "emergency_test", 1 , 1);
+					//a.getInventory().addItem(weapon);
+					a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
 				}
 				if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game

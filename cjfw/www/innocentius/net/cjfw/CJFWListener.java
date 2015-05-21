@@ -467,30 +467,7 @@ public class CJFWListener implements Listener
 		
 		}
 	}
-	/**
-	 * The method check the area around the center location &l with a radius of &radius
-	 * @param l - the center location
-	 * @param radius - the radius of detect area
-	 * @return the list of entity without sort
-	 * @author At least not me
-	 */
-	public static Entity[]  getNearbyEntities(Location l, int radius)
-	{
-		int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16))/16;
-		HashSet<Entity> radiusEntities = new HashSet<Entity>();
-		for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++)
-		{
-			for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++)
-			{
-				int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
-				for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities())
-				{
-					if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()) radiusEntities.add(e);
-				}
-			}
-		}
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
-    }
+	
 	/**
 	 * get location of set base, If base is not set, the location will not be 
 	 * displayed
@@ -546,7 +523,7 @@ public class CJFWListener implements Listener
 		if(Base_damageable.get(key))
 		{
 			Location loc;
-			Entity[] temp = getNearbyEntities(baselist.get(key), 21);
+			Entity[] temp = ch.getNearbyEntities(baselist.get(key), 21);
 			for(Entity ent:temp)
 			{
 				if(ent instanceof PigZombie || ent instanceof Zombie|| ent instanceof Spider)
@@ -600,2597 +577,2603 @@ public class CJFWListener implements Listener
 	}
 	
 	/**
-	 * The whole progress of game will be generated here.
+	 * --Update time
+	 * --Check from event list
+	 * --predefine wave time.
+	 * --this will include special event
+	 * --entity checker
 	 * @param time
 	 */
 	public void update(int time) 
 	{
-		//the update of wave should be the first step
-		Location temp;
-		LivingEntity e;
-		if(!finish && !wave9_switch && !bonus_switch)
-		{
-			if(wave_time == 0)
-			{
-				wave++;
-			}
-			//wave 9 methods
-			if(wave == 9 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 8 FINISH!");
-				}
-				wave_time = -45;
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 9 && wave_time == -40)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"在最後一波結束后將不能使用塔防支援！請各位尚餘回血的玩家儘快使用，不要浪費！");
-				}
-			}
-			if(wave == 9 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"FINAL WAVE START!");
-				}
-				
-				wave_time = 300;
-				baselist.get("BLUE").getWorld().setTime(6000);
-			}
-			if(wave == 9 && wave_time == 295)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,10,-45);
-				Entity temp_eni;
-				temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITHER);
-				LivingEntity a = (LivingEntity)temp_eni;
-				a.setRemoveWhenFarAway(false);
-				a.setCustomName(ChatColor.RED+"第二型巴特勒");
-				a.setCustomNameVisible(true);
-				ch.changerange(a); 
-				a.setMaxHealth(200 * player_count * difficulty);
-				a.setHealth(200 * player_count * difficulty);
-				final_boss = (Wither)a;
-				
-			}
-			if(wave == 9 && wave_time > 0 && wave_time < 295 && wave_time % 15 == 0)
-			{
-				if(final_boss != null)
-				{
-					if(!final_boss.isDead())
-					{
-						temp = baselist.get("AQUA").clone();
-						temp.add(0,0,-50);
-						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
-						{
-							e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
-							Skeleton skel = (Skeleton)e;
-							skel.setSkeletonType(SkeletonType.WITHER);
-							CraftSkeleton skelc = (CraftSkeleton)skel;
-					        EntitySkeleton skelMC = skelc.getHandle();
-							ItemStack item = new ItemStack(Item.getById(261));
-							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
-					        skelMC.setEquipment(0, item);
-					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-						}
-						temp = baselist.get("PURPLE").clone();
-						temp.add(0,0,-50);
-						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
-						{
-							e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-							Skeleton skel = (Skeleton)e;
-							skel.setSkeletonType(SkeletonType.WITHER);
-							CraftSkeleton skelc = (CraftSkeleton)skel;
-					        EntitySkeleton skelMC = skelc.getHandle();
-							ItemStack item = new ItemStack(Item.getById(261));
-							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
-					        skelMC.setEquipment(0, item);
-					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-						}
-					}
-				}
-			}
-			if(wave == 9 && wave_time > 0 && wave_time < 200 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-					wave9_switch = true;
-				}
-			}
-			if(wave == 9 && wave_time == 1)
-			{
-				wavefinalremove();
-				wave9_switch = true;
-			}
-			//wave 8 methods
-			if(wave == 8 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 7 FINISH!");
-				}
-				wave_time = -30;
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 8 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 8 START!");
-				}
-				
-				wave_time = 270;
-				baselist.get("BLUE").getWorld().setTime(6000);
-			}
-			if(wave == 8 && wave_time == 265)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.DARK_RED+"凋零軍團本隊來襲！");
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,10,-45);
-				e = ch.summonCreatures(baselist, "BLUE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
-				e.setMaxHealth(2000 * player_count * difficulty);
-				e.setHealth(2000 * player_count * difficulty);
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20,10,-45);
-				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
-				e.setMaxHealth(2000 * player_count * difficulty);
-				e.setHealth(2000 * player_count * difficulty);
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20,10,-45);
-				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
-				e.setMaxHealth(2000 * player_count * difficulty);
-				e.setHealth(200 * player_count * difficulty);
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < 0.5 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(80D);
-					e.setHealth(80D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.getById(261));
-					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(100D);
-					e.setHealth(100D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20,0,-30);
-				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(80D);
-					e.setHealth(80D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.getById(261));
-					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(100D);
-					e.setHealth(100D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20,0,-30);
-				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(80D);
-					e.setHealth(80D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-					ItemStack item = new ItemStack(Item.getById(261));
-					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				for(int i = 0; i < 1.0 * player_count * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
-					e.setMaxHealth(100D);
-					e.setHealth(100D);
-					Skeleton skel = (Skeleton)e;
-					skel.setSkeletonType(SkeletonType.WITHER);
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-			}
-			if(wave == 8 && wave_time > 0 && wave_time < 200 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-					
-				}
-			}
-			if(wave == 8 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 7 methods
-			if(wave == 7 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 6 FINISH!");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -30;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 7 && wave_time == -25)
-			{
-				gettop();
-			}
-			if(wave == 7 && wave_time == -10)
-			{
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
-			}
-			if(wave == 7 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 7 START!");
-				}
-				
-				wave_time = 240;
-				baselist.get("BLUE").getWorld().setTime(17000);
-			}
-			if(wave == 7 && wave_time == 240)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-			}
-			if(wave == 7 && wave_time == 200)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName("凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("AQUA").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("PURPLE").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-			}
-			if(wave == 7 && wave_time == 185)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"中路有強力的敵人出現！");
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.BLACK+"凋零型巴特勒", temp, true);
-				e.setMaxHealth(250 * player_count * difficulty);
-				e.setHealth(250 * player_count * difficulty);
-				Skeleton skel = (Skeleton)e;
-				skel.setSkeletonType(SkeletonType.WITHER);
-				CraftSkeleton skelc = (CraftSkeleton)skel;
-				EntitySkeleton skelMC = skelc.getHandle();
-				ItemStack item = new ItemStack(Item.getById(276));
-				item.addEnchantment(Enchantment.KNOCKBACK, 2);
-				item.addEnchantment(Enchantment.FIRE_ASPECT, 1);
-				skelMC.setEquipment(0, item);
-				skelMC.setEquipment(1, new ItemStack(Item.getById(309)));
-				skelMC.setEquipment(2, new ItemStack(Item.getById(308)));
-				skelMC.setEquipment(4, new ItemStack(Item.getById(306)));
-				item = new ItemStack(Item.getById(307));
-				item.addEnchantment(Enchantment.THORNS, 2);
-				skelMC.setEquipment(3, item);
-			}
-			if(wave == 7 && wave_time == 140)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName("凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("AQUA").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
-				{
-					Entity temp_eni;
-					temp_eni = baselist.get("PURPLE").getWorld().spawnEntity(temp, EntityType.WITCH);
-					LivingEntity a = (LivingEntity)temp_eni;
-					a.setRemoveWhenFarAway(false);
-					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
-					a.setCustomNameVisible(true);
-					ch.changerange(a); 
-				}
-			}
-			if(wave == 7 && wave_time == 120)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"偵測到隱形的自爆部隊！");
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-32);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-32);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-32);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
-				}
-			}
-			if(wave == 7 && wave_time == 110)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
-					e.setMaxHealth(38D);
-					e.setHealth(38D);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
-					e.setMaxHealth(38D);
-					e.setHealth(38D);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
-					e.setMaxHealth(38D);
-					e.setHealth(38D);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				}
-			}
-			if(wave == 7 && wave_time > 0 && wave_time < 70 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 7 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 6 methods
-			if(wave == 6 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 5 FINISH!");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -30;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 6 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 6 START!");
-				}
-				
-				wave_time = 240;
-				baselist.get("BLUE").getWorld().setTime(5000);
-			}
-			if(wave == 6 && wave_time == 240)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 6 && wave_time == 235)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20,0,-35);
-				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20,0,-35);
-				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 6 && wave_time == 215)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-50);
-				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程小兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20,0,-35);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20,0,-35);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 6 && wave_time == 180)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-50);
-				for(int i = 0; i < player_count * 0.9 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 1.9 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
-				}
-			}
-			if(wave == 6 && wave_time == 160)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-50);
-				e = ch.summonCreatures(baselist, "AQUA", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
-				e.setMaxHealth(100 * player_count * difficulty);
-				e.setHealth(100 * player_count * difficulty);
-				ch.changeattack(e);
-				Giant gian = (Giant)e;
-				CraftGiant skelc = (CraftGiant)gian;
-		        EntityGiantZombie skelMC = skelc.getHandle();
-		        ItemStack item = new ItemStack(Item.getById(261));
-		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
-		        skelMC.setEquipment(0, item);
-		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
-		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
-		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-		        temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-50);
-				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
-				e.setMaxHealth(100 * player_count * difficulty);
-				e.setHealth(100 * player_count * difficulty);
-				ch.changeattack(e);
-				gian = (Giant)e;
-				skelc = (CraftGiant)gian;
-		        skelMC = skelc.getHandle();
-		        item = new ItemStack(Item.getById(261));
-		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
-		        skelMC.setEquipment(0, item);
-		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
-		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
-		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			}
-			if(wave == 6 && wave_time == 120)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-50);
-				for(int i = 0; i < player_count * 0.8 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 1.6 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
-				}
-			}
-			if(wave == 6 && wave_time == 80)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-50);
-				for(int i = 0; i < player_count * 0.4 * difficulty; i ++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
-					ch.changeattack(e);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(261));
-			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
-			        skelMC.setEquipment(0, item);
-			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.8 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack item = new ItemStack(Item.getById(272));
-			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
-			        zombMC.setEquipment(0, item);
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 6 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 6 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 5 methods
-			if(wave == 5 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 4 FINISH!");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -60;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 5 && wave_time == -55)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"中場休息60秒！");
-				}
-			}
-			if(wave == 5 && wave_time == -45)
-			{
-				gettop();
-			}
-			if(wave == 5 && wave_time == -15)
-			{
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"下一波敵人還有15秒到達戰場！");
-				}
-			}
-			if(wave == 5 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 5 START!");
-				}
-				
-				wave_time = 210;
-				baselist.get("BLUE").getWorld().setTime(16000);
-			}
-			if(wave == 5 && wave_time == 208)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"清冥之加護：敵方行進速度增加20%！");
-				}
-			}
-			if(wave == 5 && wave_time == 206)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"左塔出現了強大的敵人！");
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				temp.getWorld().strikeLightningEffect(temp);
-				e = ch.summonCreatures(baselist, "AQUA" , CreatureType.ZOMBIE, ChatColor.RED+"Yan's WIFI", temp, true);
-				
-				e.setMaxHealth(200 * player_count * difficulty);
-				e.setHealth(200 * player_count * difficulty);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-				ItemStack item = new ItemStack(Item.getById(267));
-				item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-				item.addEnchantment(Enchantment.KNOCKBACK, 1);
-				zombMC.setEquipment(0, item);
-				zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-				zombMC.setEquipment(2, new ItemStack(Item.getById(308)));
-				zombMC.setEquipment(3, new ItemStack(Item.getById(307)));
-				zombMC.setEquipment(4, new ItemStack(Item.getById(306)));
-			}
-			if(wave == 5 && wave_time == 205)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1 * difficulty; i ++)
-				{
-				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-45);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
-				{
-				e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
-				{
-				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
-		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 5 && wave_time == 160)
-			{
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1 * difficulty; i ++)
-				{
-				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
-		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1 * difficulty; i ++)
-				{
-				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
-				ch.changespeed(e);
-				Zombie zomb = (Zombie)e;
-				CraftZombie zombc = (CraftZombie)zomb;
-		        EntityZombie zombMC = zombc.getHandle();
-		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
-		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 5 && wave_time == 110)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 5 & wave_time == 80)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
-					ch.changespeed(e);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 5 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 5 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 4 methods
-			if(wave == 4 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 3 FINISH!");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -30;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 4 && wave_time == -25)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("防衛結束后會根據基地剩餘血量決定獎勵數量！");
-				}
-			}
-			if(wave == 4 && wave_time == -15)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("如果防衛失敗的話只會拿到少量參與獎，請小心應對！");
-				}
-			}
-			if(wave == 4 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 4 START!");
-				}
-				
-				wave_time = 150;
-				baselist.get("BLUE").getWorld().setTime(4000);
-			}
-			if(wave == 4 && wave_time == 147)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"左塔附近出現了大量的怪物！");
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"防空(假的)步兵", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				temp.add(0,0,5);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-			}
-			if(wave == 4 && wave_time == 140)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-			}
-			if(wave == 4 && wave_time == 110)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了大量的怪物！");
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"重装大兵(没穿鞋的)", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"美国大(新)兵", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				temp.add(0,0,5);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-			}
-			if(wave == 4 && wave_time == 100)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"美国大(新)兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-			}
-			if(wave == 4 && wave_time == 70)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"右塔附近出現了大量的怪物！");
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡(被)控制人", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"尤裡新兵", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				temp.add(0,0,5);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"（回收用）市民", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-			}
-			if(wave == 4 && wave_time == 60)
-			{
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡敢死隊", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
-				}
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡老(真的很老)兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
-				}
-			}
-			if(wave == 4 && wave_time > 0 && wave_time < 50 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 4 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 3 methods
-			if(wave == 3 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 2 FINISH!");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -30;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 3 && wave_time == -25)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("總計九輪的防禦過後會根據人頭數排名頒發榮譽獎！");
-				}
-				gettop();
-			}
-			if(wave == 3 && wave_time == -20)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("榮譽獎不會過高，請各位專心于防衛！");
-				}
-			}
-			if(wave == 3 && wave_time == -15)
-			{
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
-				sb.getObjective("contri_point").setDisplaySlot(DisplaySlot.BELOW_NAME);
-			}
-			if(wave == 3 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 3 START!");
-				}
-				
-				wave_time = 180;
-				baselist.get("BLUE").getWorld().setTime(14000);
-			}
-			if(wave == 3 && wave_time == 180)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(0, 0, -30);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(268)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				} 
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0,0,-30);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(0, new ItemStack(Item.getById(283)));
-			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
-			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-			}
-			if(wave == 3 && wave_time == 160)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-			}
-			if(wave == 3 && wave_time == 150)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20,0,-30);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-				}
-				temp.add(20,0,-15);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20,0,-30);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
-				}
-				temp.add(-20,0,-15);
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-			}
-			if(wave == 3 && wave_time == 124)
-			{
-				Bukkit.broadcastMessage(ChatColor.RED+"变异型巴特勒：【就算没有魔王的指示，我也能一个人把你们全部打烂！】");
-			}
-			if(wave == 3 && wave_time == 120)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了強大的敵人！");
-				}
-				baselist.get("BLUE").getWorld().setStorm(true);
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				e = ch.summonCreatures(baselist, "BLUE" , CreatureType.SKELETON, ChatColor.RED+"变异型巴特勒", temp, true);
-				e.setMaxHealth(150 * player_count * difficulty);
-				e.setHealth(150 * player_count * difficulty);
-				Skeleton skel = (Skeleton)e;
-				CraftSkeleton skelc = (CraftSkeleton)skel;
-				EntitySkeleton skelMC = skelc.getHandle();
-				ItemStack item = new ItemStack(Item.getById(283));
-				item.addEnchantment(Enchantment.DAMAGE_ALL, 3);
-				skelMC.setEquipment(0, item);
-				skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
-				skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
-				skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
-				skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				 
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
-				}
-				temp.add(0,0,-5);
-				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
-					skel = (Skeleton)e;
-					skelc = (CraftSkeleton)skel;
-					skelMC = skelc.getHandle();
-					skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-					skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
-				}
-			        
-			}
-			if(wave == 3 && wave_time == 70)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了大量的怪物！");
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0,0,-40);
-				for(int i = 0; i < player_count * 3.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-			}
-			if(wave == 3 && wave_time == 40)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.YELLOW+"偷襲部隊時刻有可能出現，請小心應對！");
-				}
-				
-			}
-			if(wave == 3 && wave_time > 0 && wave_time < 61 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 3 && wave_time == 1)
-			{
-				wavefinalremove();
-				Bukkit.broadcastMessage(ChatColor.RED+"变异型巴特勒：可恶啊！！要是再多给我一点时间的话...");
-			}
-			//wave 2 methods
-			if(wave == 2 && wave_time == 0)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("每波之间有30秒钟休息时间！");
-				}
-				baselist.get("BLUE").getWorld().setStorm(false);
-				baselist.get("BLUE").getWorld().setThundering(false);
-				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
-				wave_time = -30;
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
-			}
-			if(wave == 2 && wave_time == -25)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 1 FINISH!");
-				}
-			}
-			if(wave == 2 && wave_time == -20)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"每波結束各職業都會有不同的補給品發出!");
-				}
-			}
-			if(wave == 2 && wave_time == -15)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GREEN+"請善加利用！");
-				}
-			}
-			if(wave == 2 && wave_time == -1)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 2 START!");
-				}
-				wave_time = 150;
-			}
-			if(wave == 2 && wave_time == 150)
-			{
-				baselist.get("BLUE").getWorld().setTime(0);
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
-				{
-					
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 2 && wave_time == 120)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒工兵", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20, 0, -30);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20, 0, -30);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
-				}
-			}
-			if(wave == 2 && wave_time == 90)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
-					Zombie zomb = (Zombie)e;
-					zomb.setBaby(true);
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
-				}
-			}
-			if(wave == 2 && wave_time == 60)
-			{
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20, 0, -30);
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
-				}
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
-				}
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20, 0, -30);
-				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
-				{
-					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, "拿錯裝備的", temp, true);
-					Skeleton skel = (Skeleton)e;
-					CraftSkeleton skelc = (CraftSkeleton)skel;
-			        EntitySkeleton skelMC = skelc.getHandle();
-			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
-			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
-				}
-			}
-			if(wave == 2 && wave_time > 0 && wave_time < 55 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 2 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 1 methods
-			if(wave == 1 && wave_time == 0)
-			{
-				for(int i = 0; i < 8; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 1 START!");
-				}
-				
-				wave_time = 120;
-				baselist.get("BLUE").getWorld().setTime(14000);
-				
-					temp = baselist.get("BLUE").clone();
-					temp.add(0, 0, -40);
-					for(int i = 0; i < player_count * 1.5 * difficulty; i++)
-					{
-						ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"渣渣", temp, false);
-					}
-			}
-			if(wave == 1 && wave_time == 110)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 1 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"炮灰", temp, false);
-				}
-			}
-			if(wave == 1 && wave_time == 100)
-			{
-				temp = baselist.get("PURPLE").clone();
-				temp.add(0, 0, -35);
-				for(int i = 0; i < player_count * 1 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"菜鳥", temp, false);
-				}
-				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"難民", temp, false);
-				}
-			}
-			if(wave == 1 && wave_time == 90)
-			{
-				temp = baselist.get("AQUA").clone();
-				temp.add(-20, 0 ,-30);
-				for(int i = 0; i < player_count * 0.75 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"雜魚", temp, false);
-				}	
-			}
-			if(wave == 1 && wave_time == 80)
-			{
-				temp = baselist.get("BLUE").clone();
-				temp.add(0, 0, -40);
-				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"兵痞", temp, false);
-				}
-			}
-			if(wave == 1 && wave_time == 60)
-			{
-				temp = baselist.get("PURPLE").clone();
-				temp.add(20, 0 , -30);
-				for(int i = 0; i < player_count * 1 * difficulty; i++)
-				{
-					ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
-				}
-			}
-			if(wave == 1 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
-			{
-				if(checkentitydata())
-				{
-					bonus_time = bonus_time + wave_time;
-					wave_time = 0;
-				}
-			}
-			if(wave == 1 && wave_time == 1)
-			{
-				wavefinalremove();
-			}
-			//wave 0 methods
-			if(wave == 0 && wave_time == -1)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("欢迎各位参加防卫战的勇士们！");
-				}
-				wave_time = 90;
-			}
-			if(wave == 0 && wave_time == 75)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("敌人即将入侵采掘基地，请各位利用手中的武器保护基地！");
-				}
-				//temp = baselist.get("PURPLE").clone();
-				//temp.add(20, 0 , -20);
-				//tp = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
-			}
-			if(wave == 0 && wave_time == 60)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("请避免让近程怪物靠近红圈，远程怪物靠近黄圈！进入该范围的怪物将会使基地损伤！");
-				}
-				//if(tp.isDead())
-				//{
-				//	Bukkit.broadcastMessage("you got it.");
-				//}
-			}
-			if(wave == 0 && wave_time == 50)
-			{
-				for(int i = 0; i < 2; i++)
-				{
-					Bukkit.broadcastMessage("撑过一波的方法有两种！");
-					Bukkit.broadcastMessage(ChatColor.RED+"其一是wave时间耗尽！");
-					Bukkit.broadcastMessage(ChatColor.GREEN+"其二是将所有怪物歼灭！");
-				}
-			}
-			if(wave == 0 && wave_time == 45)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.RED+"敌军还有45秒到达战场！");
-				}
-			}
-			if(wave == 0 && wave_time == 30)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("自爆类的怪物在绿圈内自爆会对基地造成大损伤！请一定注意！");
-					}
-				}
-				if(wave == 0 && wave_time == 20)
-				{
-					for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("每位玩家均有兩次开启某一塔塔防和恢复塔受损耐久值的机会！可以在塔的后方开启，请好好利用！");
-				}
-			}
-			if(wave == 0 && wave_time == 15)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage("每波会有额外的道具提供！请法师记得清理物品栏！");
-				}
-			}
-			if(wave == 0 && wave_time == 10)
-			{
-				for(int i = 0; i < 4; i++)
-				{
-					Bukkit.broadcastMessage(ChatColor.GOLD+"介绍就到这里，以上！祝各位武运昌隆！");
-				}
-			}
-			//the update of wave_time should be the last step before refresh scoreboard
-			if(wave_time < 0)
-			{
-				wave_time ++;
-			}
-			if(wave_time > 0)
-			{
-				wave_time --;
-			}
-			
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Wave cjfw " + wave);
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Time cjfw " + wave_time);
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set BLUE cjfw " + Base_HP.get("BLUE"));
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
-				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
-				if(Base_HP.get("BLUE") == 0 && Base_HP.get("AQUA") == 0 && Base_HP.get("PURPLE") == 0)
-				{
-					finish = true;
-				}
-		}
-		if(!finish && wave9_switch && !bonus_switch)
-		{
-			String rank = calculate_rank();
-			Bukkit.broadcastMessage(ChatColor.GREEN + "防衛成功！");
-			Bukkit.broadcastMessage(ChatColor.BLUE + "本次防衛的評價為：");
-			Bukkit.broadcastMessage(ChatColor.GOLD + rank + "!");
-			if(bonus_time > 180)
-			{
-				bonus_switch = true;
-				back_timer = -10;
-				for(int i = 0; i < 3; i++)
-				{
-					baselist.get("BLUE").getWorld().setTime(0000);
-					Bukkit.broadcastMessage("一分鐘后傳送主城！");
-				}
-			}
-			else
-			{
-				gettop();
-				for(int i = 0; i < 3; i++)
-				{
-					Bukkit.broadcastMessage("活動結束！請等待傳送和獎勵發放！");
-				}
-				finish = true;
-			}
-		}
-		//HIDDEN BOSS
-		if(!finish && wave9_switch && bonus_switch && !bonus_finish_switch)
-		{
-			if(back_timer < 0 )
-			{
-				back_timer ++;
-			}
-			else
-			{
-				if(back_timer == 0 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.YELLOW+"【傳送主城...？有意思。】");
-					}
-				}
-				if(back_timer == 5 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.RED + "【費盡千辛萬苦才等到這麼一個好機會...】");
-					}
-				}
-				if(back_timer == 15 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "吾烈焰魔王【伊諾增忒斯】會讓你們這麼容易逃走嗎？！");
-					}
-				}
-				if(back_timer == 20 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "爲了讓你們輕敵，吾可是故意偽裝成深淵魔王進攻啊...");
-					}
-				}
-				if(back_timer == 25 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "沒想到你們這麼容易就上當了...真是可笑啊...");
-					}
-				}
-				if(back_timer == 30 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "哼...吾可是會出全力的，看你們能撐到什麼時候！");
-					}
-				}
-				if(back_timer == 32 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					temp = baselist.get("BLUE").clone();
-					temp.add(0, 0, -40);
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_RED+"烈焰魔王Innocentius", temp, true);
-					e.setMaxHealth(300 * player_count * difficulty);
-					e.setHealth(300 * player_count * difficulty);
-					ch.changespeed(e);
-					ch.changeattack(e);
-					last_boss = e;
-					Zombie zomb = (Zombie)e;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        ItemStack i = new ItemStack(Item.getById(276));
-			        i.addEnchantment(Enchantment.DAMAGE_ALL, 5);
-			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-			        i.addEnchantment(Enchantment.KNOCKBACK, 4);
-			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.getById(305));
-			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.getById(304));
-			        i.addEnchantment(Enchantment.PROTECTION_FIRE, 1);
-			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.getById(303));
-			        i.addEnchantment(Enchantment.THORNS, 2);
-			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.getById(302));
-			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-			        zombMC.setEquipment(4, i);
-				}
-				if(back_timer == 37 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.YELLOW + "最終boss:Innocentius出現了！");
-					}
-				}
-				if(back_timer == 40 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 4; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.YELLOW + "本回合不計算時間，不計算總評價，不計算對塔的傷害。");
-					}
-				}
-				if(last_boss != null && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					Damageable a = (Damageable)last_boss;
-					if((a.getHealth() / a.getMaxHealth() < 0.7) && !last_boss_phase1 && !last_boss_phase3)
-					{
-						last_boss_phase1 = true;
-						back_timer = 0;
-					}
-				}
-				if(back_timer == 0 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 哦？頗有點意思呢。");
-					}
-				}
-				if(back_timer == 3 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 出來吧！吾之守護！");
-					}
-				}
-				if(back_timer == 5 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 5), true);
-					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.AQUA+"烈風", last_boss.getLocation(), true);
-					e.setMaxHealth(40 * player_count * difficulty);
-					e.setHealth(40 * player_count * difficulty);
-					Zombie zomb = (Zombie)e;
-					last_boss1 = zomb;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-					ItemStack i = new ItemStack(Item.getById(276));
-			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			        i.addEnchantment(Enchantment.KNOCKBACK, 3);
-			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.getById(305));
-			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.getById(304));
-			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.getById(303));
-			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.getById(302));
-			        zombMC.setEquipment(4, i);
-			        e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_GREEN+"森木", last_boss.getLocation(), true);
-					e.setMaxHealth(40 * player_count * difficulty);
-					e.setHealth(40 * player_count * difficulty);
-					zomb = (Zombie)e;
-					last_boss2 = zomb;
-					zombc = (CraftZombie)zomb;
-			        zombMC = zombc.getHandle();
-					i = new ItemStack(Item.getById(276));
-			        i.addEnchantment(Enchantment.DAMAGE_ALL, 3);
-			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.getById(305));
-			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.getById(304));
-			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.getById(303));
-			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.getById(302));
-			        zombMC.setEquipment(4, i);
-			        e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.RED+"焱魔", last_boss.getLocation(), true);
-					e.setMaxHealth(40 * player_count * difficulty);
-					e.setHealth(40 * player_count * difficulty);
-					zomb = (Zombie)e;
-					last_boss3 = zomb;
-					zombc = (CraftZombie)zomb;
-			        zombMC = zombc.getHandle();
-					i = new ItemStack(Item.getById(276));
-			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
-			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-			        zombMC.setEquipment(0, i);
-			        i = new ItemStack(Item.getById(305));
-			        zombMC.setEquipment(1, i);
-			        i = new ItemStack(Item.getById(304));
-			        zombMC.setEquipment(2, i);
-			        i = new ItemStack(Item.getById(303));
-			        zombMC.setEquipment(3, i);
-			        i = new ItemStack(Item.getById(302));
-			        zombMC.setEquipment(4, i);
-			        
-				}
-				if(back_timer == 8 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 只要吾之三大守護尚在，吾就不會受到分毫傷害！");
-					}
-				}
-				if(last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3 && last_boss1 != null && last_boss2 != null && last_boss3 != null)
-				{
-					if(last_boss1.isDead() && last_boss2.isDead() && last_boss3.isDead())
-					{
-						last_boss_phase2 = true;
-						back_timer = 0;
-					}
-				}
-				if(back_timer == 0 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					Zombie zomb = (Zombie)last_boss;
-					CraftZombie zombc = (CraftZombie)zomb;
-			        EntityZombie zombMC = zombc.getHandle();
-			        zombMC.removeAllEffects();
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 唔唔唔...可惡的臭蟲們！");
-					}
-				}
-				if(back_timer == 3 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 但是你們以為吾是單槍匹馬到來的嗎...嘿嘿嘿...");
-					}
-				}
-				if(back_timer == 6 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 顯現吧！吾之燃燒軍團！！");
-					}
-				}
-				if(back_timer == 8 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					last_boss.getWorld().setStorm(true);
-					last_boss.getWorld().setWeatherDuration(100000);
-				}
-				if(back_timer == 14 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: ...什麽？！");
-					}
-				}
-				if(back_timer == 17 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 下雨了？！你【嗶---】在逗吾烈焰魔王！");
-					}
-				}
-				if(back_timer == 20 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 明明是沙漠，為什麼會下雨啊啊啊啊啊啊啊啊！！！");
-					}
-				}
-				if(back_timer == 22 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					last_boss.getWorld().strikeLightning(last_boss.getLocation());
-				}
-				if(back_timer == 25 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 啊啊啊啊啊啊啊！可惡啊啊啊啊啊！");
-					}
-					last_boss.setHealth(120 * player_count * difficulty);
-					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 3));
-					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 1000000, 1));
-				}
-				if(back_timer == 30 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
-				{
-					for(int i = 0; i < 5; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.WHITE + "現在正是好時機！乘勝追擊消滅烈焰魔王吧！");
-					}
-				}
-				if(last_boss_phase1 && last_boss_phase2 && !last_boss_phase3 && last_boss != null)
-				{
-					Damageable a = (Damageable)last_boss;
-					if(a.getHealth() / a.getMaxHealth() < 0.3)
-					{
-						last_boss_phase3 = true;
-						back_timer = 0;
-					}
-						
-				}
-				if(back_timer == 0 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 可惡啊啊啊啊啊！為何你們不會被燃盡！！");
-					}
-				}
-				if(back_timer == 3 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: ？？！！這是什麽情況！！");
-					}
-				}
-				if(back_timer == 5 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius:你們的鎧甲...為何被附魔了最高級的火焰防護！");
-					}
-				}
-				if(back_timer == 8 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 怎麼會...吾居然被人算計了。");
-					}
-				}
-				if(back_timer == 11 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 是誰敢算計本大爺？！光明神嗎？水神嗎？可惡啊啊啊啊啊啊啊啊！");
-					}
-				}
-				if(back_timer == 15 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
-				{
-					for(int i = 0; i < 2; i++)
-					{
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 我死不瞑目啊啊啊啊啊啊!");
-					}
-				}
-				if(last_boss_phase1 && last_boss_phase2 && last_boss_phase3 && last_boss != null)
-				{
-					if(last_boss.isDead())
-					{
-						for(int i = 0; i < 2; i++)
-						{
-							Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 我恨啊啊啊啊啊啊啊啊啊啊啊啊啊！");
-							bonus_finish_switch = true;
-						}
-					}
-				}
-				if(back_timer < 60)
-				{
-					back_timer ++;
-				}
-				
-			}
-		}
-		if(!finish && wave9_switch && bonus_switch && bonus_finish_switch)
-		{
-			for(int i = 0; i < 2; i++)
-			{
-				Bukkit.broadcastMessage(ChatColor.GOLD + "恭喜通過隱藏關卡！最終評價上升一級！");
-			}
-			gettop();
-			for(int i = 0; i < 3; i++)
-			{
-				Bukkit.broadcastMessage("活動結束！請等待傳送和獎勵發放！");
-			}
-			finish = true;
-		}
+		//set 
+//		//the update of wave should be the first step
+//		Location temp;
+//		LivingEntity e;
+//		if(!finish && !wave9_switch && !bonus_switch)
+//		{
+//			if(wave_time == 0)
+//			{
+//				wave++;
+//			}
+//			//wave 9 methods
+//			if(wave == 9 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 8 FINISH!");
+//				}
+//				wave_time = -45;
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 9 && wave_time == -40)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"在最後一波結束后將不能使用塔防支援！請各位尚餘回血的玩家儘快使用，不要浪費！");
+//				}
+//			}
+//			if(wave == 9 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"FINAL WAVE START!");
+//				}
+//				
+//				wave_time = 300;
+//				baselist.get("BLUE").getWorld().setTime(6000);
+//			}
+//			if(wave == 9 && wave_time == 295)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,10,-45);
+//				Entity temp_eni;
+//				temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITHER);
+//				LivingEntity a = (LivingEntity)temp_eni;
+//				a.setRemoveWhenFarAway(false);
+//				a.setCustomName(ChatColor.RED+"第二型巴特勒");
+//				a.setCustomNameVisible(true);
+//				ch.changerange(a); 
+//				a.setMaxHealth(200 * player_count * difficulty);
+//				a.setHealth(200 * player_count * difficulty);
+//				final_boss = (Wither)a;
+//				
+//			}
+//			if(wave == 9 && wave_time > 0 && wave_time < 295 && wave_time % 15 == 0)
+//			{
+//				if(final_boss != null)
+//				{
+//					if(!final_boss.isDead())
+//					{
+//						temp = baselist.get("AQUA").clone();
+//						temp.add(0,0,-50);
+//						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
+//						{
+//							e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+//							Skeleton skel = (Skeleton)e;
+//							skel.setSkeletonType(SkeletonType.WITHER);
+//							CraftSkeleton skelc = (CraftSkeleton)skel;
+//					        EntitySkeleton skelMC = skelc.getHandle();
+//							ItemStack item = new ItemStack(Item.getById(261));
+//							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+//					        skelMC.setEquipment(0, item);
+//					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//						}
+//						temp = baselist.get("PURPLE").clone();
+//						temp.add(0,0,-50);
+//						for(int i = 0; i < 0.5 * player_count * difficulty; i++)
+//						{
+//							e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//							Skeleton skel = (Skeleton)e;
+//							skel.setSkeletonType(SkeletonType.WITHER);
+//							CraftSkeleton skelc = (CraftSkeleton)skel;
+//					        EntitySkeleton skelMC = skelc.getHandle();
+//							ItemStack item = new ItemStack(Item.getById(261));
+//							item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+//					        skelMC.setEquipment(0, item);
+//					        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//					        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//					        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//					        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//						}
+//					}
+//				}
+//			}
+//			if(wave == 9 && wave_time > 0 && wave_time < 200 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//					wave9_switch = true;
+//				}
+//			}
+//			if(wave == 9 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//				wave9_switch = true;
+//			}
+//			//wave 8 methods
+//			if(wave == 8 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 7 FINISH!");
+//				}
+//				wave_time = -30;
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 8 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 8 START!");
+//				}
+//				
+//				wave_time = 270;
+//				baselist.get("BLUE").getWorld().setTime(6000);
+//			}
+//			if(wave == 8 && wave_time == 265)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.DARK_RED+"凋零軍團本隊來襲！");
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,10,-45);
+//				e = ch.summonCreatures(baselist, "BLUE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+//				e.setMaxHealth(2000 * player_count * difficulty);
+//				e.setHealth(2000 * player_count * difficulty);
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20,10,-45);
+//				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+//				e.setMaxHealth(2000 * player_count * difficulty);
+//				e.setHealth(2000 * player_count * difficulty);
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20,10,-45);
+//				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ENDER_DRAGON, ChatColor.GOLD+"凋零軍團副官", temp, true);
+//				e.setMaxHealth(2000 * player_count * difficulty);
+//				e.setHealth(200 * player_count * difficulty);
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < 0.5 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(80D);
+//					e.setHealth(80D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//					ItemStack item = new ItemStack(Item.getById(261));
+//					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(100D);
+//					e.setHealth(100D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20,0,-30);
+//				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(80D);
+//					e.setHealth(80D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//					ItemStack item = new ItemStack(Item.getById(261));
+//					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(100D);
+//					e.setHealth(100D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20,0,-30);
+//				for(int i = 0; i < 1.2 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(80D);
+//					e.setHealth(80D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//					ItemStack item = new ItemStack(Item.getById(261));
+//					item.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				for(int i = 0; i < 1.0 * player_count * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團本部", temp, false);
+//					e.setMaxHealth(100D);
+//					e.setHealth(100D);
+//					Skeleton skel = (Skeleton)e;
+//					skel.setSkeletonType(SkeletonType.WITHER);
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        skelMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//			}
+//			if(wave == 8 && wave_time > 0 && wave_time < 200 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//					
+//				}
+//			}
+//			if(wave == 8 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 7 methods
+//			if(wave == 7 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 6 FINISH!");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -30;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 7 && wave_time == -25)
+//			{
+//				gettop();
+//			}
+//			if(wave == 7 && wave_time == -10)
+//			{
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
+//			}
+//			if(wave == 7 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 7 START!");
+//				}
+//				
+//				wave_time = 240;
+//				baselist.get("BLUE").getWorld().setTime(17000);
+//			}
+//			if(wave == 7 && wave_time == 240)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//			}
+//			if(wave == 7 && wave_time == 200)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.75 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName("凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("AQUA").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.85 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("PURPLE").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//			}
+//			if(wave == 7 && wave_time == 185)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"中路有強力的敵人出現！");
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.BLACK+"凋零型巴特勒", temp, true);
+//				e.setMaxHealth(250 * player_count * difficulty);
+//				e.setHealth(250 * player_count * difficulty);
+//				Skeleton skel = (Skeleton)e;
+//				skel.setSkeletonType(SkeletonType.WITHER);
+//				CraftSkeleton skelc = (CraftSkeleton)skel;
+//				EntitySkeleton skelMC = skelc.getHandle();
+//				ItemStack item = new ItemStack(Item.getById(276));
+//				item.addEnchantment(Enchantment.KNOCKBACK, 2);
+//				item.addEnchantment(Enchantment.FIRE_ASPECT, 1);
+//				skelMC.setEquipment(0, item);
+//				skelMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//				skelMC.setEquipment(2, new ItemStack(Item.getById(308)));
+//				skelMC.setEquipment(4, new ItemStack(Item.getById(306)));
+//				item = new ItemStack(Item.getById(307));
+//				item.addEnchantment(Enchantment.THORNS, 2);
+//				skelMC.setEquipment(3, item);
+//			}
+//			if(wave == 7 && wave_time == 140)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName("凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("AQUA").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團前衛", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"凋零軍團先鋒", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
+//				{
+//					Entity temp_eni;
+//					temp_eni = baselist.get("PURPLE").getWorld().spawnEntity(temp, EntityType.WITCH);
+//					LivingEntity a = (LivingEntity)temp_eni;
+//					a.setRemoveWhenFarAway(false);
+//					a.setCustomName(ChatColor.GREEN+"凋零軍團巫師");
+//					a.setCustomNameVisible(true);
+//					ch.changerange(a); 
+//				}
+//			}
+//			if(wave == 7 && wave_time == 120)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"偵測到隱形的自爆部隊！");
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-32);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-32);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-32);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"凋零軍團自爆連", temp, true);
+//				}
+//			}
+//			if(wave == 7 && wave_time == 110)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+//					e.setMaxHealth(38D);
+//					e.setHealth(38D);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+//					e.setMaxHealth(38D);
+//					e.setHealth(38D);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"凋零軍團近衛", temp, false);
+//					e.setMaxHealth(38D);
+//					e.setHealth(38D);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				}
+//			}
+//			if(wave == 7 && wave_time > 0 && wave_time < 70 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 7 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 6 methods
+//			if(wave == 6 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 5 FINISH!");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -30;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 6 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 6 START!");
+//				}
+//				
+//				wave_time = 240;
+//				baselist.get("BLUE").getWorld().setTime(5000);
+//			}
+//			if(wave == 6 && wave_time == 240)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 6 && wave_time == 235)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20,0,-35);
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20,0,-35);
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 6 && wave_time == 215)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-50);
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程小兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.9 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20,0,-35);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20,0,-35);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 6 && wave_time == 180)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-50);
+//				for(int i = 0; i < player_count * 0.9 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 1.9 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
+//				}
+//			}
+//			if(wave == 6 && wave_time == 160)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-50);
+//				e = ch.summonCreatures(baselist, "AQUA", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
+//				e.setMaxHealth(100 * player_count * difficulty);
+//				e.setHealth(100 * player_count * difficulty);
+//				ch.changeattack(e);
+//				Giant gian = (Giant)e;
+//				CraftGiant skelc = (CraftGiant)gian;
+//		        EntityGiantZombie skelMC = skelc.getHandle();
+//		        ItemStack item = new ItemStack(Item.getById(261));
+//		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
+//		        skelMC.setEquipment(0, item);
+//		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+//		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+//		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//		        temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-50);
+//				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.GIANT, ChatColor.DARK_PURPLE+"腐肉山型巴特勒", temp, true);
+//				e.setMaxHealth(100 * player_count * difficulty);
+//				e.setHealth(100 * player_count * difficulty);
+//				ch.changeattack(e);
+//				gian = (Giant)e;
+//				skelc = (CraftGiant)gian;
+//		        skelMC = skelc.getHandle();
+//		        item = new ItemStack(Item.getById(261));
+//		        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 10);
+//		        skelMC.setEquipment(0, item);
+//		        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//		        skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+//		        skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+//		        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			}
+//			if(wave == 6 && wave_time == 120)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-50);
+//				for(int i = 0; i < player_count * 0.8 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 1.6 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, ChatColor.GREEN+"地精工程師", temp, true);
+//				}
+//			}
+//			if(wave == 6 && wave_time == 80)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-50);
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i ++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.WHITE+"天災遠程兵", temp, false);
+//					ch.changeattack(e);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(261));
+//			        item.addEnchantment(Enchantment.ARROW_KNOCKBACK, 2);
+//			        skelMC.setEquipment(0, item);
+//			        skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.8 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack item = new ItemStack(Item.getById(272));
+//			        item.addEnchantment(Enchantment.KNOCKBACK, 2);
+//			        zombMC.setEquipment(0, item);
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 6 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 6 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 5 methods
+//			if(wave == 5 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 4 FINISH!");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -60;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 5 && wave_time == -55)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"中場休息60秒！");
+//				}
+//			}
+//			if(wave == 5 && wave_time == -45)
+//			{
+//				gettop();
+//			}
+//			if(wave == 5 && wave_time == -15)
+//			{
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"下一波敵人還有15秒到達戰場！");
+//				}
+//			}
+//			if(wave == 5 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 5 START!");
+//				}
+//				
+//				wave_time = 210;
+//				baselist.get("BLUE").getWorld().setTime(16000);
+//			}
+//			if(wave == 5 && wave_time == 208)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"清冥之加護：敵方行進速度增加20%！");
+//				}
+//			}
+//			if(wave == 5 && wave_time == 206)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"左塔出現了強大的敵人！");
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				temp.getWorld().strikeLightningEffect(temp);
+//				e = ch.summonCreatures(baselist, "AQUA" , CreatureType.ZOMBIE, ChatColor.RED+"Yan's WIFI", temp, true);
+//				
+//				e.setMaxHealth(200 * player_count * difficulty);
+//				e.setHealth(200 * player_count * difficulty);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//				ItemStack item = new ItemStack(Item.getById(267));
+//				item.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//				item.addEnchantment(Enchantment.KNOCKBACK, 1);
+//				zombMC.setEquipment(0, item);
+//				zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//				zombMC.setEquipment(2, new ItemStack(Item.getById(308)));
+//				zombMC.setEquipment(3, new ItemStack(Item.getById(307)));
+//				zombMC.setEquipment(4, new ItemStack(Item.getById(306)));
+//			}
+//			if(wave == 5 && wave_time == 205)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1 * difficulty; i ++)
+//				{
+//				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+//		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-45);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
+//				{
+//				e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+//		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i ++)
+//				{
+//				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"鬼魂", temp, false);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//		        zombMC.setEquipment(0, new ItemStack(Item.getById(269)));
+//		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.3 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 5 && wave_time == 160)
+//			{
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1 * difficulty; i ++)
+//				{
+//				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+//		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1 * difficulty; i ++)
+//				{
+//				e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+//				ch.changespeed(e);
+//				Zombie zomb = (Zombie)e;
+//				CraftZombie zombc = (CraftZombie)zomb;
+//		        EntityZombie zombMC = zombc.getHandle();
+//		        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+//		        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//		        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//		        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//		        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 5 && wave_time == 110)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.6 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 5 & wave_time == 80)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.WHITE+"僵尸(真的)", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(267)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.4 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.WHITE+"幽靈", temp, false);
+//					ch.changespeed(e);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(309)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(313)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(312)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 5 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 5 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 4 methods
+//			if(wave == 4 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 3 FINISH!");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -30;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 4 && wave_time == -25)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("防衛結束后會根據基地剩餘血量決定獎勵數量！");
+//				}
+//			}
+//			if(wave == 4 && wave_time == -15)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("如果防衛失敗的話只會拿到少量參與獎，請小心應對！");
+//				}
+//			}
+//			if(wave == 4 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 4 START!");
+//				}
+//				
+//				wave_time = 150;
+//				baselist.get("BLUE").getWorld().setTime(4000);
+//			}
+//			if(wave == 4 && wave_time == 147)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"左塔附近出現了大量的怪物！");
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"防空(假的)步兵", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				temp.add(0,0,5);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//			}
+//			if(wave == 4 && wave_time == 140)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"恐怖分子", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"动员兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//			}
+//			if(wave == 4 && wave_time == 110)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了大量的怪物！");
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"重装大兵(没穿鞋的)", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"美国大(新)兵", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				temp.add(0,0,5);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//			}
+//			if(wave == 4 && wave_time == 100)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"自爆机器(划掉)人", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"美国大(新)兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//			}
+//			if(wave == 4 && wave_time == 70)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"右塔附近出現了大量的怪物！");
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡(被)控制人", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"尤裡新兵", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				temp.add(0,0,5);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"（回收用）市民", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//			}
+//			if(wave == 4 && wave_time == 60)
+//			{
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡敢死隊", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(272)));
+//				}
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"尤裡老(真的很老)兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(270)));
+//				}
+//			}
+//			if(wave == 4 && wave_time > 0 && wave_time < 50 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 4 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 3 methods
+//			if(wave == 3 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 2 FINISH!");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -30;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 3 && wave_time == -25)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("總計九輪的防禦過後會根據人頭數排名頒發榮譽獎！");
+//				}
+//				gettop();
+//			}
+//			if(wave == 3 && wave_time == -20)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("榮譽獎不會過高，請各位專心于防衛！");
+//				}
+//			}
+//			if(wave == 3 && wave_time == -15)
+//			{
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
+//				sb.getObjective("contri_point").setDisplaySlot(DisplaySlot.BELOW_NAME);
+//			}
+//			if(wave == 3 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 3 START!");
+//				}
+//				
+//				wave_time = 180;
+//				baselist.get("BLUE").getWorld().setTime(14000);
+//			}
+//			if(wave == 3 && wave_time == 180)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0, 0, -30);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(268)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				} 
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0,0,-30);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GREEN+"先鋒精英工兵", temp, true);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(0, new ItemStack(Item.getById(283)));
+//			        zombMC.setEquipment(1, new ItemStack(Item.getById(301)));
+//			        zombMC.setEquipment(2, new ItemStack(Item.getById(300)));
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(298)));
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 0.1 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//			}
+//			if(wave == 3 && wave_time == 160)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//			}
+//			if(wave == 3 && wave_time == 150)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20,0,-30);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//				}
+//				temp.add(20,0,-15);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20,0,-30);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(3, new ItemStack(Item.getById(299)));
+//				}
+//				temp.add(-20,0,-15);
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//			}
+//			if(wave == 3 && wave_time == 124)
+//			{
+//				Bukkit.broadcastMessage(ChatColor.RED+"变异型巴特勒：【就算没有魔王的指示，我也能一个人把你们全部打烂！】");
+//			}
+//			if(wave == 3 && wave_time == 120)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了強大的敵人！");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(true);
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				e = ch.summonCreatures(baselist, "BLUE" , CreatureType.SKELETON, ChatColor.RED+"变异型巴特勒", temp, true);
+//				e.setMaxHealth(150 * player_count * difficulty);
+//				e.setHealth(150 * player_count * difficulty);
+//				Skeleton skel = (Skeleton)e;
+//				CraftSkeleton skelc = (CraftSkeleton)skel;
+//				EntitySkeleton skelMC = skelc.getHandle();
+//				ItemStack item = new ItemStack(Item.getById(283));
+//				item.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+//				skelMC.setEquipment(0, item);
+//				skelMC.setEquipment(1, new ItemStack(Item.getById(317)));
+//				skelMC.setEquipment(2, new ItemStack(Item.getById(316)));
+//				skelMC.setEquipment(3, new ItemStack(Item.getById(315)));
+//				skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				 
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵+", temp, false);
+//				}
+//				temp.add(0,0,-5);
+//				for(int i = 0; i < player_count * 1.0 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, false);
+//					skel = (Skeleton)e;
+//					skelc = (CraftSkeleton)skel;
+//					skelMC = skelc.getHandle();
+//					skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//					skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				for(int i = 0; i < player_count * 0.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, "先鋒自爆連", temp, true);
+//				}
+//			        
+//			}
+//			if(wave == 3 && wave_time == 70)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"中塔附近出現了大量的怪物！");
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0,0,-40);
+//				for(int i = 0; i < player_count * 3.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//			}
+//			if(wave == 3 && wave_time == 40)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.YELLOW+"偷襲部隊時刻有可能出現，請小心應對！");
+//				}
+//				
+//			}
+//			if(wave == 3 && wave_time > 0 && wave_time < 61 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 3 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//				Bukkit.broadcastMessage(ChatColor.RED+"变异型巴特勒：可恶啊！！要是再多给我一点时间的话...");
+//			}
+//			//wave 2 methods
+//			if(wave == 2 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("每波之间有30秒钟休息时间！");
+//				}
+//				baselist.get("BLUE").getWorld().setStorm(false);
+//				baselist.get("BLUE").getWorld().setThundering(false);
+//				baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+//				wave_time = -30;
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "revclass supply confirm");
+//			}
+//			if(wave == 2 && wave_time == -25)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"WAVE 1 FINISH!");
+//				}
+//			}
+//			if(wave == 2 && wave_time == -20)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"每波結束各職業都會有不同的補給品發出!");
+//				}
+//			}
+//			if(wave == 2 && wave_time == -15)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"請善加利用！");
+//				}
+//			}
+//			if(wave == 2 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 2 START!");
+//				}
+//				wave_time = 150;
+//			}
+//			if(wave == 2 && wave_time == 150)
+//			{
+//				baselist.get("BLUE").getWorld().setTime(0);
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.2 * difficulty; i++)
+//				{
+//					
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 2 && wave_time == 120)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒工兵", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20, 0, -30);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20, 0, -30);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒工兵", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"先鋒弓箭手", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(261)));
+//				}
+//			}
+//			if(wave == 2 && wave_time == 90)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"先鋒敢死隊", temp, false);
+//					Zombie zomb = (Zombie)e;
+//					zomb.setBaby(true);
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//				}
+//			}
+//			if(wave == 2 && wave_time == 60)
+//			{
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20, 0, -30);
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
+//				}
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
+//				}
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20, 0, -30);
+//				for(int i = 0; i < player_count * 0.7 * difficulty; i++)
+//				{
+//					e = ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, "拿錯裝備的", temp, true);
+//					Skeleton skel = (Skeleton)e;
+//					CraftSkeleton skelc = (CraftSkeleton)skel;
+//			        EntitySkeleton skelMC = skelc.getHandle();
+//			        skelMC.setEquipment(4, new ItemStack(Item.getById(314)));
+//			        skelMC.setEquipment(0, new ItemStack(Item.getById(268)));
+//				}
+//			}
+//			if(wave == 2 && wave_time > 0 && wave_time < 55 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 2 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 1 methods
+//			if(wave == 1 && wave_time == 0)
+//			{
+//				for(int i = 0; i < 8; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"WAVE 1 START!");
+//				}
+//				
+//				wave_time = 120;
+//				baselist.get("BLUE").getWorld().setTime(14000);
+//				
+//					temp = baselist.get("BLUE").clone();
+//					temp.add(0, 0, -40);
+//					for(int i = 0; i < player_count * 1.5 * difficulty; i++)
+//					{
+//						ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.GRAY+"渣渣", temp, false);
+//					}
+//			}
+//			if(wave == 1 && wave_time == 110)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 1 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"炮灰", temp, false);
+//				}
+//			}
+//			if(wave == 1 && wave_time == 100)
+//			{
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(0, 0, -35);
+//				for(int i = 0; i < player_count * 1 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"菜鳥", temp, false);
+//				}
+//				for(int i = 0; i < player_count * 0.25 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "PURPLE", CreatureType.ZOMBIE, ChatColor.GRAY+"難民", temp, false);
+//				}
+//			}
+//			if(wave == 1 && wave_time == 90)
+//			{
+//				temp = baselist.get("AQUA").clone();
+//				temp.add(-20, 0 ,-30);
+//				for(int i = 0; i < player_count * 0.75 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "AQUA", CreatureType.SKELETON, ChatColor.GRAY+"雜魚", temp, false);
+//				}	
+//			}
+//			if(wave == 1 && wave_time == 80)
+//			{
+//				temp = baselist.get("BLUE").clone();
+//				temp.add(0, 0, -40);
+//				for(int i = 0; i < player_count * 0.5 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, ChatColor.GRAY+"兵痞", temp, false);
+//				}
+//			}
+//			if(wave == 1 && wave_time == 60)
+//			{
+//				temp = baselist.get("PURPLE").clone();
+//				temp.add(20, 0 , -30);
+//				for(int i = 0; i < player_count * 1 * difficulty; i++)
+//				{
+//					ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
+//				}
+//			}
+//			if(wave == 1 && wave_time > 0 && wave_time < 60 && wave_time % 5 == 0)
+//			{
+//				if(checkentitydata())
+//				{
+//					bonus_time = bonus_time + wave_time;
+//					wave_time = 0;
+//				}
+//			}
+//			if(wave == 1 && wave_time == 1)
+//			{
+//				wavefinalremove();
+//			}
+//			//wave 0 methods
+//			if(wave == 0 && wave_time == -1)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("欢迎各位参加防卫战的勇士们！");
+//				}
+//				wave_time = 90;
+//			}
+//			if(wave == 0 && wave_time == 75)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("敌人即将入侵采掘基地，请各位利用手中的武器保护基地！");
+//				}
+//				//temp = baselist.get("PURPLE").clone();
+//				//temp.add(20, 0 , -20);
+//				//tp = ch.summonCreatures(baselist, "PURPLE", CreatureType.SKELETON, ChatColor.GRAY+"民兵", temp, false);
+//			}
+//			if(wave == 0 && wave_time == 60)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("请避免让近程怪物靠近红圈，远程怪物靠近黄圈！进入该范围的怪物将会使基地损伤！");
+//				}
+//				//if(tp.isDead())
+//				//{
+//				//	Bukkit.broadcastMessage("you got it.");
+//				//}
+//			}
+//			if(wave == 0 && wave_time == 50)
+//			{
+//				for(int i = 0; i < 2; i++)
+//				{
+//					Bukkit.broadcastMessage("撑过一波的方法有两种！");
+//					Bukkit.broadcastMessage(ChatColor.RED+"其一是wave时间耗尽！");
+//					Bukkit.broadcastMessage(ChatColor.GREEN+"其二是将所有怪物歼灭！");
+//				}
+//			}
+//			if(wave == 0 && wave_time == 45)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.RED+"敌军还有45秒到达战场！");
+//				}
+//			}
+//			if(wave == 0 && wave_time == 30)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("自爆类的怪物在绿圈内自爆会对基地造成大损伤！请一定注意！");
+//					}
+//				}
+//				if(wave == 0 && wave_time == 20)
+//				{
+//					for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("每位玩家均有兩次开启某一塔塔防和恢复塔受损耐久值的机会！可以在塔的后方开启，请好好利用！");
+//				}
+//			}
+//			if(wave == 0 && wave_time == 15)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage("每波会有额外的道具提供！请法师记得清理物品栏！");
+//				}
+//			}
+//			if(wave == 0 && wave_time == 10)
+//			{
+//				for(int i = 0; i < 4; i++)
+//				{
+//					Bukkit.broadcastMessage(ChatColor.GOLD+"介绍就到这里，以上！祝各位武运昌隆！");
+//				}
+//			}
+//			//the update of wave_time should be the last step before refresh scoreboard
+//			if(wave_time < 0)
+//			{
+//				wave_time ++;
+//			}
+//			if(wave_time > 0)
+//			{
+//				wave_time --;
+//			}
+//			
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Wave cjfw " + wave);
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Time cjfw " + wave_time);
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set BLUE cjfw " + Base_HP.get("BLUE"));
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
+//				Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
+//				if(Base_HP.get("BLUE") == 0 && Base_HP.get("AQUA") == 0 && Base_HP.get("PURPLE") == 0)
+//				{
+//					finish = true;
+//				}
+//		}
+//		if(!finish && wave9_switch && !bonus_switch)
+//		{
+//			String rank = calculate_rank();
+//			Bukkit.broadcastMessage(ChatColor.GREEN + "防衛成功！");
+//			Bukkit.broadcastMessage(ChatColor.BLUE + "本次防衛的評價為：");
+//			Bukkit.broadcastMessage(ChatColor.GOLD + rank + "!");
+//			if(bonus_time > 180)
+//			{
+//				bonus_switch = true;
+//				back_timer = -10;
+//				for(int i = 0; i < 3; i++)
+//				{
+//					baselist.get("BLUE").getWorld().setTime(0000);
+//					Bukkit.broadcastMessage("一分鐘后傳送主城！");
+//				}
+//			}
+//			else
+//			{
+//				gettop();
+//				for(int i = 0; i < 3; i++)
+//				{
+//					Bukkit.broadcastMessage("活動結束！請等待傳送和獎勵發放！");
+//				}
+//				finish = true;
+//			}
+//		}
+//		//HIDDEN BOSS
+//		if(!finish && wave9_switch && bonus_switch && !bonus_finish_switch)
+//		{
+//			if(back_timer < 0 )
+//			{
+//				back_timer ++;
+//			}
+//			else
+//			{
+//				if(back_timer == 0 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.YELLOW+"【傳送主城...？有意思。】");
+//					}
+//				}
+//				if(back_timer == 5 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.RED + "【費盡千辛萬苦才等到這麼一個好機會...】");
+//					}
+//				}
+//				if(back_timer == 15 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "吾烈焰魔王【伊諾增忒斯】會讓你們這麼容易逃走嗎？！");
+//					}
+//				}
+//				if(back_timer == 20 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "爲了讓你們輕敵，吾可是故意偽裝成深淵魔王進攻啊...");
+//					}
+//				}
+//				if(back_timer == 25 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "沒想到你們這麼容易就上當了...真是可笑啊...");
+//					}
+//				}
+//				if(back_timer == 30 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "哼...吾可是會出全力的，看你們能撐到什麼時候！");
+//					}
+//				}
+//				if(back_timer == 32 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					temp = baselist.get("BLUE").clone();
+//					temp.add(0, 0, -40);
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_RED+"烈焰魔王Innocentius", temp, true);
+//					e.setMaxHealth(300 * player_count * difficulty);
+//					e.setHealth(300 * player_count * difficulty);
+//					ch.changespeed(e);
+//					ch.changeattack(e);
+//					last_boss = e;
+//					Zombie zomb = (Zombie)e;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        ItemStack i = new ItemStack(Item.getById(276));
+//			        i.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+//			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+//			        i.addEnchantment(Enchantment.KNOCKBACK, 4);
+//			        zombMC.setEquipment(0, i);
+//			        i = new ItemStack(Item.getById(305));
+//			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+//			        zombMC.setEquipment(1, i);
+//			        i = new ItemStack(Item.getById(304));
+//			        i.addEnchantment(Enchantment.PROTECTION_FIRE, 1);
+//			        zombMC.setEquipment(2, i);
+//			        i = new ItemStack(Item.getById(303));
+//			        i.addEnchantment(Enchantment.THORNS, 2);
+//			        zombMC.setEquipment(3, i);
+//			        i = new ItemStack(Item.getById(302));
+//			        i.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+//			        zombMC.setEquipment(4, i);
+//				}
+//				if(back_timer == 37 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.YELLOW + "最終boss:Innocentius出現了！");
+//					}
+//				}
+//				if(back_timer == 40 && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 4; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.YELLOW + "本回合不計算時間，不計算總評價，不計算對塔的傷害。");
+//					}
+//				}
+//				if(last_boss != null && !last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					Damageable a = (Damageable)last_boss;
+//					if((a.getHealth() / a.getMaxHealth() < 0.7) && !last_boss_phase1 && !last_boss_phase3)
+//					{
+//						last_boss_phase1 = true;
+//						back_timer = 0;
+//					}
+//				}
+//				if(back_timer == 0 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 哦？頗有點意思呢。");
+//					}
+//				}
+//				if(back_timer == 3 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 出來吧！吾之守護！");
+//					}
+//				}
+//				if(back_timer == 5 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 5), true);
+//					e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.AQUA+"烈風", last_boss.getLocation(), true);
+//					e.setMaxHealth(40 * player_count * difficulty);
+//					e.setHealth(40 * player_count * difficulty);
+//					Zombie zomb = (Zombie)e;
+//					last_boss1 = zomb;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//					ItemStack i = new ItemStack(Item.getById(276));
+//			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//			        i.addEnchantment(Enchantment.KNOCKBACK, 3);
+//			        zombMC.setEquipment(0, i);
+//			        i = new ItemStack(Item.getById(305));
+//			        zombMC.setEquipment(1, i);
+//			        i = new ItemStack(Item.getById(304));
+//			        zombMC.setEquipment(2, i);
+//			        i = new ItemStack(Item.getById(303));
+//			        zombMC.setEquipment(3, i);
+//			        i = new ItemStack(Item.getById(302));
+//			        zombMC.setEquipment(4, i);
+//			        e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.DARK_GREEN+"森木", last_boss.getLocation(), true);
+//					e.setMaxHealth(40 * player_count * difficulty);
+//					e.setHealth(40 * player_count * difficulty);
+//					zomb = (Zombie)e;
+//					last_boss2 = zomb;
+//					zombc = (CraftZombie)zomb;
+//			        zombMC = zombc.getHandle();
+//					i = new ItemStack(Item.getById(276));
+//			        i.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+//			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        zombMC.setEquipment(0, i);
+//			        i = new ItemStack(Item.getById(305));
+//			        zombMC.setEquipment(1, i);
+//			        i = new ItemStack(Item.getById(304));
+//			        zombMC.setEquipment(2, i);
+//			        i = new ItemStack(Item.getById(303));
+//			        zombMC.setEquipment(3, i);
+//			        i = new ItemStack(Item.getById(302));
+//			        zombMC.setEquipment(4, i);
+//			        e = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, ChatColor.RED+"焱魔", last_boss.getLocation(), true);
+//					e.setMaxHealth(40 * player_count * difficulty);
+//					e.setHealth(40 * player_count * difficulty);
+//					zomb = (Zombie)e;
+//					last_boss3 = zomb;
+//					zombc = (CraftZombie)zomb;
+//			        zombMC = zombc.getHandle();
+//					i = new ItemStack(Item.getById(276));
+//			        i.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+//			        i.addEnchantment(Enchantment.KNOCKBACK, 1);
+//			        i.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+//			        zombMC.setEquipment(0, i);
+//			        i = new ItemStack(Item.getById(305));
+//			        zombMC.setEquipment(1, i);
+//			        i = new ItemStack(Item.getById(304));
+//			        zombMC.setEquipment(2, i);
+//			        i = new ItemStack(Item.getById(303));
+//			        zombMC.setEquipment(3, i);
+//			        i = new ItemStack(Item.getById(302));
+//			        zombMC.setEquipment(4, i);
+//			        
+//				}
+//				if(back_timer == 8 && last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 只要吾之三大守護尚在，吾就不會受到分毫傷害！");
+//					}
+//				}
+//				if(last_boss_phase1 && !last_boss_phase2 && !last_boss_phase3 && last_boss1 != null && last_boss2 != null && last_boss3 != null)
+//				{
+//					if(last_boss1.isDead() && last_boss2.isDead() && last_boss3.isDead())
+//					{
+//						last_boss_phase2 = true;
+//						back_timer = 0;
+//					}
+//				}
+//				if(back_timer == 0 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					Zombie zomb = (Zombie)last_boss;
+//					CraftZombie zombc = (CraftZombie)zomb;
+//			        EntityZombie zombMC = zombc.getHandle();
+//			        zombMC.removeAllEffects();
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 唔唔唔...可惡的臭蟲們！");
+//					}
+//				}
+//				if(back_timer == 3 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 但是你們以為吾是單槍匹馬到來的嗎...嘿嘿嘿...");
+//					}
+//				}
+//				if(back_timer == 6 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 顯現吧！吾之燃燒軍團！！");
+//					}
+//				}
+//				if(back_timer == 8 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					last_boss.getWorld().setStorm(true);
+//					last_boss.getWorld().setWeatherDuration(100000);
+//				}
+//				if(back_timer == 14 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: ...什麽？！");
+//					}
+//				}
+//				if(back_timer == 17 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 下雨了？！你【嗶---】在逗吾烈焰魔王！");
+//					}
+//				}
+//				if(back_timer == 20 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 明明是沙漠，為什麼會下雨啊啊啊啊啊啊啊啊！！！");
+//					}
+//				}
+//				if(back_timer == 22 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					last_boss.getWorld().strikeLightning(last_boss.getLocation());
+//				}
+//				if(back_timer == 25 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 啊啊啊啊啊啊啊！可惡啊啊啊啊啊！");
+//					}
+//					last_boss.setHealth(120 * player_count * difficulty);
+//					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 3));
+//					last_boss.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 1000000, 1));
+//				}
+//				if(back_timer == 30 && last_boss_phase1 && last_boss_phase2 && !last_boss_phase3)
+//				{
+//					for(int i = 0; i < 5; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.WHITE + "現在正是好時機！乘勝追擊消滅烈焰魔王吧！");
+//					}
+//				}
+//				if(last_boss_phase1 && last_boss_phase2 && !last_boss_phase3 && last_boss != null)
+//				{
+//					Damageable a = (Damageable)last_boss;
+//					if(a.getHealth() / a.getMaxHealth() < 0.3)
+//					{
+//						last_boss_phase3 = true;
+//						back_timer = 0;
+//					}
+//						
+//				}
+//				if(back_timer == 0 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 可惡啊啊啊啊啊！為何你們不會被燃盡！！");
+//					}
+//				}
+//				if(back_timer == 3 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: ？？！！這是什麽情況！！");
+//					}
+//				}
+//				if(back_timer == 5 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius:你們的鎧甲...為何被附魔了最高級的火焰防護！");
+//					}
+//				}
+//				if(back_timer == 8 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 怎麼會...吾居然被人算計了。");
+//					}
+//				}
+//				if(back_timer == 11 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 是誰敢算計本大爺？！光明神嗎？水神嗎？可惡啊啊啊啊啊啊啊啊！");
+//					}
+//				}
+//				if(back_timer == 15 && last_boss_phase1 && last_boss_phase2 && last_boss_phase3)
+//				{
+//					for(int i = 0; i < 2; i++)
+//					{
+//						Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 我死不瞑目啊啊啊啊啊啊!");
+//					}
+//				}
+//				if(last_boss_phase1 && last_boss_phase2 && last_boss_phase3 && last_boss != null)
+//				{
+//					if(last_boss.isDead())
+//					{
+//						for(int i = 0; i < 2; i++)
+//						{
+//							Bukkit.broadcastMessage(ChatColor.DARK_RED + "Innocentius: 我恨啊啊啊啊啊啊啊啊啊啊啊啊啊！");
+//							bonus_finish_switch = true;
+//						}
+//					}
+//				}
+//				if(back_timer < 60)
+//				{
+//					back_timer ++;
+//				}
+//				
+//			}
+//		}
+//		if(!finish && wave9_switch && bonus_switch && bonus_finish_switch)
+//		{
+//			for(int i = 0; i < 2; i++)
+//			{
+//				Bukkit.broadcastMessage(ChatColor.GOLD + "恭喜通過隱藏關卡！最終評價上升一級！");
+//			}
+//			gettop();
+//			for(int i = 0; i < 3; i++)
+//			{
+//				Bukkit.broadcastMessage("活動結束！請等待傳送和獎勵發放！");
+//			}
+//			finish = true;
+//		}
+		
 	}
 	private String calculate_rank() {
 		int full = 3 *counthp(player_count);
@@ -3234,21 +3217,21 @@ public class CJFWListener implements Listener
 	}
 	private void wavefinalremove()
 	{
-		for(Entity ent:getNearbyEntities(baselist.get("BLUE"), 70))
+		for(Entity ent:ch.getNearbyEntities(baselist.get("BLUE"), 70))
 		{
 			if(ent instanceof Monster || ent instanceof EnderDragon)
 			{
 				((Monster) ent).setHealth(0D);
 			}
 		}
-		for(Entity ent:getNearbyEntities(baselist.get("AQUA"), 70))
+		for(Entity ent:ch.getNearbyEntities(baselist.get("AQUA"), 70))
 		{
 			if(ent instanceof Monster || ent instanceof EnderDragon)
 			{
 				((Monster) ent).setHealth(0D);
 			}
 		}
-		for(Entity ent:getNearbyEntities(baselist.get("PURPLE"), 70))
+		for(Entity ent:ch.getNearbyEntities(baselist.get("PURPLE"), 70))
 		{
 			if(ent instanceof Monster || ent instanceof EnderDragon)
 			{
@@ -3324,36 +3307,7 @@ public class CJFWListener implements Listener
 		}
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar top");
 	}
-	private boolean checkentitydata() 
-	{
-		Entity[] temp_dat;
-		temp_dat = getNearbyEntities(baselist.get("BLUE"), 70);
-		for(Entity ent:temp_dat)
-		{
-			if(ent instanceof Monster || ent instanceof EnderDragon)
-			{
-				return false;
-			}
-		}
-        temp_dat = getNearbyEntities(baselist.get("AQUA"), 70);
-        for(Entity ent:temp_dat)
-        {
-        	if(ent instanceof Monster || ent instanceof EnderDragon)
-        	{
-        		return false;
-        	}
-        	
-        }
-        temp_dat = getNearbyEntities(baselist.get("PURPLE"), 70);
-        for(Entity ent:temp_dat)
-        {
-        	if(ent instanceof Monster || ent instanceof EnderDragon)
-        	{
-        		return false;
-        	}
-        }
-        return true;
-	}
+	
 	/**
 	 * The selected tower will go fortified
 	 * @param string - the name of tower

@@ -107,7 +107,7 @@ public final class CJFWmain extends JavaPlugin
 					if(game.start())
 					{
 						scheduler = Bukkit.getServer().getScheduler();
-				        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+				        scheduler.scheduleAsyncRepeatingTask(this, new Runnable() {
 				            public void run() {
 				                game.checkdamage();
 				                game.update(1);

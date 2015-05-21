@@ -33,6 +33,7 @@ import org.bukkit.entity.Giant;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Spider;
@@ -170,7 +171,7 @@ public class CJFWListener implements Listener
 	{
 		reset();
 		Fileloader gameevent = new Fileloader();
-		wave = 0;
+		wave = -1;
 		wave_time = -1;
 		finish = false;
 		wave9_switch = false;
@@ -586,7 +587,127 @@ public class CJFWListener implements Listener
 	 */
 	public void update(int time) 
 	{
-		//set 
+		//check settime valid
+		if(wave_time == 0)
+		{
+			wave++;
+			//only when 120 -> 0 will trigger.
+			switch(wave)
+			{
+			case 0:
+				wave_time = -30;
+				//teleport
+			case 1:
+				wave_time = -30;
+				playbgm("wave_1");
+				//wave 2 BGM is 162s containing 32s rest time
+				break;
+			case 2:
+				wave_time = -30;
+				//wave 3 BGM is 226s containing 31s rest time
+				break;
+			case 3:
+				wave_time = -30;
+				//wave 4 BGM is 226s containing 31s rest time
+				break;
+			case 4:
+				wave_time = -30;
+				//wave 5 BGM is 218s containing 28s rest time
+				break;
+			case 5:
+				wave_time = -30;
+				//wave 6 BGM is 279s containing 29s rest time
+				break;
+			case 6:
+				wave_time = -30;
+				//wave 7 BGM is 282s containing 32s rest time
+				break;
+			case 7:
+				wave_time = -30;
+				//wave 8 BGM is 215s containing 30s rest time
+				break;
+			case 8:
+				wave_time = -30;
+				//wave 9 BGM is 250s containing 30s rest time
+				break;
+			case 9:
+				wave_time = -30;
+				//wave 10 BGM is 689s containing 29s rest time
+				break;
+			case 10:
+				wave_time = -30;
+				break;
+			default:
+				System.out.println("PANIC! wave = " + wave);
+				break;
+			}
+		}
+		if(wave_time == -1)
+		{
+			switch(wave)
+			{
+			case 1:
+				wave_time = 120;
+				//the BGM is 152s containing 32s rest time
+				break;
+			case 2:
+				wave_time = 130;
+				//wave 2 BGM is 162s containing 32s rest time
+				break;
+			case 3:
+				wave_time = 195;
+				//wave 3 BGM is 226s containing 31s rest time
+				break;
+			case 4:
+				wave_time = 195;
+				//wave 4 BGM is 226s containing 31s rest time
+				break;
+			case 5:
+				wave_time = 190;
+				//wave 5 BGM is 218s containing 28s rest time
+				break;
+			case 6:
+				wave_time = 250;
+				//wave 6 BGM is 279s containing 29s rest time
+				break;
+			case 7:
+				wave_time = 250;
+				//wave 7 BGM is 282s containing 32s rest time
+				break;
+			case 8:
+				wave_time = 195;
+				//wave 8 BGM is 215s containing 30s rest time
+				break;
+			case 9:
+				wave_time = 281;
+				//wave 9 BGM is 250s containing 30s rest time
+				break;
+			case 10:
+				wave_time = 660;
+				//wave 10 BGM is 689s containing 29s rest time
+				break;
+			}
+		}
+		//set time for new
+		if(wave_time < 0)
+		{
+			wave_time ++;
+		}
+		if(wave_time > 0)
+		{
+			wave_time --;
+		}
+			
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Wave cjfw " + wave);
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Time cjfw " + wave_time);
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set BLUE cjfw " + Base_HP.get("BLUE"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("GREEN"));
+		if(Base_HP.get("BLUE") == 0 && Base_HP.get("AQUA") == 0 && Base_HP.get("PURPLE") == 0 && Base_HP.get("GREEN") == 0)
+		{
+			finish = true;
+		}
 //		//the update of wave should be the first step
 //		Location temp;
 //		LivingEntity e;
@@ -3173,6 +3294,13 @@ public class CJFWListener implements Listener
 //			}
 //			finish = true;
 //		}
+		
+	}
+	private void playbgm(String string) {
+		for(Player a : baselist.get("BLUE").getWorld().getPlayers())
+		{
+			a.playSound(a.getLocation(), string, 1000, 1);
+		}
 		
 	}
 	private String calculate_rank() {

@@ -597,45 +597,55 @@ public class CJFWListener implements Listener
 			case 0:
 				wave_time = -30;
 				//teleport
+				break;
 			case 1:
 				wave_time = -30;
 				playbgm("wave_1");
-				//wave 2 BGM is 162s containing 32s rest time
+				//wave 2 BGM is 162s containing 32s rest time, with 30s there is a 5s lap over
 				break;
 			case 2:
 				wave_time = -30;
+				playbgm("wave_2");
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 3:
 				wave_time = -30;
+				playbgm("wave_3");
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 4:
 				wave_time = -30;
+				playbgm("wave_4");
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 5:
 				wave_time = -30;
+				playbgm("wave_5");
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 6:
 				wave_time = -30;
+				playbgm("wave_6");
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 7:
 				wave_time = -30;
+				playbgm("wave_7");
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 8:
 				wave_time = -30;
+				playbgm("wave_8");
 				//wave 9 BGM is 250s containing 30s rest time
 				break;
 			case 9:
 				wave_time = -30;
+				playbgm("wave_9");
 				//wave 10 BGM is 689s containing 29s rest time
 				break;
 			case 10:
 				wave_time = -30;
+				playbgm("wave_10");
 				break;
 			default:
 				System.out.println("PANIC! wave = " + wave);
@@ -647,43 +657,43 @@ public class CJFWListener implements Listener
 			switch(wave)
 			{
 			case 1:
-				wave_time = 120;
+				wave_time = 130;
 				//the BGM is 152s containing 32s rest time
 				break;
 			case 2:
-				wave_time = 130;
+				wave_time = 140;
 				//wave 2 BGM is 162s containing 32s rest time
 				break;
 			case 3:
-				wave_time = 195;
+				wave_time = 205;
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 4:
-				wave_time = 195;
+				wave_time = 205;
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 5:
-				wave_time = 190;
+				wave_time = 200;
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 6:
-				wave_time = 250;
+				wave_time = 260;
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 7:
-				wave_time = 250;
+				wave_time = 260;
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 8:
-				wave_time = 195;
+				wave_time = 205;
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 9:
-				wave_time = 281;
+				wave_time = 290;
 				//wave 9 BGM is 250s containing 30s rest time
 				break;
 			case 10:
-				wave_time = 660;
+				wave_time = 670;
 				//wave 10 BGM is 689s containing 29s rest time
 				break;
 			}

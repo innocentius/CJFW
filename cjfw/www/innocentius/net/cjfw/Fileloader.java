@@ -11,7 +11,6 @@ public class Fileloader {
 	 */
 	public LinkedHashMap<WaveTime, String> serversayevent;
 	public LinkedHashMap<WaveTime, String> spawnmobevent;
-	public LinkedHashMap<WaveTime, String> backgroundmusicevent;
 	public ArrayList<WaveTime> showrankeventlist;
 	/**
 	 * Load file into the system, current file directory is "CJFWdata.txt";
@@ -20,7 +19,6 @@ public class Fileloader {
 	{
       serversayevent = new LinkedHashMap<WaveTime, String>();
       spawnmobevent = new LinkedHashMap<WaveTime, String>();
-	  backgroundmusicevent = new LinkedHashMap<WaveTime, String>();
 	  showrankeventlist = new ArrayList<WaveTime>();
 	  readfile("CJFWdata.txt");
 	}
@@ -54,7 +52,7 @@ public class Fileloader {
 		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
 		            	 }
 		            	 serversayevent.put(temp, sb.toString());
-		            	 return;
+		            	 break;
 		            	//spawn creature
 		         		//usage: <wave number> <wave remaining time> spawn <creature type> <creature amount modifier> <creature weapon rank>
 		            	//<creature armor rank> <creature name> 
@@ -67,21 +65,14 @@ public class Fileloader {
 		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
 		            	 }
 		            	 spawnmobevent.put(temp, sb.toString());
-		            	 return;
+		            	 break;
 		            	//BGM play
 		         		//<wave number> <wave remaining time> BGM <BGMname(with path, recognize space)>
-		             case "BGM":
-		            	 sb = new StringBuilder();
-		            	 for(int i = 3; i < sep.length; i++)
-		            	 {
-		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
-		            	 }
-		            	 backgroundmusicevent.put(temp, sb.toString());
-		            	 return;
 		            	//push player rank
 		         		//<wave number> <wave remaining time> rank
 		             case "rank":
 		            	 showrankeventlist.add(temp);
+		            	 break;
 		           }
 		         line = br.readLine();
 		      }

@@ -56,6 +56,7 @@ public final class CJFWmain extends JavaPlugin
 					//a.getInventory().addItem(weapon);
 					a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
 				}
+				
 				if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game
 					// The initialize will 100% succeed
@@ -167,6 +168,22 @@ public final class CJFWmain extends JavaPlugin
 					// The action will fail and send an error message to sender
 				{
 					
+					return true;
+				}
+				else if(args[0].equalsIgnoreCase("testmusic"))
+				{
+					if(args[1] != null)
+					{
+						Player a = sender.getServer().getPlayer(sender.getName());
+						if(args[1].equalsIgnoreCase("1"))
+						{
+							a.playSound(a.getLocation(), "wave_10_1", 1000 , 1);
+						}
+						else
+						{
+							a.playSound(a.getLocation(), "wave_10_2", 1000 , 1);
+						}
+					}
 					return true;
 				}
 				else if(args[0].equalsIgnoreCase("setwave"))

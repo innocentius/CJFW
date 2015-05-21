@@ -86,6 +86,7 @@ public class CJFWListener implements Listener
 	boolean last_boss_phase2;
 	boolean last_boss_phase3;
 	double difficulty;
+	Fileloader gameevent;
 	Wither final_boss;
 	LivingEntity last_boss;
 	Zombie last_boss1;
@@ -170,7 +171,7 @@ public class CJFWListener implements Listener
 	public void init() 
 	{
 		reset();
-		Fileloader gameevent = new Fileloader();
+		
 		wave = -1;
 		wave_time = -1;
 		finish = false;
@@ -195,6 +196,7 @@ public class CJFWListener implements Listener
 		Base_damageable.put("AQUA", true);
 		Base_damageable.put("PURPLE", true);
 		Base_damageable.put("GREEN", true);
+		gameevent = new Fileloader();
 		try
 		{
 			sb.registerNewObjective("cjfw", "dummy");
@@ -496,27 +498,27 @@ public class CJFWListener implements Listener
 			dodamage("AQUA");
 			dodamage("PURPLE");
 			dodamage("GREEN");
-			if(Base_HP.get("BLUE") == 0)
-			{
-				baselist.put("BLUE", baselist.get("PURPLE").clone());
-			}
-			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") != 0)
-			{
-				baselist.put("AQUA", baselist.get("BLUE").clone());
-			}
-			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") == 0)
-			{
-				baselist.put("AQUA", baselist.get("PURPLE").clone());
-			}
-			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") != 0)
-			{
-				baselist.put("PURPLE", baselist.get("BLUE").clone());
-			}
-			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") == 0)
-			{
-				baselist.put("PURPLE", baselist.get("AQUA").clone());
-				baselist.put("BLUE", baselist.get("AQUA").clone());
-			}
+//			if(Base_HP.get("BLUE") == 0)
+//			{
+//				baselist.put("BLUE", baselist.get("PURPLE").clone());
+//			}
+//			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") != 0)
+//			{
+//				baselist.put("AQUA", baselist.get("BLUE").clone());
+//			}
+//			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") == 0)
+//			{
+//				baselist.put("AQUA", baselist.get("PURPLE").clone());
+//			}
+//			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") != 0)
+//			{
+//				baselist.put("PURPLE", baselist.get("BLUE").clone());
+//			}
+//			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") == 0)
+//			{
+//				baselist.put("PURPLE", baselist.get("AQUA").clone());
+//				baselist.put("BLUE", baselist.get("AQUA").clone());
+//			}
 		}
 	}
 	private void dodamage(String key)
@@ -587,7 +589,7 @@ public class CJFWListener implements Listener
 	 */
 	public void update(int time) 
 	{
-		//check settime valid
+		//check settime valid (do this at first)
 		if(wave_time == 0)
 		{
 			wave++;
@@ -651,6 +653,7 @@ public class CJFWListener implements Listener
 				System.out.println("PANIC! wave = " + wave);
 				break;
 			}
+			wave_time --;
 		}
 		if(wave_time == -1)
 		{
@@ -685,20 +688,21 @@ public class CJFWListener implements Listener
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 8:
-				wave_time = 205;
+				wave_time = 195;
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 9:
-				wave_time = 290;
-				//wave 9 BGM is 250s containing 30s rest time
+				wave_time = 260;
+				//wave 9 BGM is 281s containing 30s rest time
 				break;
 			case 10:
 				wave_time = 670;
 				//wave 10 BGM is 689s containing 29s rest time
 				break;
 			}
+			wave_time ++;
 		}
-		//set time for new
+		//set time for new (do this at last)
 		if(wave_time < 0)
 		{
 			wave_time ++;
@@ -718,6 +722,28 @@ public class CJFWListener implements Listener
 		{
 			finish = true;
 		}
+		WaveTime ti = new WaveTime(wave, wave_time);
+		try
+		{
+		if(gameevent.serversayevent.containsKey(ti))
+		{
+			Bukkit.broadcastMessage(gameevent.serversayevent.get(ti));
+		}
+		if(gameevent.spawnmobevent.containsKey(ti))
+		{
+			
+		}
+		if(gameevent.showrankeventlist.contains(ti))
+		{
+			
+		}
+		}
+		catch(Exception e)
+		{
+			System.out.println("PANIC:" + e.getMessage());
+		}
+		//check event
+		
 //		//the update of wave should be the first step
 //		Location temp;
 //		LivingEntity e;

@@ -19,11 +19,9 @@ commands:
               /cjfw showhp - show current hp of base, must start game
               /cjfw showloc - show the current position of bases.
               /cjfw setdiff <difficulty> - set the difficulty of game, 1 as default, 0 as no mobs spawned, DON'T GO BEYOND 3
-              
               /cjfw setbase <basenumber> - set the location of three bases, basenumber must be 1 for blue or 2 for aqua or                                            3 for purple, DO THIS AFTER INIT
               /cjfw heal <basename> <playername> - heal a base 5% with sender's name, ONLY USE THIS IN COM_BLOCK
-              /cjfw fortify <basename> <playername> - fortify a base for 3 sec with sender's name, ONLY USE IN COM_BLOCK
-              
+              /cjfw fortify <basename> <playername> - fortify a base for 3 sec with sender's name, ONLY USE IN COM_BLOCK       
 permissions:
    cjfw.admin:
        description: op has the control of game

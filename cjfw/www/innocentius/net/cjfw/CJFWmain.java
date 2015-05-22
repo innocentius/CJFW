@@ -1,9 +1,5 @@
 package innocentius.net.cjfw;
 
-import net.minecraft.server.v1_8_R2.Enchantment;
-import net.minecraft.server.v1_8_R2.Item;
-import net.minecraft.server.v1_8_R2.ItemStack;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,9 +18,11 @@ public final class CJFWmain extends JavaPlugin
 {
 	
 	public final CJFWListener game = new CJFWListener();
+	public Classhandler innoclass;
 	public BukkitScheduler scheduler;
 	public void onEnable() 
 	{
+		innoclass = new Classhandler();
 		PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this.game, this);
 	}
@@ -36,7 +34,8 @@ public final class CJFWmain extends JavaPlugin
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, final String[] args)
 	{
-		//There is only one main command: cjfw
+		//class command
+		//There is one main command: cjfw
 		if(cmd.getName().equals("cjfw"))
 		{
 			if(args.length == 0)
@@ -46,7 +45,7 @@ public final class CJFWmain extends JavaPlugin
 				sender.sendMessage(ChatColor.AQUA+"This is the plugin for a game Desert Base Defense!");
 				return false;
 			}
-			else if(args.length == 1)
+			else if(args.length == 1 && !args[0].equalsIgnoreCase("innoclass"))
 			{
 				if(args[0].equalsIgnoreCase("test"))
 				{
@@ -55,6 +54,7 @@ public final class CJFWmain extends JavaPlugin
 					weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
 					//a.getInventory().addItem(weapon);
 					a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
+					return true;
 				}
 				
 				if(args[0].equalsIgnoreCase("init"))
@@ -159,7 +159,7 @@ public final class CJFWmain extends JavaPlugin
 					return false;
 				}
 			}
-			else if(args.length == 2)
+			else if(args.length == 2 && !args[0].equalsIgnoreCase("innoclass"))
 			{
 				if(args[0].equalsIgnoreCase("choose"))
 					// Is this necessary?
@@ -242,7 +242,7 @@ public final class CJFWmain extends JavaPlugin
 					return false;
 				}
 			}
-			else if (args.length == 3)
+			else if (args.length == 3 && !args[0].equalsIgnoreCase("innoclass"))
 			{
 				 if(args[0].equalsIgnoreCase("heal"))
 					//Call listener to heal the hit point of one of the bases for a portion (5%)
@@ -293,15 +293,43 @@ public final class CJFWmain extends JavaPlugin
 					return false;
 				}
 			}
-			else
-			{
-				return false;
-			}
 		}
-		else
+		if(args.length > 0 && args[0].equalsIgnoreCase("innoclass"))
 		{
-			return false;
+			if(args.length == 1)
+			{
+				//cjfw innoclass
+				//display help message
+				sender.sendMessage("/cjfw innoclass for this help page.");
+				sender.sendMessage("/cjfw innoclass setfirst <classname>");
+				sender.sendMessage("/cjfw innoclass setbetw <classname>");
+				sender.sendMessage("/cjfw innoclass givefirst [classname] [playername]");
+				sender.sendMessage("/cjfw innoclass givebetw [classname]  [playername]");
+			}
+			else if(args.length == 3)
+			{
+				if(args[1].equalsIgnoreCase("setfirst"))
+				{
+					innoclass.setfirst(sender.getServer().getPlayer(sender.getName()), args[2]);
+				}
+				else if(args[1].equalsIgnoreCase("setbetw"))
+				{
+					innoclass.setbetween(sender.getServer().getPlayer(sender.getName()), args[2]);
+				}
+			}
+			else if(args.length == 4)
+			{
+				if(args[1].equalsIgnoreCase("givefirst"))
+				{
+					innoclass.retrievefirst(args[3], args[2]);
+				}
+				else if(args[1].equalsIgnoreCase("givebetw"))
+				{
+					innoclass.retrievebetween(args[3], args[2]);
+				}
+			}
+			return true;
 		}
-		
+			return false;		
 	}
 }

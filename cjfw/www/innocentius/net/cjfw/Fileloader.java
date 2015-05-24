@@ -60,7 +60,7 @@ public class Fileloader {
 		            	//OR: <wave number> <wave remaining time> spawn BOSS <creature weapon rank> <creature armor rank> <creature name>
 		             case "spawn":
 		            	 sb = new StringBuilder();
-		            	 for(int i = 3; i < sep.length; i++)
+		            	 for(int i = 3; i < sep.length - 1; i++)
 		            	 {
 		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
 		            	 }

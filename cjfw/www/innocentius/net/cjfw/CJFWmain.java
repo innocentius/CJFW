@@ -330,6 +330,13 @@ public final class CJFWmain extends JavaPlugin
 			}
 			return true;
 		}
+		if(args.length == 5 && args[0].equalsIgnoreCase("jump"))
+		{
+			//cjfw jump <playername> <x amount> <y amount> <z amount>
+			//TODO calculate the amount of vector needed to pass player to the location
+			//then give player 100? tick of invulnerable time.
+			return true;
+		}
 			return false;		
 	}
 }

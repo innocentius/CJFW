@@ -101,6 +101,7 @@ public class CJFWListener implements Listener
 	Map<String, Integer> Player_score = new HashMap<String, Integer>();
 	Map<String, Integer> Player_use_heal = new HashMap<String, Integer>();
 	Map<String, Integer> Player_use_fort = new HashMap<String, Integer>();
+	Map<String, Villager> Base_defender = new HashMap<String, Villager>();
 	/**
 	 * Create a new CJFWListener object.
 	 * Contains:
@@ -343,7 +344,16 @@ public class CJFWListener implements Listener
 				e = ch.summonCreatures(baselist, "BLUE", CreatureType.VILLAGER, ChatColor.GOLD+"蓝塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
-				bluedef = (Villager)e;
+				if(!Base_defender.containsKey(basekey))
+				{
+					Base_defender.put(basekey, (Villager)e);
+				}
+				else
+				{
+					Base_defender.get(basekey).remove();
+					Base_defender.remove(basekey);
+					Base_defender.put(basekey, (Villager)e);
+				}
 			}
 			else if(basenum == 2)
 			{
@@ -352,7 +362,16 @@ public class CJFWListener implements Listener
 				e = ch.summonCreatures(baselist, "AQUA", CreatureType.VILLAGER, ChatColor.GOLD+"青塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
-				aquadef = (Villager)e;
+				if(!Base_defender.containsKey(basekey))
+				{
+					Base_defender.put(basekey, (Villager)e);
+				}
+				else
+				{
+					Base_defender.get(basekey).remove();
+					Base_defender.remove(basekey);
+					Base_defender.put(basekey, (Villager)e);
+				}
 			}
 			else if(basenum == 3)
 			{
@@ -361,7 +380,16 @@ public class CJFWListener implements Listener
 				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.VILLAGER, ChatColor.GOLD+"紫塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
-				purpdef = (Villager)e;
+				if(!Base_defender.containsKey(basekey))
+				{
+					Base_defender.put(basekey, (Villager)e);
+				}
+				else
+				{
+					Base_defender.get(basekey).remove();
+					Base_defender.remove(basekey);
+					Base_defender.put(basekey, (Villager)e);
+				}
 			}
 			else if(basenum == 4)
 			{
@@ -370,7 +398,16 @@ public class CJFWListener implements Listener
 				e = ch.summonCreatures(baselist, "GREEN", CreatureType.VILLAGER, ChatColor.GOLD+"绿塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
-				greedef = (Villager)e;
+				if(!Base_defender.containsKey(basekey))
+				{
+					Base_defender.put(basekey, (Villager)e);
+				}
+				else
+				{
+					Base_defender.get(basekey).remove();
+					Base_defender.remove(basekey);
+					Base_defender.put(basekey, (Villager)e);
+				}
 			}
 			else
 			{

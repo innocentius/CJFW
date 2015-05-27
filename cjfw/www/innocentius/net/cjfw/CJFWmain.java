@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.Vector;
 /**
  * This is the main class of Plugin<CJFW>
  * @author Shellingford
@@ -333,7 +334,19 @@ public final class CJFWmain extends JavaPlugin
 		if(args.length == 5 && args[0].equalsIgnoreCase("jump"))
 		{
 			//cjfw jump <playername> <x amount> <y amount> <z amount>
-			//TODO calculate the amount of vector needed to pass player to the location
+			//use only in command block!
+			Vector a = new Vector();
+			try
+			{
+			a.setX(Double.parseDouble(args[2]));
+			a.setY(Double.parseDouble(args[3]));
+			a.setZ(Double.parseDouble(args[4]));
+			}
+			catch(Exception e)
+			{
+				return false;
+			}
+			Jumpboard.Jump(Bukkit.getServer().getPlayer(args[1]), a);
 			//then give player 100? tick of invulnerable time.
 			return true;
 		}

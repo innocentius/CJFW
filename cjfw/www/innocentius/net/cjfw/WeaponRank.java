@@ -26,7 +26,7 @@ public class WeaponRank {
 	 * @param a
 	 * @param e
 	 */
-	public void setWeapon(int a, EntityZombie e)
+	public static void setWeapon(int a, EntityZombie e)
 	{
 		ItemStack weapon;
 		switch(a)
@@ -115,7 +115,7 @@ public class WeaponRank {
 	 * @param a
 	 * @param e
 	 */
-	public void setWeapon(int a, EntitySkeleton e)
+	public static void setWeapon(int a, EntitySkeleton e)
 	{
 		ItemStack weapon;
 		switch(a)

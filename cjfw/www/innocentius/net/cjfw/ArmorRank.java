@@ -53,7 +53,7 @@ public class ArmorRank {
 	 * @param i
 	 * @param e
 	 */
-	public void setArmor(int i, EntityCreature e)
+	public static void setArmor(int i, EntityCreature e)
 	{
 		ItemStack item;
 		switch(i)

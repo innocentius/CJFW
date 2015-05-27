@@ -2,6 +2,7 @@ package innocentius.net.cjfw;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,9 @@ import org.bukkit.util.Vector;
  */
 public final class CJFWmain extends JavaPlugin 
 {
-	
+	public static int hinaruscheduler;
+	public static int mainscheduler;
+	public static int luthurscheduler;
 	public final CJFWListener game = new CJFWListener();
 	public Classhandler innoclass;
 	public BukkitScheduler scheduler;
@@ -331,6 +334,8 @@ public final class CJFWmain extends JavaPlugin
 			}
 			return true;
 		}
+		if(args.length > 0)
+		{
 		if(args.length == 5 && args[0].equalsIgnoreCase("jump"))
 		{
 			//cjfw jump <playername> <x amount> <y amount> <z amount>
@@ -349,6 +354,25 @@ public final class CJFWmain extends JavaPlugin
 			Jumpboard.Jump(Bukkit.getServer().getPlayer(args[1]), a);
 			//then give player 100? tick of invulnerable time.
 			return true;
+		}
+		if(args.length == 5 && args[0].equalsIgnoreCase("spawnboss"))
+		{
+			//cjfw spawnboss <name> <x amount> <y amount> <z amount>
+			Location a = new Location(sender.getServer().getPlayer(sender.getName()).getWorld(),Double.parseDouble(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]));
+			HinaruHandler hh = new HinaruHandler(a);
+			scheduler = Bukkit.getServer().getScheduler();
+			hinaruscheduler = scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+	            public void run() {
+	                hh.update();
+	            }
+	        }, 0L, 20L);
+			return true;
+		}
+		if(args.length == 6 && args[0].equalsIgnoreCase("spawnbossconsole"))
+		{
+			//cjfw spawnbossconsole <world> <bossname> <x amount> <y amount> <z amount>
+			Location a = new Location(sender.getServer().getWorld(args[1]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5]));
+		}
 		}
 			return false;		
 	}

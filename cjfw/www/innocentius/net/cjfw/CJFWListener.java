@@ -838,7 +838,9 @@ public class CJFWListener implements Listener
 		}
 		if(gameevent.showrankeventlist.contains(ti))
 		{
-			
+			gettop();
+//			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
+//		    sb.getObjective("contri_point").setDisplaySlot(DisplaySlot.BELOW_NAME);
 		}
 		}
 		catch(Exception e)

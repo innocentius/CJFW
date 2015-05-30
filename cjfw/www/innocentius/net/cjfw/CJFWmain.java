@@ -156,6 +156,7 @@ public final class CJFWmain extends JavaPlugin
 					game.getbaseloc("BLUE", sender);
 					game.getbaseloc("AQUA", sender);
 					game.getbaseloc("PURPLE", sender);
+					game.getbaseloc("GREEN", sender);
 					return true;
 				}
 				else
@@ -165,14 +166,27 @@ public final class CJFWmain extends JavaPlugin
 			}
 			else if(args.length == 2 && !args[0].equalsIgnoreCase("innoclass"))
 			{
-				if(args[0].equalsIgnoreCase("choose"))
-					// Is this necessary?
-					// Let players choose from 4 careers
-					// If the players already chose a career
-					// The action will fail and send an error message to sender
+				if(args[0].equalsIgnoreCase("setborder"))
 				{
-					
-					return true;
+				  try
+				  {
+					if(args[1].equalsIgnoreCase("1"))
+					{
+						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 1);
+					}
+					else if(args[2].equalsIgnoreCase("2"))
+					{
+						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 1);
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED+"We only need two points for a border... right?");
+					}
+				  }
+				  catch (Exception e)
+				  {
+					  sender.sendMessage(ChatColor.RED+"This command is player only.");
+				  }
 				}
 				else if(args[0].equalsIgnoreCase("testmusic"))
 				{

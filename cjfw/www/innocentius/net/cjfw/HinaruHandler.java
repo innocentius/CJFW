@@ -63,6 +63,7 @@ public class HinaruHandler {
 		entityhinaru = crafthinaru.getHandle();
 		WeaponRank.setWeapon(1, entityhinaru);
 		ArmorRank.setArmor(14, entityhinaru);
+		entityhinaru.getAttributeInstance(GenericAttributes.c).setValue(0.9);
 		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
 		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.b);
 		x = UUID.randomUUID();
@@ -184,12 +185,12 @@ public class HinaruHandler {
 						{
 							if(e instanceof Player)
 							{
-								PotionEffect temp = new PotionEffect(PotionEffectType.SLOW, 10, 4);
+								PotionEffect temp = new PotionEffect(PotionEffectType.SLOW, 200, 4);
 								((Player)e).addPotionEffect(temp);
 							}
 						}
 						incd = true;
-						cdt = 5;
+						cdt = 4;
 						return;
 					}
 					else if(thresh66_3)
@@ -200,7 +201,7 @@ public class HinaruHandler {
 							p.playSound(hinaru.getLocation(), "hinaru_shinen", 3, 1);
 						}
 						incd = true;
-						cdt = 5;
+						cdt = 3;
 						return;
 					}
 					else if(thresh66_4)
@@ -211,7 +212,7 @@ public class HinaruHandler {
 							Arrow a = hinaru.launchProjectile(Arrow.class);
 						}
 						incd = true;
-						cdt = 3;
+						cdt = 2;
 						return;
 					}
 					else
@@ -285,7 +286,7 @@ public class HinaruHandler {
 							p.playSound(hinaru.getLocation(), "hinaru_shinen", 3, 1);
 						}
 						incd = true;
-						cdt = 4;
+						cdt = 3;
 						return;
 					}
 					else if(thresh33_4)

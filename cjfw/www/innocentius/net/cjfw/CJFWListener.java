@@ -95,6 +95,8 @@ public class CJFWListener implements Listener
 	//LivingEntity tp; //debug use
 	Scoreboard sb;
 	UUID x;
+	Location bord1;
+	Location bord2;
 	Map<String, Location> baselist = new HashMap<String, Location>();
 	Map<String, Integer> Base_HP = new HashMap<String, Integer>();
 	Map<String, Boolean> Base_damageable = new HashMap<String, Boolean>();
@@ -245,12 +247,72 @@ public class CJFWListener implements Listener
 			}
 			else
 			{
+				try
+				{
+					if(!calcborder(bord1, bord2))
+					{
+						return false;
+					}
+				}
+				catch(Exception a)
+				{
+					return false;
+				}
 			on = true;
 			baselist.get("BLUE").getWorld().setStorm(false);
 			baselist.get("BLUE").getWorld().setThundering(false);
 			baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
 			return true;
 			}
+		}
+	}
+	private boolean calcborder(Location bord12, Location bord22) {
+		if(bord12.getWorld().getName().equals(bord22.getWorld().getName()))
+		{
+			if(bord12.getY() == bord22.getY())
+			{
+				if(bord12.getX() < bord22.getX() && bord12.getZ() < bord22.getZ())
+				{
+					return true;
+				}
+				else if(bord12.getX() > bord22.getX() && bord12.getZ() < bord22.getZ())
+				{
+					double x = bord12.getX();
+					bord12.setX(bord22.getX());
+					bord22.setX(x);
+					return true;
+				}
+				else if(bord12.getX() < bord22.getX() && bord12.getZ() > bord22.getZ())
+				{
+					double z = bord12.getZ();
+					bord12.setZ(bord22.getZ());
+					bord22.setZ(z);
+					return true;
+				}
+				else if(bord12.getX() > bord22.getX() && bord12.getZ() > bord22.getZ())
+				{
+					double x = bord12.getX();
+					bord12.setX(bord22.getX());
+					bord22.setX(x);
+					double z = bord12.getZ();
+					bord12.setZ(bord22.getZ());
+					bord22.setZ(z);
+					return true;
+				}
+				else
+				{
+					//if x = x or z = z
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
 		}
 	}
 	/**
@@ -638,53 +700,53 @@ public class CJFWListener implements Listener
 				//teleport
 				break;
 			case 1:
-				wave_time = -30;
+				wave_time = -35;
 				playbgm("wave_1");
 				//wave 2 BGM is 162s containing 32s rest time, with 30s there is a 5s lap over
 				break;
 			case 2:
-				wave_time = -30;
+				wave_time = -35;
 				playbgm("wave_2");
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 3:
-				wave_time = -30;
+				wave_time = -35;
 				playbgm("wave_3");
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 4:
-				wave_time = -30;
+				wave_time = -35;
 				playbgm("wave_4");
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 5:
-				wave_time = -30;
+				wave_time = -40;
 				playbgm("wave_5");
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 6:
-				wave_time = -30;
+				wave_time = -40;
 				playbgm("wave_6");
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 7:
-				wave_time = -30;
+				wave_time = -35;
 				playbgm("wave_7");
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 8:
-				wave_time = -30;
+				wave_time = -40;
 				playbgm("wave_8");
 				//wave 9 BGM is 250s containing 30s rest time
 				break;
 			case 9:
-				wave_time = -30;
+				wave_time = -40;
 				playbgm("wave_9");
 				//wave 10 BGM is 689s containing 29s rest time
 				break;
 			case 10:
-				wave_time = -30;
-				playbgm("wave_10");
+				wave_time = -40;
+				playbgm("wave_10_1");
 				break;
 			default:
 				System.out.println("PANIC! wave = " + wave);
@@ -697,47 +759,51 @@ public class CJFWListener implements Listener
 			switch(wave)
 			{
 			case 1:
-				wave_time = 130;
+				wave_time = 125;
 				//the BGM is 152s containing 32s rest time
 				break;
 			case 2:
-				wave_time = 140;
+				wave_time = 135;
 				//wave 2 BGM is 162s containing 32s rest time
 				break;
 			case 3:
-				wave_time = 205;
+				wave_time = 200;
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 4:
-				wave_time = 205;
+				wave_time = 200;
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 5:
-				wave_time = 200;
+				wave_time = 190;
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 6:
-				wave_time = 260;
+				wave_time = 250;
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 7:
-				wave_time = 260;
+				wave_time = 250;
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 8:
-				wave_time = 195;
+				wave_time = 185;
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 9:
-				wave_time = 260;
+				wave_time = 250;
 				//wave 9 BGM is 281s containing 30s rest time
 				break;
 			case 10:
 				wave_time = 670;
-				//wave 10 BGM is 689s containing 29s rest time
+				//wave 10 BGM is 344+345s containing 29s rest time
 				break;
 			}
 			wave_time ++;
+		}
+		if(wave == 10 && wave_time == 355)
+		{
+			playbgm("wave_10_2");
 		}
 		//set time for new (do this at last)
 		if(wave_time < 0)
@@ -3581,5 +3647,16 @@ public class CJFWListener implements Listener
 			wave_time = Integer.parseInt(string);
 		}
 		
+	}
+	public void setborder(Location location, int i) {
+		if(i == 1)
+		{
+			bord1 = location;
+			
+		}
+		if(i == 2)
+		{
+			bord2 = location;
+		}
 	}
 }

@@ -1,10 +1,10 @@
 package innocentius.net.cjfw;
 
-import net.minecraft.server.v1_8_R2.Enchantment;
-import net.minecraft.server.v1_8_R2.EntityCreature;
-import net.minecraft.server.v1_8_R2.EntitySkeleton;
-import net.minecraft.server.v1_8_R2.Item;
-import net.minecraft.server.v1_8_R2.ItemStack;
+import net.minecraft.server.v1_8_R1.Enchantment;
+import net.minecraft.server.v1_8_R1.EntityCreature;
+import net.minecraft.server.v1_8_R1.EntitySkeleton;
+import net.minecraft.server.v1_8_R1.Item;
+import net.minecraft.server.v1_8_R1.ItemStack;
 
 public class ArmorRank {
 //	armor rank 0: none

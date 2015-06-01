@@ -31,9 +31,9 @@ public class Fileloader {
 		WaveTime temp;
 		Boolean success = true;
 		StringBuilder sb = new StringBuilder();
-		 try(BufferedReader br = new BufferedReader(new FileReader(path))) 
+		 try 
 		 {
-		    
+			 BufferedReader br = new BufferedReader(new FileReader(path));
 		    String line = br.readLine();
 
 		      while (line != null) 

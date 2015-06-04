@@ -168,6 +168,7 @@ public final class CJFWmain extends JavaPlugin
 			{
 				if(args[0].equalsIgnoreCase("addmis"))
 				{
+					innoclass.setmis(Bukkit.getServer().getPlayer(args[1]));
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.scheduleAsyncDelayedTask(this, new Runnable() {
 			            public void run() {

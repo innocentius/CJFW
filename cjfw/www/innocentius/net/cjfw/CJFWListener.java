@@ -1,6 +1,7 @@
 package innocentius.net.cjfw;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,6 +27,8 @@ import org.bukkit.entity.Wither;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -552,11 +556,51 @@ public class CJFWListener implements Listener
 		}
 	}
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent a)
+	public void onEntityDamage(EntityDamageByEntityEvent a)
 	{
-		if(on)
+        //if(on)
 		{
-			CJFWmain.innoclass.returnmis(a.getEntity());
+			if(a.getDamager() instanceof Player)
+			{
+				Player dam = (Player)a.getDamager();
+				if(dam.getItemInHand() != null)
+				{
+				if(dam.getItemInHand().getItemMeta().getDisplayName().equals("小型狂战斧"))
+				{
+					for(Entity e : getNearbyEntities(a.getEntity().getLocation(), 3))
+					{
+						if(e instanceof Monster)
+						{
+							((Monster) e).damage(3);
+						}
+					}
+					return;
+				}
+				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals("狂战斧"))
+				{
+					for(Entity e: getNearbyEntities(a.getEntity().getLocation(), 4))
+					{
+						if(e instanceof Monster)
+						{
+							((Monster) e).damage(15);
+						}
+					}
+					return;
+				}
+				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals("激光炮"))
+				{
+					for(Entity e: getNearbyEntities(a.getEntity().getLocation(), 7))
+					{
+						if(e instanceof Monster)
+						{
+							((Monster) e).damage(100);
+						}
+					}
+					dam.setItemInHand(null);
+					return;
+				}
+				}
+		}
 		}
 	}
 	/**
@@ -3650,4 +3694,21 @@ public class CJFWListener implements Listener
 			bord2 = location;
 		}
 	}
+	public Entity[]  getNearbyEntities(Location l, int radius)
+	{
+		int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16))/16;
+		HashSet<Entity> radiusEntities = new HashSet<Entity>();
+		for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++)
+		{
+			for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++)
+			{
+				int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
+				for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities())
+				{
+					if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()) radiusEntities.add(e);
+				}
+			}
+		}
+        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
+    }
 }

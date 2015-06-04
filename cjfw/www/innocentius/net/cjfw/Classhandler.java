@@ -34,8 +34,7 @@ public class Classhandler
 			}
 		}
 		misstore.put(a.getName(), g);
-		setfirst(a, "MIS");
-		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cjfw addmis "+a.getName());
+		retrievefirst(a.getName(), "MIS");
 	}
 	public void returnmis(Player a)
 	{

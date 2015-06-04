@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -550,7 +551,14 @@ public class CJFWListener implements Listener
 		
 		}
 	}
-	
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent a)
+	{
+		if(on)
+		{
+			CJFWmain.innoclass.returnmis(a.getEntity());
+		}
+	}
 	/**
 	 * get location of set base, If base is not set, the location will not be 
 	 * displayed
@@ -826,7 +834,7 @@ public class CJFWListener implements Listener
 		}
 		catch(Exception e)
 		{
-			System.out.println("PANIC:" + e.getMessage());
+			System.out.println("PANIC:" + e.getMessage()); 
 		}
 		//check event
 		

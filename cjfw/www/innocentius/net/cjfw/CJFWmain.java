@@ -22,7 +22,7 @@ public final class CJFWmain extends JavaPlugin
 	public static int mainscheduler;
 	public static int luthurscheduler;
 	public final CJFWListener game = new CJFWListener();
-	public Classhandler innoclass;
+	public static Classhandler innoclass;
 	public BukkitScheduler scheduler;
 	public void onEnable() 
 	{
@@ -54,8 +54,8 @@ public final class CJFWmain extends JavaPlugin
 				if(args[0].equalsIgnoreCase("test"))
 				{
 					Player a = sender.getServer().getPlayer(sender.getName());
-					org.bukkit.inventory.ItemStack weapon = new org.bukkit.inventory.ItemStack(Material.DIAMOND_SWORD,1);
-					weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
+					//org.bukkit.inventory.ItemStack weapon = new org.bukkit.inventory.ItemStack(Material.DIAMOND_SWORD,1);
+					//weapon.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 10);
 					//a.getInventory().addItem(weapon);
 					a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
 					return true;
@@ -166,6 +166,17 @@ public final class CJFWmain extends JavaPlugin
 			}
 			else if(args.length == 2 && !args[0].equalsIgnoreCase("innoclass"))
 			{
+				if(args[0].equalsIgnoreCase("addmis"))
+				{
+					scheduler = Bukkit.getServer().getScheduler();
+					scheduler.scheduleAsyncDelayedTask(this, new Runnable() {
+			            public void run() {
+			                innoclass.returnmis(Bukkit.getServer().getPlayer(args[1]));
+			                //TODO add check if in same world
+			            }
+			        }, 2400L);
+			   
+				}
 				if(args[0].equalsIgnoreCase("setborder"))
 				{
 				  try
@@ -176,7 +187,7 @@ public final class CJFWmain extends JavaPlugin
 					}
 					else if(args[2].equalsIgnoreCase("2"))
 					{
-						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 1);
+						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 2);
 					}
 					else
 					{
@@ -372,8 +383,10 @@ public final class CJFWmain extends JavaPlugin
 		if(args.length == 5 && args[0].equalsIgnoreCase("spawnboss"))
 		{
 			//cjfw spawnboss <name> <x amount> <y amount> <z amount>
+			if(args[1].equalsIgnoreCase("hinaru"))
+			{
 			Location a = new Location(sender.getServer().getPlayer(sender.getName()).getWorld(),Double.parseDouble(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]));
-			HinaruHandler hh = new HinaruHandler(a);
+			final HinaruHandler hh = new HinaruHandler(a);
 			scheduler = Bukkit.getServer().getScheduler();
 			hinaruscheduler = scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
 	            public void run() {
@@ -381,6 +394,19 @@ public final class CJFWmain extends JavaPlugin
 	            }
 	        }, 0L, 20L);
 			return true;
+			}
+			if(args[1].equalsIgnoreCase("luthur"))
+			{
+				Location a = new Location(sender.getServer().getPlayer(sender.getName()).getWorld(),Double.parseDouble(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]));
+				final LuthurHandler lh = new LuthurHandler(a);
+				scheduler = Bukkit.getServer().getScheduler();
+				luthurscheduler = scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+		            public void run() {
+		                lh.update();
+		            }
+		        }, 0L, 20L);
+				return true;
+			}
 		}
 		if(args.length == 6 && args[0].equalsIgnoreCase("spawnbossconsole"))
 		{

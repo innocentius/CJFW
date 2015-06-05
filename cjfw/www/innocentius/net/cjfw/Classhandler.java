@@ -38,8 +38,10 @@ public class Classhandler
 	}
 	public void returnmis(Player a)
 	{
-		if(misstore.containsKey(a.getName()))
+		if(misstore.containsKey(a.getName()) && CJFWListener.gameworld != null)
 		{
+			if(CJFWListener.gameworld.equals(a.getWorld()))
+			{
 			a.getInventory().clear();
 			ItemStack s;
 			ArrayList<Map<String, Object>> g = misstore.get(a.getName());
@@ -50,6 +52,7 @@ public class Classhandler
 					s = ItemStack.deserialize(q);
 					a.getInventory().addItem(s);
 				}
+			}
 			}
 		}
 	}

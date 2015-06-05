@@ -1,6 +1,7 @@
 package innocentius.net.cjfw;
 
 import net.minecraft.server.v1_8_R1.Enchantment;
+import net.minecraft.server.v1_8_R1.EntityGiantZombie;
 import net.minecraft.server.v1_8_R1.EntitySkeleton;
 import net.minecraft.server.v1_8_R1.EntityZombie;
 import net.minecraft.server.v1_8_R1.Item;
@@ -27,6 +28,74 @@ public class WeaponRank {
 	 * @param e
 	 */
 	public static void setWeapon(int a, EntityZombie e)
+	{
+		ItemStack weapon;
+		switch(a)
+		{
+		case 0:
+			return;
+		case 1:
+			e.setEquipment(0, new ItemStack(Item.getById(269)));
+			return;
+		case 2:
+			e.setEquipment(0, new ItemStack(Item.getById(271)));
+			return;
+		case 3:
+			e.setEquipment(0, new ItemStack(Item.getById(268)));
+			return;
+		case 4:
+			e.setEquipment(0, new ItemStack(Item.getById(272)));
+			return;
+		case 5:
+			e.setEquipment(0, new ItemStack(Item.getById(267)));
+			return;
+		case 6:
+			weapon = new ItemStack(Item.getById(279));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 7:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 8:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+			e.setEquipment(0, weapon);
+			return;
+		case 9:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 10:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 4);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			e.setEquipment(0, weapon);
+			return;
+		case 11:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			weapon.addEnchantment(Enchantment.KNOCKBACK, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 12:
+			weapon = new ItemStack(Item.getById(276));
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			weapon.addEnchantment(Enchantment.KNOCKBACK, 2);
+			weapon.addEnchantment(Enchantment.DURABILITY, 10);
+			e.setEquipment(0, weapon);
+			return;
+		default:
+			return;
+		}
+	}
+	public static void setWeapon(int a, EntityGiantZombie e)
 	{
 		ItemStack weapon;
 		switch(a)

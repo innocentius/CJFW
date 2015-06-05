@@ -1,5 +1,8 @@
 package innocentius.net.cjfw;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,6 +27,7 @@ public final class CJFWmain extends JavaPlugin
 	public final CJFWListener game = new CJFWListener();
 	public static Classhandler innoclass;
 	public BukkitScheduler scheduler;
+	Map<String, Integer> Player_use_mis = new HashMap<String, Integer>();
 	public void onEnable() 
 	{
 		innoclass = new Classhandler();
@@ -40,7 +44,7 @@ public final class CJFWmain extends JavaPlugin
 	{
 		//class command
 		//There is one main command: cjfw
-		if(cmd.getName().equals("cjfw"))
+		if(cmd.getName().equals("cjfw") && sender.isOp())
 		{
 			if(args.length == 0)
 				// If no argument, display a welcome signal
@@ -60,8 +64,11 @@ public final class CJFWmain extends JavaPlugin
 					a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
 					return true;
 				}
-				
-				if(args[0].equalsIgnoreCase("init"))
+				else if(args[0].equalsIgnoreCase("showmission"))
+				{
+					
+				}
+				else if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game
 					// The initialize will 100% succeed
 				{
@@ -118,6 +125,12 @@ public final class CJFWmain extends JavaPlugin
 				                game.update(1);
 				            }
 				        }, 0L, 20L);
+				        scheduler.scheduleSyncRepeatingTask(this, new Runnable(){
+				        	public void run()
+				        	{
+				        		game.droplumencrystal();
+				        	}
+				        }, 0L, 200L);
 						sender.sendMessage(ChatColor.GOLD+"Desert Base Defence is started!");
 						sender.sendMessage(ChatColor.GOLD+"Timer is started.");
 					}
@@ -168,6 +181,24 @@ public final class CJFWmain extends JavaPlugin
 			{
 				if(args[0].equalsIgnoreCase("addmis"))
 				{
+					if(game.on)
+					{
+						boolean cando = false;
+					if(!Player_use_mis.containsKey(args[1]))
+					{
+						if(game.calcmis() != 0)
+						{
+							cando = true;
+							Player_use_mis.put(args[1], 1);
+						}
+					}
+					else if(Player_use_mis.get(args[1]) < game.calcmis())
+					{
+						cando = true;
+						Player_use_mis.put(args[1], Player_use_mis.get(args[1]) + 1);
+					}
+					if(cando)
+					{
 					innoclass.setmis(Bukkit.getServer().getPlayer(args[1]));
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.scheduleAsyncDelayedTask(this, new Runnable() {
@@ -177,44 +208,63 @@ public final class CJFWmain extends JavaPlugin
 			            }
 			        }, 400L);
 					return true;
+					}
+					else
+					{
+						Bukkit.getServer().getPlayer(args[1]).sendMessage("您暂时没有使用MIS的次数！");
+						return true;
+					}
+					}
+					else
+					{
+						return true;
+					}
+				}
+				if(args[0].equalsIgnoreCase("retcry"))
+				{
+					//cjfw retcry -- command block only
+					Player a = sender.getServer().getPlayer(args[1]);
+					game.retrievecrystal(a);
+					return true;
+				}
+				else if(args[0].equalsIgnoreCase("changemusic"))
+				{
+					scheduler = Bukkit.getServer().getScheduler();
+					scheduler.scheduleSyncDelayedTask(this, new Runnable(){
+						public void run()
+						{
+							game.playbgm(args[1]);
+						}
+					}, 1L);
+					return true;
 				}
 				else if(args[0].equalsIgnoreCase("setborder"))
 				{
-				  try
-				  {
+					try
+					{
 					if(args[1].equalsIgnoreCase("1"))
 					{
 						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 1);
+						sender.sendMessage("Set border point 1");
+						return true;
 					}
-					else if(args[2].equalsIgnoreCase("2"))
+					else if(args[1].equalsIgnoreCase("2"))
 					{
 						game.setborder(sender.getServer().getPlayer(sender.getName()).getLocation(), 2);
+						sender.sendMessage("Set border point 2");
+						return true;
 					}
 					else
 					{
 						sender.sendMessage(ChatColor.RED+"We only need two points for a border... right?");
+						return true;
 					}
-				  }
-				  catch (Exception e)
-				  {
-					  sender.sendMessage(ChatColor.RED+"This command is player only.");
-				  }
-				}
-				else if(args[0].equalsIgnoreCase("testmusic"))
-				{
-					if(args[1] != null)
+					}
+					catch(Exception e)
 					{
-						Player a = sender.getServer().getPlayer(sender.getName());
-						if(args[1].equalsIgnoreCase("1"))
-						{
-							a.playSound(a.getLocation(), "wave_10_1", 1000 , 1);
-						}
-						else
-						{
-							a.playSound(a.getLocation(), "wave_10_2", 1000 , 1);
-						}
+						sender.sendMessage(e.getMessage());
+						return true;
 					}
-					return true;
 				}
 				else if(args[0].equalsIgnoreCase("setwave"))
 				{
@@ -301,7 +351,7 @@ public final class CJFWmain extends JavaPlugin
 				{
 					if(game.fortify(args[1], args[2]))
 					{
-				    Bukkit.broadcastMessage(args[2] + " 开启了 " + args[1] + " 的防护！");
+				    Bukkit.broadcastMessage(args[2] + " 开启了 " + args[1] + " 的冰霜结界！");
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.scheduleSyncDelayedTask(this, new Runnable() 
 					{

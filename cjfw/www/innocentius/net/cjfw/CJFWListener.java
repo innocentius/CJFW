@@ -1,5 +1,6 @@
 package innocentius.net.cjfw;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,13 +10,20 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Jukebox;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftZombie;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftGiant;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftSkeleton;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.PigZombie;
@@ -28,10 +36,10 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -51,6 +59,7 @@ import org.bukkit.scoreboard.Scoreboard;
 @SuppressWarnings("deprecation")
 public class CJFWListener implements Listener
 {
+	public static World gameworld;
 	boolean on;
 	boolean init;
 	Random random;
@@ -60,6 +69,7 @@ public class CJFWListener implements Listener
 	int wave_time;
 	int bonus_time;
 	int back_timer;
+	public int lumen_count;
 	Villager bluedef;
 	Villager aquadef;
 	Villager purpdef;
@@ -72,6 +82,8 @@ public class CJFWListener implements Listener
 	boolean last_boss_phase2;
 	boolean last_boss_phase3;
 	double difficulty;
+	double attack_modifier;
+	double hp_modifier;
 	Fileloader gameevent;
 	Wither final_boss;
 	LivingEntity last_boss;
@@ -90,6 +102,7 @@ public class CJFWListener implements Listener
 	Map<String, Integer> Player_use_heal = new HashMap<String, Integer>();
 	Map<String, Integer> Player_use_fort = new HashMap<String, Integer>();
 	Map<String, Villager> Base_defender = new HashMap<String, Villager>();
+	Map<String, Location> spawn_loc = new HashMap<String, Location>();
 	/**
 	 * Create a new CJFWListener object.
 	 * Contains:
@@ -135,6 +148,8 @@ public class CJFWListener implements Listener
 		last_boss2 = null;
 		last_boss3 = null;
 		final_boss = null;
+		bord2 = null;
+		bord1 = null;
 		back_timer = 0;
 		player_count = 0;
 		bonus_time = 0;
@@ -175,7 +190,10 @@ public class CJFWListener implements Listener
 		last_boss_phase3 = false;
 		difficulty = 1;
 		bonus_time = 0;
+		lumen_count = 0;
 		back_timer = 0;
+		hp_modifier = 1;
+		attack_modifier = 1;
 		int hpfull = counthp(player_count);
 		Base_HP.put("BLUE", hpfull);
 		Base_HP.put("AQUA", hpfull);
@@ -206,6 +224,7 @@ public class CJFWListener implements Listener
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set GREEN cjfw " + Base_HP.get("GREEN"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Crystal cjfw " + lumen_count);
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
 		init = true;
 	}
@@ -248,6 +267,22 @@ public class CJFWListener implements Listener
 			baselist.get("BLUE").getWorld().setStorm(false);
 			baselist.get("BLUE").getWorld().setThundering(false);
 			baselist.get("BLUE").getWorld().setWeatherDuration(1000000);
+			spawn_loc.put("1", new Location(baselist.get("BLUE").getWorld(), baselist.get("BLUE").getX() + 40, baselist.get("BLUE").getY(),
+					baselist.get("BLUE").getZ()));
+			spawn_loc.put("2", new Location(baselist.get("BLUE").getWorld(), baselist.get("BLUE").getX(), baselist.get("BLUE").getY(),
+					baselist.get("BLUE").getZ() + 40));
+			spawn_loc.put("3", new Location(baselist.get("AQUA").getWorld(), baselist.get("AQUA").getX() - 40, baselist.get("AQUA").getY(),
+					baselist.get("AQUA").getZ()));
+			spawn_loc.put("4", new Location(baselist.get("AQUA").getWorld(), baselist.get("AQUA").getX(), baselist.get("AQUA").getY(),
+					baselist.get("AQUA").getZ() + 40));
+			spawn_loc.put("5", new Location(baselist.get("PURPLE").getWorld(), baselist.get("PURPLE").getX() - 40, baselist.get("PURPLE").getY(),
+					baselist.get("PURPLE").getZ()));
+			spawn_loc.put("6", new Location(baselist.get("PURPLE").getWorld(), baselist.get("PURPLE").getX(), baselist.get("PURPLE").getY(),
+					baselist.get("PURPLE").getZ() - 40));
+			spawn_loc.put("7", new Location(baselist.get("GREEN").getWorld(), baselist.get("GREEN").getX() + 40, baselist.get("GREEN").getY(),
+					baselist.get("GREEN").getZ()));
+			spawn_loc.put("8", new Location(baselist.get("GREEN").getWorld(), baselist.get("GREEN").getX(), baselist.get("GREEN").getY(),
+					baselist.get("GREEN").getZ() - 40));
 			return true;
 			}
 		}
@@ -255,46 +290,28 @@ public class CJFWListener implements Listener
 	private boolean calcborder(Location bord12, Location bord22) {
 		if(bord12.getWorld().getName().equals(bord22.getWorld().getName()))
 		{
-			if(bord12.getY() == bord22.getY())
-			{
-				if(bord12.getX() < bord22.getX() && bord12.getZ() < bord22.getZ())
+				if(bord12.getX() > bord22.getX())
 				{
-					return true;
-				}
-				else if(bord12.getX() > bord22.getX() && bord12.getZ() < bord22.getZ())
-				{
-					double x = bord12.getX();
+					double tX = bord12.getX();
 					bord12.setX(bord22.getX());
-					bord22.setX(x);
-					return true;
+					bord22.setX(tX);
 				}
-				else if(bord12.getX() < bord22.getX() && bord12.getZ() > bord22.getZ())
+				if(bord12.getY() > bord22.getY())
 				{
-					double z = bord12.getZ();
+					double tY = bord12.getY();
+					bord12.setY(bord22.getY());
+					bord22.setY(tY);
+				}
+				if(bord12.getZ() > bord22.getZ())
+				{
+					double tZ = bord12.getZ();
 					bord12.setZ(bord22.getZ());
-					bord22.setZ(z);
-					return true;
+					bord22.setZ(tZ);
 				}
-				else if(bord12.getX() > bord22.getX() && bord12.getZ() > bord22.getZ())
-				{
-					double x = bord12.getX();
-					bord12.setX(bord22.getX());
-					bord22.setX(x);
-					double z = bord12.getZ();
-					bord12.setZ(bord22.getZ());
-					bord22.setZ(z);
-					return true;
-				}
-				else
-				{
-					//if x = x or z = z
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
+				bord1 = bord12;
+				bord2 = bord22;
+				return true;
+				
 		}
 		else
 		{
@@ -387,6 +404,7 @@ public class CJFWListener implements Listener
 			{
 			if(basenum == 1)
 			{
+				gameworld = i.getWorld();
 				basekey = "BLUE";
 				baselist.put(basekey, i);
 				e = ch.summonCreatures(baselist, "BLUE", CreatureType.VILLAGER, ChatColor.GOLD+"蓝塔守护者", i, false);
@@ -461,6 +479,72 @@ public class CJFWListener implements Listener
 			{
 				basekey = "FOO";
 			}		
+		}
+	}
+	/**
+	 * Calculate Lumen Crystal amount, add some to random location in the area.
+	 * 
+	 */
+	public void droplumencrystal()
+	{
+		if(on)
+		{
+			try
+			{
+				int count = 0;
+				for(int i = bord1.getBlockX(); i <= bord2.getBlockX(); i= i + 16)
+				{
+					for(int j = bord1.getBlockY(); j <= bord2.getBlockY(); j = j + 16)
+					{
+						for(int z = bord1.getBlockZ(); z <= bord2.getBlockZ(); z = z + 16)
+						{
+							Location temp = new Location(bord1.getWorld(),i, j, z);
+							for(Entity e :temp.getBlock().getChunk().getEntities())
+							{
+								if(e instanceof Item)
+								{
+									try
+									{
+									if(((Item)e).getItemStack().getItemMeta().getDisplayName().contains("Lumen Crystal"))
+										{
+											count = count + ((Item)e).getItemStack().getAmount();
+										}
+									}
+									catch(Exception w)
+									{
+										
+									}
+								}
+							
+							}
+						}
+					}
+				}
+				//System.out.println(count);
+				if(count < 60)
+				{
+					for(int i = count; i < 60; i++)
+					{
+						int tempx = random.nextInt(bord2.getBlockX() - bord1.getBlockX()) + bord1.getBlockX();
+						int tempy = random.nextInt(bord2.getBlockY() - bord1.getBlockY()) + bord1.getBlockY();
+						int tempz = random.nextInt(bord2.getBlockZ() - bord1.getBlockZ()) + bord1.getBlockZ();
+						Location temploc = new Location(bord1.getWorld(), tempx, tempy, tempz);
+						if(temploc.getBlock().isEmpty())
+						{
+							ItemStack crystal = new ItemStack(399);
+							ItemMeta crysmeta = crystal.getItemMeta();
+							crysmeta.setDisplayName("Lumen Crystal");
+							crystal.setAmount(1);
+							crystal.setItemMeta(crysmeta);
+							temploc.getWorld().dropItem(temploc, crystal);
+						}
+					}
+				}
+			}
+			catch(Exception E)
+			{
+				System.out.println("PANIC: "+ E.getMessage());
+			}
 		}
 	}
 	/**
@@ -558,14 +642,14 @@ public class CJFWListener implements Listener
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent a)
 	{
-        //if(on)
+        if(on)
 		{
 			if(a.getDamager() instanceof Player)
 			{
 				Player dam = (Player)a.getDamager();
 				if(dam.getItemInHand() != null)
 				{
-				if(dam.getItemInHand().getItemMeta().getDisplayName().equals("小型狂战斧"))
+				if(dam.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.RED+"小型狂战斧"))
 				{
 					for(Entity e : getNearbyEntities(a.getEntity().getLocation(), 3))
 					{
@@ -576,7 +660,7 @@ public class CJFWListener implements Listener
 					}
 					return;
 				}
-				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals("狂战斧"))
+				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"狂战斧"))
 				{
 					for(Entity e: getNearbyEntities(a.getEntity().getLocation(), 4))
 					{
@@ -587,7 +671,7 @@ public class CJFWListener implements Listener
 					}
 					return;
 				}
-				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals("激光炮"))
+				else if(dam.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.BLUE+"激光炮"))
 				{
 					for(Entity e: getNearbyEntities(a.getEntity().getLocation(), 7))
 					{
@@ -689,13 +773,20 @@ public class CJFWListener implements Listener
 		{
 			if(Player_use_heal.containsKey(name) == false)
 			{
+				if(calcheal() != 0)
+				{
 				double a = 0.05 * counthp(player_count);
 				Double doubleobj = new Double(a);
 				HPModify(string, doubleobj.intValue());
 				Player_use_heal.put(name, 1);
 				return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			else if(Player_use_heal.get(name) < 2)
+			else if(Player_use_heal.get(name) < calcheal())
 			{
 				double a = 0.05 * counthp(player_count);
 				Double doubleobj = new Double(a);
@@ -711,6 +802,27 @@ public class CJFWListener implements Listener
 		return false;
 	}
 	
+	private Integer calcheal() {
+		if(lumen_count < 1000)	return 0;
+		if(lumen_count < 3500) return 1;
+		if(lumen_count < 10000) return 2;
+		return 3;
+	}
+	private Integer calcfortify()
+	{
+		if(lumen_count < 500) return 0;
+		if(lumen_count < 2000) return 1;
+		if(lumen_count < 3000) return 2;
+		if(lumen_count < 6000) return 3;
+		return 4;
+	}
+	public Integer calcmis()
+	{
+		if(lumen_count < 200) return 0;
+		if(lumen_count < 7000) return 1;
+		if(lumen_count < 10000) return 2;
+		return 3;
+	} 
 	/**
 	 * --Update time
 	 * --Check from event list
@@ -725,6 +837,7 @@ public class CJFWListener implements Listener
 		if(wave_time == 0)
 		{
 			wave++;
+			wavefinalremove();
 			//only when 120 -> 0 will trigger.
 			switch(wave)
 			{
@@ -733,53 +846,53 @@ public class CJFWListener implements Listener
 				//teleport
 				break;
 			case 1:
-				wave_time = -35;
-				playbgm("wave_1");
+				wave_time = -30;
+				playbgmc("wave_1");
 				//wave 2 BGM is 162s containing 32s rest time, with 30s there is a 5s lap over
 				break;
 			case 2:
-				wave_time = -35;
-				playbgm("wave_2");
+				wave_time = -30;
+				playbgmc("wave_2");
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 3:
-				wave_time = -35;
-				playbgm("wave_3");
+				wave_time = -30;
+				playbgmc("wave_3");
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 4:
-				wave_time = -35;
-				playbgm("wave_4");
+				wave_time = -30;
+				playbgmc("wave_4");
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 5:
-				wave_time = -40;
-				playbgm("wave_5");
+				wave_time = -30;
+				playbgmc("wave_5");
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 6:
-				wave_time = -40;
-				playbgm("wave_6");
+				wave_time = -30;
+				playbgmc("wave_6");
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 7:
-				wave_time = -35;
-				playbgm("wave_7");
+				wave_time = -30;
+				playbgmc("wave_7");
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 8:
-				wave_time = -40;
-				playbgm("wave_8");
+				wave_time = -30;
+				playbgmc("wave_8");
 				//wave 9 BGM is 250s containing 30s rest time
 				break;
 			case 9:
-				wave_time = -40;
-				playbgm("wave_9");
+				wave_time = -30;
+				playbgmc("wave_9");
 				//wave 10 BGM is 689s containing 29s rest time
 				break;
 			case 10:
-				wave_time = -40;
-				playbgm("wave_10_1");
+				wave_time = -30;
+				playbgmc("wave_10");
 				break;
 			default:
 				System.out.println("PANIC! wave = " + wave);
@@ -792,23 +905,23 @@ public class CJFWListener implements Listener
 			switch(wave)
 			{
 			case 1:
-				wave_time = 125;
+				wave_time = 122;
 				//the BGM is 152s containing 32s rest time
 				break;
 			case 2:
-				wave_time = 135;
+				wave_time = 132;
 				//wave 2 BGM is 162s containing 32s rest time
 				break;
 			case 3:
-				wave_time = 200;
+				wave_time = 196;
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 4:
-				wave_time = 200;
+				wave_time = 196;
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 5:
-				wave_time = 190;
+				wave_time = 188;
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 6:
@@ -816,7 +929,7 @@ public class CJFWListener implements Listener
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 7:
-				wave_time = 250;
+				wave_time = 252;
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 8:
@@ -828,15 +941,11 @@ public class CJFWListener implements Listener
 				//wave 9 BGM is 281s containing 30s rest time
 				break;
 			case 10:
-				wave_time = 670;
+				wave_time = 660;
 				//wave 10 BGM is 344+345s containing 29s rest time
 				break;
 			}
 			wave_time ++;
-		}
-		if(wave == 10 && wave_time == 355)
-		{
-			playbgm("wave_10_2");
 		}
 		//set time for new (do this at last)
 		if(wave_time < 0)
@@ -854,6 +963,7 @@ public class CJFWListener implements Listener
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set AQUA cjfw " + Base_HP.get("AQUA"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set PURPLE cjfw " + Base_HP.get("PURPLE"));
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set GREEN cjfw " + Base_HP.get("GREEN"));
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard players set Crystal cjfw " + lumen_count);
 		if(Base_HP.get("BLUE") == 0 && Base_HP.get("AQUA") == 0 && Base_HP.get("PURPLE") == 0 && Base_HP.get("GREEN") == 0)
 		{
 			finish = true;
@@ -867,13 +977,78 @@ public class CJFWListener implements Listener
 		}
 		if(gameevent.spawnmobevent.containsKey(ti))
 		{
-			
+			//<Type> <amount_modifier> <weaponrank> <armorrank> <name>
+			String a = gameevent.spawnmobevent.get(ti);
+			String[] args = a.split(" ");
+			int sp = random.nextInt(8) + 1;
+			LivingEntity spawned = null;
+			int weaponrank = Integer.parseInt(args[2]);
+			int armorrank = Integer.parseInt(args[3]);
+			double modifier = Double.parseDouble(args[1]);
+			for(int i = 0; i <= modifier * player_count * difficulty; i ++)
+			{
+			switch(args[0])
+			{
+			case "zombie":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.ZOMBIE, args[4], spawn_loc.get(Integer.toString(sp)), false);
+	
+				WeaponRank.setWeapon(weaponrank, ((CraftZombie)spawned).getHandle());
+				ArmorRank.setArmor(armorrank, ((CraftZombie)spawned).getHandle());
+				break;
+			case "skeleton":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.SKELETON, args[4], spawn_loc.get(Integer.toString(sp)), false);
+				WeaponRank.setWeapon(weaponrank, ((CraftSkeleton)spawned).getHandle());
+				ArmorRank.setArmor(armorrank, ((CraftSkeleton)spawned).getHandle());
+				break;
+			case "giant":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.GIANT, args[4], spawn_loc.get(Integer.toString(sp)), false);
+				WeaponRank.setWeapon(weaponrank, ((CraftGiant)spawned).getHandle());
+				ArmorRank.setArmor(armorrank, ((CraftGiant)spawned).getHandle());
+				break;
+			case "creeper":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, args[4], spawn_loc.get(Integer.toString(sp)), false);
+				break;
+			}
+			if(spawned != null)
+			{
+				
+				spawned.setMaxHealth(spawned.getMaxHealth() * hp_modifier);
+				spawned.setHealth(spawned.getMaxHealth() * hp_modifier);
+				ch.changeattack(spawned, attack_modifier - 1);
+				switch(sp)
+				{
+				case 1:
+					((Monster)spawned).setTarget(bluedef);
+					break;
+				case 2:
+					((Monster)spawned).setTarget(bluedef);
+					break;
+				case 3:
+					((Monster)spawned).setTarget(aquadef);
+					break;
+				case 4:
+					((Monster)spawned).setTarget(aquadef);
+					break;
+				case 5:
+					((Monster)spawned).setTarget(purpdef);
+					break;
+				case 6:
+					((Monster)spawned).setTarget(purpdef);
+					break;
+				case 7:
+					((Monster)spawned).setTarget(greedef);
+					break;
+				case 8:
+					((Monster)spawned).setTarget(greedef);
+					break;
+				}
+			}
+			}
 		}
 		if(gameevent.showrankeventlist.contains(ti))
 		{
 			gettop();
-//			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
-//		    sb.getObjective("contri_point").setDisplaySlot(DisplaySlot.BELOW_NAME);
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cjfw showmission");
 		}
 		}
 		catch(Exception e)
@@ -3470,10 +3645,72 @@ public class CJFWListener implements Listener
 //		}
 		
 	}
-	private void playbgm(String string) {
-		for(Player a : baselist.get("BLUE").getWorld().getPlayers())
+	private void playbgmc(String args) 
+	{
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cjfw changemusic " + args);
+	}
+	public void playbgm(String args) 
+	{
+		for(int i = bord1.getBlockX(); i <= bord2.getBlockX(); i++)
 		{
-			a.playSound(a.getLocation(), string, 1000, 1);
+			for(int j = bord1.getBlockY(); j <= bord2.getBlockY(); j++)
+			{
+				for(int z = bord1.getBlockZ(); z <= bord2.getBlockZ(); z++)
+				{
+					Location temp = new Location(bord1.getWorld(),i, j, z);
+					if(temp.getBlock().getState() != null)
+					{
+						BlockState e = temp.getBlock().getState();
+						if(e instanceof Jukebox)
+						{
+							//RECORD11 - M1A
+							switch(args)
+							{
+							case "wave_1":
+								System.out.println("It should be playing.");
+								((Jukebox) e).setPlaying(Material.RECORD_11);
+								break;
+							case "wave_2":
+								((Jukebox) e).setPlaying(Material.GOLD_RECORD);
+								break;
+							case "wave_3":
+								((Jukebox) e).setPlaying(Material.RECORD_3);
+								break;
+							case "wave_4":
+								((Jukebox) e).setPlaying(Material.GREEN_RECORD);
+								break;	
+							case "wave_5":
+								((Jukebox) e).setPlaying(Material.RECORD_5);
+								break;
+							case "wave_6":
+								((Jukebox) e).setPlaying(Material.RECORD_6);
+								break;
+							case "wave_7":
+								((Jukebox) e).setPlaying(Material.RECORD_7);
+								break;
+							case "wave_8":
+								((Jukebox) e).setPlaying(Material.RECORD_4);
+								break;
+							case "wave_9":
+								((Jukebox) e).setPlaying(Material.RECORD_8);
+								break;
+							case "wave_10":
+								((Jukebox) e).setPlaying(Material.RECORD_9);
+								break;
+							//GOLD    -- M2A
+							//RECORD3 -- M3A
+							//GREEN   -- M4A
+							//RECORD5 -- M5A
+							//RECORD6 -- M6A
+							//RECORD7 -- M7A
+							//RECORD4 -- M4B
+							//RECORD8 -- M7D
+							//RECORD9 -- M8D
+							}
+						}
+					}
+				}
+			}
 		}
 		
 	}
@@ -3620,11 +3857,18 @@ public class CJFWListener implements Listener
 		{
 			if(Player_use_fort.containsKey(name) == false)
 			{
+				if(calcfortify() != 0)
+				{
 				Base_damageable.put(string, false);
 				Player_use_fort.put(name, 1);
 				return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			else if(Player_use_fort.get(name) < 2)
+			else if(Player_use_fort.get(name) < calcfortify())
 			{
 				Base_damageable.put(string, false);
 				Player_use_fort.put(name, Player_use_fort.get(name) + 1);
@@ -3711,4 +3955,69 @@ public class CJFWListener implements Listener
 		}
         return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
+	public void retrievecrystal(Player a) {
+		for(Entity e : getNearbyEntities(a.getLocation(), 5))
+		{
+			if(e instanceof Player)
+			{
+				cargoscan((Player)e);
+			}
+		}
+		
+	}
+	private void cargoscan(Player e) 
+	{
+		ItemStack[] temp = e.getInventory().getContents();
+		ArrayList<Map<String, Object>> array = new ArrayList<Map<String, Object>>();
+		for(ItemStack i : temp)
+		{
+			if(i != null)
+			{
+			if(i.hasItemMeta())
+			{
+				if(!i.getItemMeta().getDisplayName().contains("Lumen Crystal"))
+				{
+					array.add(i.serialize());
+				}
+				else
+				{
+					addlumen(i);
+				}
+			}
+			else
+			{
+				array.add(i.serialize());
+			}
+			}
+		}
+		e.getInventory().clear();
+		for(Map<String, Object> c : array)
+		{
+			e.getInventory().addItem(ItemStack.deserialize(c));
+		}
+	}
+	private void addlumen(ItemStack i) 
+	{
+		if(on)
+		{
+			int k = i.getAmount();
+			if(player_count < 10)
+			{
+				lumen_count = lumen_count + 10 * k;
+			}
+			else if(player_count < 20)
+			{
+				lumen_count = lumen_count + 7 * k;
+			}
+			else if(player_count < 40)
+			{
+				lumen_count = lumen_count + 5 * k;
+			}
+			else if(player_count < 80)
+			{
+				lumen_count = lumen_count + 3 * k;
+			}
+		}
+		
+	}
 }

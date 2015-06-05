@@ -182,13 +182,5 @@ public class ArmorRank {
 			return;
 		}
 	}
-	/**
-	 * @deprecated this method is not yet used.
-	 * @param i
-	 * @param e
-	 */
-	public void setArmor(int i, EntitySkeleton e)
-	{
-		
-	}
+
 }

@@ -68,12 +68,12 @@ public class CreatureHandler {
 		x = UUID.randomUUID();
 		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 0.2, 1));
 	}
-	public void changeattack(LivingEntity temp_eni)
+	public void changeattack(LivingEntity temp_eni, double i)
 	{
 		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
 		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.e);
 		x = UUID.randomUUID();
-		attributes.a(new AttributeModifier(x, "" + random.nextInt(), 0.3, 1));
+		attributes.a(new AttributeModifier(x, "" + random.nextInt(), i, 1));
 	}
 	public void sethealth(Damageable a, double b)
 	{

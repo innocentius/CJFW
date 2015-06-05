@@ -106,7 +106,7 @@ public class HinaruHandler {
 			}
 			else if(n < 10)
 			{
-				return 200;
+				return 1000;
 			}
 			else if(n < 20)
 			{

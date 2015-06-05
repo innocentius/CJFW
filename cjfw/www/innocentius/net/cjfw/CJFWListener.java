@@ -23,6 +23,7 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -908,6 +909,39 @@ public class CJFWListener implements Listener
 			}
 			wave_time --;
 		}
+		if(wave_time == -25)
+		{
+			switch(wave)
+			{
+			case 2:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 3:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 4:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 5:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 6:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 7:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 8:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 9:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			case 10:
+				CJFWmain.innoclass.retrievebetweenall();
+				break;
+			}
+		}
 		if(wave_time == -1)
 		{
 			switch(wave)
@@ -918,38 +952,65 @@ public class CJFWListener implements Listener
 				break;
 			case 2:
 				wave_time = 132;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升20%,血量提升20%!");
+				hp_modifier = 1.2;
+				attack_modifier = 1.2;
 				//wave 2 BGM is 162s containing 32s rest time
 				break;
 			case 3:
 				wave_time = 196;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升20%,血量提升40%!");
+				hp_modifier = 1.4;
+				attack_modifier = 1.2;
 				//wave 3 BGM is 226s containing 31s rest time
 				break;
 			case 4:
 				wave_time = 196;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升40%,血量提升40%!");
+				hp_modifier = 1.4;
+				attack_modifier = 1.4;
 				//wave 4 BGM is 226s containing 31s rest time
 				break;
 			case 5:
 				wave_time = 188;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升40%,血量提升60%!");
+				hp_modifier = 1.6;
+				attack_modifier = 1.4;
 				//wave 5 BGM is 218s containing 28s rest time
 				break;
 			case 6:
 				wave_time = 250;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升60%,血量提升60%!");
+				hp_modifier = 1.6;
+				attack_modifier = 1.6;
 				//wave 6 BGM is 279s containing 29s rest time
 				break;
 			case 7:
 				wave_time = 252;
+				Bukkit.broadcastMessage(ChatColor.RED+"DANGER!怪物攻击力提升60%,血量提升60%!");
+				hp_modifier = 1.6;
+				attack_modifier = 1.6;
 				//wave 7 BGM is 282s containing 32s rest time
 				break;
 			case 8:
 				wave_time = 185;
+				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE+"EXTREME DANGER!怪物攻击力提升80%,血量提升60%!");
+				hp_modifier = 1.6;
+				attack_modifier = 1.8;
 				//wave 8 BGM is 215s containing 30s rest time
 				break;
 			case 9:
 				wave_time = 250;
+				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE+"EXTREME DANGER!怪物属性...计测不能。");
+				hp_modifier = 1.8;
+				attack_modifier = 1.8;
 				//wave 9 BGM is 281s containing 30s rest time
 				break;
 			case 10:
 				wave_time = 660;
+				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE+"EXTREME DANGER!");
+				hp_modifier = 2.0;
+				attack_modifier = 2.0;
 				//wave 10 BGM is 344+345s containing 29s rest time
 				break;
 			}
@@ -1031,7 +1092,7 @@ public class CJFWListener implements Listener
 			{
 				
 				spawned.setMaxHealth(spawned.getMaxHealth() * hp_modifier);
-				spawned.setHealth(spawned.getMaxHealth() * hp_modifier);
+				spawned.setHealth(spawned.getMaxHealth());
 				ch.changeattack(spawned, attack_modifier - 1);
 				switch(sp)
 				{
@@ -1076,6 +1137,25 @@ public class CJFWListener implements Listener
 		{
 			System.out.println("PANIC:" + e.getMessage()); 
 		}
+		if(wave == 5 && wave_time == 185)
+		{
+				Location temp = baselist.get("BLUE").clone();
+				temp.add(0,10,40);
+				Entity temp_eni;
+				temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITHER);
+				LivingEntity a = (LivingEntity)temp_eni;
+				a.setRemoveWhenFarAway(false);
+				a.setCustomName(ChatColor.RED+"第二型巴特勒");
+				a.setCustomNameVisible(true);
+				ch.changerange(a); 
+				a.setMaxHealth(75 * player_count * difficulty);
+	     		a.setHealth(75 * player_count * difficulty);		
+		}
+		if(wave == 6 && wave_time == 245)
+		{
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cjfw spawnbossconsole "+baselist.get("BLUE").getWorld().getName()+" hinaru "+
+		(baselist.get("GREEN").getBlockX()+40) + " " + baselist.get("GREEN").getBlockY() + " " + baselist.get("GREEN").getBlockZ());
+		}
 		//check event
 		
 //		//the update of wave should be the first step
@@ -1117,22 +1197,7 @@ public class CJFWListener implements Listener
 //				wave_time = 300;
 //				baselist.get("BLUE").getWorld().setTime(6000);
 //			}
-//			if(wave == 9 && wave_time == 295)
-//			{
-//				temp = baselist.get("BLUE").clone();
-//				temp.add(0,10,-45);
-//				Entity temp_eni;
-//				temp_eni = baselist.get("BLUE").getWorld().spawnEntity(temp, EntityType.WITHER);
-//				LivingEntity a = (LivingEntity)temp_eni;
-//				a.setRemoveWhenFarAway(false);
-//				a.setCustomName(ChatColor.RED+"第二型巴特勒");
-//				a.setCustomNameVisible(true);
-//				ch.changerange(a); 
-//				a.setMaxHealth(200 * player_count * difficulty);
-//				a.setHealth(200 * player_count * difficulty);
-//				final_boss = (Wither)a;
-//				
-//			}
+				
 //			if(wave == 9 && wave_time > 0 && wave_time < 295 && wave_time % 15 == 0)
 //			{
 //				if(final_boss != null)
@@ -4000,6 +4065,8 @@ public class CJFWListener implements Listener
 			{
 			if(i.hasItemMeta())
 			{
+				try
+				{
 				if(!i.getItemMeta().getDisplayName().contains("Lumen Crystal"))
 				{
 					array.add(i.serialize());
@@ -4007,6 +4074,11 @@ public class CJFWListener implements Listener
 				else
 				{
 					addlumen(i);
+				}
+				}
+				catch(Exception ex)
+				{
+					array.add(i.serialize());
 				}
 			}
 			else

@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 
 public class Classhandler 
@@ -15,11 +17,15 @@ public class Classhandler
 	LinkedHashMap<String, ArrayList<Map<String, Object>>> first;
 	LinkedHashMap<String, ArrayList<Map<String, Object>>> betw;
 	LinkedHashMap<String, ArrayList<Map<String, Object>>> misstore;
+	LinkedHashMap<String, String> player_class;
+	LinkedHashMap<String, String> player_class_beforemis;
 	public Classhandler()
 	{
 		first = new LinkedHashMap<String, ArrayList<Map<String, Object>>>();
 		betw = new LinkedHashMap<String, ArrayList<Map<String, Object>>>();
 		misstore = new LinkedHashMap<String, ArrayList<Map<String, Object>>>();
+		player_class = new LinkedHashMap<String, String>();
+		player_class_beforemis = new LinkedHashMap<String, String>();
 	}
 	public void setmis(Player a)
 	{
@@ -34,7 +40,10 @@ public class Classhandler
 			}
 		}
 		misstore.put(a.getName(), g);
+		player_class_beforemis.put(a.getName(), player_class.get(a.getName()));
 		retrievefirst(a.getName(), "MIS");
+		a.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2400, 10));
+		a.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2400, 2));
 	}
 	public void returnmis(Player a)
 	{
@@ -54,6 +63,13 @@ public class Classhandler
 				}
 			}
 			}
+			misstore.remove(a.getName());
+			player_class.put(a.getName(), player_class_beforemis.get(a.getName()));
+			player_class_beforemis.remove(a.getName());
+		}
+		else
+		{
+			a.getInventory().clear();
 		}
 	}
 	public void setfirst(Player a, String name) 
@@ -103,6 +119,7 @@ public class Classhandler
 		  			a.getInventory().addItem(s);
 		  			}
 		  		}
+		  		player_class.put(args, name);
 		  	}
 		}
 	}
@@ -124,6 +141,13 @@ public class Classhandler
 		  			}
 		  		}
 		  	}
+		}
+	}
+	public void retrievebetweenall()
+	{
+		for(String name: player_class.keySet())
+		{
+			retrievebetween(name, player_class.get(name));
 		}
 	}
 	

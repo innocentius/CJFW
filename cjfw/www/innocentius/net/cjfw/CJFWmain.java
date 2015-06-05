@@ -383,7 +383,7 @@ public final class CJFWmain extends JavaPlugin
 					return false;
 				}
 			}
-		}
+		
 		if(args.length > 0 && args[0].equalsIgnoreCase("innoclass"))
 		{
 			if(args.length == 1)
@@ -473,7 +473,39 @@ public final class CJFWmain extends JavaPlugin
 		{
 			//cjfw spawnbossconsole <world> <bossname> <x amount> <y amount> <z amount>
 			Location a = new Location(sender.getServer().getWorld(args[1]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5]));
+			if(args[2].equalsIgnoreCase("hinaru"))
+			{
+				final HinaruHandler hh = new HinaruHandler(a);
+				scheduler = Bukkit.getServer().getScheduler();
+				hinaruscheduler = scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+		            public void run() {
+		                hh.update();
+		            }
+		        }, 0L, 20L);
+				return true;
+			}
+			if(args[2].equalsIgnoreCase("luthur"))
+			{
+				final LuthurHandler lh = new LuthurHandler(a);
+				scheduler = Bukkit.getServer().getScheduler();
+				luthurscheduler = scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+		            public void run() {
+		                lh.update();
+		            }
+		        }, 0L, 20L);
+				return true;
+			}
 		}
+		}
+		}
+		else if(cmd.getName().equals("cjfw") && !sender.isOp())
+		{
+			if(args[0].equalsIgnoreCase("test"))
+			{
+				Player a = sender.getServer().getPlayer(sender.getName());
+				a.playSound(a.getLocation(), "emergency_test", 1000 , 1);
+				return true;
+			}
 		}
 			return false;		
 	}

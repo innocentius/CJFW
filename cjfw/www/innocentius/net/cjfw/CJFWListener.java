@@ -70,10 +70,7 @@ public class CJFWListener implements Listener
 	int bonus_time;
 	int back_timer;
 	public int lumen_count;
-	Villager bluedef;
-	Villager aquadef;
-	Villager purpdef;
-	Villager greedef;
+
 	boolean finish;
 	boolean wave9_switch;
 	boolean bonus_switch;
@@ -647,6 +644,8 @@ public class CJFWListener implements Listener
 			if(a.getDamager() instanceof Player)
 			{
 				Player dam = (Player)a.getDamager();
+				try
+				{
 				if(dam.getItemInHand() != null)
 				{
 				if(dam.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.RED+"小型狂战斧"))
@@ -684,9 +683,14 @@ public class CJFWListener implements Listener
 					return;
 				}
 				}
-		}
+				}
+				catch(Exception e)
+			{
+					
+			}
 		}
 	}
+}
 	/**
 	 * get location of set base, If base is not set, the location will not be 
 	 * displayed
@@ -834,6 +838,10 @@ public class CJFWListener implements Listener
 	public void update(int time) 
 	{
 		//check settime valid (do this at first)
+		if(finish)
+		{
+			return;
+		}
 		if(wave_time == 0)
 		{
 			wave++;
@@ -967,25 +975,35 @@ public class CJFWListener implements Listener
 		if(Base_HP.get("BLUE") == 0 && Base_HP.get("AQUA") == 0 && Base_HP.get("PURPLE") == 0 && Base_HP.get("GREEN") == 0)
 		{
 			finish = true;
+			Bukkit.broadcastMessage("防卫战结束！");
+			Bukkit.broadcastMessage("最终防卫等级： F !");
+		}
+		if(wave == 11 && wave_time == 0)
+		{
+			finish = true;
+			Bukkit.broadcastMessage("防卫战结束！");
+			Bukkit.broadcastMessage("最终防卫等级： "+ calculate_rank() + " !");
 		}
 		WaveTime ti = new WaveTime(wave, wave_time);
 		try
 		{
-		if(gameevent.serversayevent.containsKey(ti))
+		if(gameevent.serversayevent.containsKey(ti.toString()))
 		{
-			Bukkit.broadcastMessage(gameevent.serversayevent.get(ti));
+			Bukkit.broadcastMessage(gameevent.serversayevent.get(ti.toString()));
+			System.out.println(ti.toString());
 		}
-		if(gameevent.spawnmobevent.containsKey(ti))
+		if(gameevent.spawnmobevent.containsKey(ti.toString()))
 		{
+			System.out.println(ti.toString());
 			//<Type> <amount_modifier> <weaponrank> <armorrank> <name>
-			String a = gameevent.spawnmobevent.get(ti);
+			String a = gameevent.spawnmobevent.get(ti.toString());
 			String[] args = a.split(" ");
 			int sp = random.nextInt(8) + 1;
 			LivingEntity spawned = null;
 			int weaponrank = Integer.parseInt(args[2]);
 			int armorrank = Integer.parseInt(args[3]);
 			double modifier = Double.parseDouble(args[1]);
-			for(int i = 0; i <= modifier * player_count * difficulty; i ++)
+			for(int i = 0; i < modifier * player_count * difficulty; i ++)
 			{
 			switch(args[0])
 			{
@@ -1018,34 +1036,37 @@ public class CJFWListener implements Listener
 				switch(sp)
 				{
 				case 1:
-					((Monster)spawned).setTarget(bluedef);
+					((Monster)spawned).setTarget(Base_defender.get("BLUE"));
 					break;
 				case 2:
-					((Monster)spawned).setTarget(bluedef);
+					((Monster)spawned).setTarget(Base_defender.get("BLUE"));
 					break;
 				case 3:
-					((Monster)spawned).setTarget(aquadef);
+					((Monster)spawned).setTarget(Base_defender.get("AQUA"));
 					break;
 				case 4:
-					((Monster)spawned).setTarget(aquadef);
+					((Monster)spawned).setTarget(Base_defender.get("AQUA"));
 					break;
 				case 5:
-					((Monster)spawned).setTarget(purpdef);
+					((Monster)spawned).setTarget(Base_defender.get("PURPLE"));
 					break;
 				case 6:
-					((Monster)spawned).setTarget(purpdef);
+					((Monster)spawned).setTarget(Base_defender.get("PURPLE"));
 					break;
 				case 7:
-					((Monster)spawned).setTarget(greedef);
+					((Monster)spawned).setTarget(Base_defender.get("GREEN"));
 					break;
 				case 8:
-					((Monster)spawned).setTarget(greedef);
+					((Monster)spawned).setTarget(Base_defender.get("GREEN"));
+					break;
+				default:
+					((Monster)spawned).setTarget(Base_defender.get("BLUE"));
 					break;
 				}
 			}
 			}
 		}
-		if(gameevent.showrankeventlist.contains(ti))
+		if(gameevent.showrankeventlist.contains(ti.toString()))
 		{
 			gettop();
 			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cjfw showmission");
@@ -3715,8 +3736,8 @@ public class CJFWListener implements Listener
 		
 	}
 	private String calculate_rank() {
-		int full = 3 *counthp(player_count);
-		int fin = Base_HP.get("BLUE") + Base_HP.get("AQUA") + Base_HP.get("PURPLE");
+		int full = 4 *counthp(player_count);
+		int fin = Base_HP.get("BLUE") + Base_HP.get("AQUA") + Base_HP.get("PURPLE") + Base_HP.get("GREEN");
 		int brok = 0;
 		String rank = "";
 		if(Base_HP.get("BLUE") == 0)
@@ -3731,6 +3752,10 @@ public class CJFWListener implements Listener
 		{
 			brok++;
 		}
+		if(Base_HP.get("GREEN") == 0)
+		{
+			brok ++;
+		}
 		if(fin > 0.97 * full)
 		{
 			rank = "SS";
@@ -3743,11 +3768,11 @@ public class CJFWListener implements Listener
 		{
 			rank = "A";
 		}
-		if((fin > 0.4 * full && fin < 0.6 * full) || brok == 1)
+		if((fin > 0.4 * full && fin < 0.6 * full) || brok == 2)
 		{
 			rank = "B";
 		}
-		if((fin < 0.4 * full) || brok == 2)
+		if((fin < 0.4 * full) || brok == 3)
 		{
 			rank = "C";
 		}

@@ -23,6 +23,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.Vector;
 
 @SuppressWarnings("deprecation")
 public class HinaruHandler {
@@ -210,6 +211,10 @@ public class HinaruHandler {
 						for(int i = 0; i < 72; i++)
 						{
 							Arrow a = hinaru.launchProjectile(Arrow.class);
+							double x = Math.sin((double)i * 5 / 57.3) * 4;
+							double z = Math.cos((double)i * 5 / 57.3) * 4;
+							a.setCritical(true);
+							a.setVelocity(new Vector(x, 0, z));
 						}
 						incd = true;
 						cdt = 2;
@@ -295,6 +300,10 @@ public class HinaruHandler {
 						for(int i = 0; i < 72; i++)
 						{
 							Arrow a = hinaru.launchProjectile(Arrow.class);
+							double x = Math.sin((double)i * 5 / 57.3) * 4;
+							double z = Math.cos((double)i * 5 / 57.3) * 4;
+							a.setCritical(true);
+							a.setVelocity(new Vector(x, 0, z));
 						}
 						incd = true;
 						cdt = 2;

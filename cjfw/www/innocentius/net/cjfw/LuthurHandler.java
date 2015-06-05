@@ -4,11 +4,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
 
-import net.minecraft.server.v1_8_R1.AttributeInstance;
-import net.minecraft.server.v1_8_R1.AttributeModifier;
 import net.minecraft.server.v1_8_R1.Enchantment;
 import net.minecraft.server.v1_8_R1.EntityGiantZombie;
-import net.minecraft.server.v1_8_R1.EntityInsentient;
 import net.minecraft.server.v1_8_R1.GenericAttributes;
 import net.minecraft.server.v1_8_R1.Item;
 import net.minecraft.server.v1_8_R1.ItemStack;
@@ -16,20 +13,17 @@ import net.minecraft.server.v1_8_R1.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftGiant;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftZombie;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Giant;
-import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
+@SuppressWarnings("deprecation")
 public class LuthurHandler {
 	Giant Luthur;
 	CraftGiant craftluthur;
@@ -53,7 +47,6 @@ public class LuthurHandler {
 	boolean thresh20;
 	boolean gomi_on;
 	int timeslap;
-	@SuppressWarnings("deprecation")
 	public LuthurHandler(Location a)
 	{
 		LivingEntity temp_eni;
@@ -123,7 +116,6 @@ public class LuthurHandler {
 		}
 		return 20;
 	}
-	@SuppressWarnings("deprecation")
 	public void update()
 	{
 		if(Luthur.isDead())

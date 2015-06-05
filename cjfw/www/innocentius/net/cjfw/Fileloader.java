@@ -11,17 +11,17 @@ public class Fileloader {
 	/**
 	 * only load one file into the directory.
 	 */
-	public LinkedHashMap<WaveTime, String> serversayevent;
-	public LinkedHashMap<WaveTime, String> spawnmobevent;
-	public ArrayList<WaveTime> showrankeventlist;
+	public LinkedHashMap<String, String> serversayevent;
+	public LinkedHashMap<String, String> spawnmobevent;
+	public ArrayList<String> showrankeventlist;
 	/**
 	 * Load file into the system, current file directory is "CJFWdata.txt";
 	 */
 	public Fileloader()
 	{
-      serversayevent = new LinkedHashMap<WaveTime, String>();
-      spawnmobevent = new LinkedHashMap<WaveTime, String>();
-	  showrankeventlist = new ArrayList<WaveTime>();
+      serversayevent = new LinkedHashMap<String, String>();
+      spawnmobevent = new LinkedHashMap<String, String>();
+	  showrankeventlist = new ArrayList<String>();
 	  readfile("CJFWdata.txt");
 	}
 	/**
@@ -53,7 +53,9 @@ public class Fileloader {
 		            	 {
 		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
 		            	 }
-		            	 serversayevent.put(temp, sb.toString());
+		            	 serversayevent.put(temp.toString(), sb.toString());
+		            	 System.out.println(temp.toString());
+		            	 System.out.println(sb.toString());
 		            	 break;
 		            	//spawn creature
 		         		//usage: <wave number> <wave remaining time> spawn <creature type> <creature amount modifier> <creature weapon rank>
@@ -62,18 +64,20 @@ public class Fileloader {
 		            	//OR: <wave number> <wave remaining time> spawn BOSS <creature weapon rank> <creature armor rank> <creature name>
 		             case "spawn":
 		            	 sb = new StringBuilder();
-		            	 for(int i = 3; i < sep.length - 1; i++)
+		            	 for(int i = 3; i < sep.length; i++)
 		            	 {
 		            		 sb.append(sep[i] + " ");//add space inorder to replace the parsed space
 		            	 }
-		            	 spawnmobevent.put(temp, sb.toString());
+		            	 System.out.println(temp.toString());
+		            	 spawnmobevent.put(temp.toString(), sb.toString());
+		            	 System.out.println(sb.toString());
 		            	 break;
 		            	//BGM play
 		         		//<wave number> <wave remaining time> BGM <BGMname(with path, recognize space)>
 		            	//push player rank
 		         		//<wave number> <wave remaining time> rank
 		             case "rank":
-		            	 showrankeventlist.add(temp);
+		            	 showrankeventlist.add(temp.toString());
 		            	 break;
 		           }
 		         line = br.readLine();

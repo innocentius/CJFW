@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.util.Vector;
 /**
  * This is the main class of Plugin<CJFW>
@@ -27,7 +28,7 @@ public final class CJFWmain extends JavaPlugin
 	public final CJFWListener game = new CJFWListener();
 	public static Classhandler innoclass;
 	public BukkitScheduler scheduler;
-	Map<String, Integer> Player_use_mis = new HashMap<String, Integer>();
+	public Map<String, Integer> Player_use_mis = new HashMap<String, Integer>();
 	public void onEnable() 
 	{
 		innoclass = new Classhandler();
@@ -66,12 +67,20 @@ public final class CJFWmain extends JavaPlugin
 				}
 				else if(args[0].equalsIgnoreCase("showmission"))
 				{
-					
+					scheduler = Bukkit.getServer().getScheduler();
+					scheduler.scheduleAsyncDelayedTask(this, new Runnable(){
+						public void run()
+						{
+							Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "scoreboard objectives setdisplay sidebar cjfw");
+							Bukkit.getServer().getScoreboardManager().getMainScoreboard().getObjective("contri_point").setDisplaySlot(DisplaySlot.BELOW_NAME);
+						}
+					}, 300L);
 				}
 				else if(args[0].equalsIgnoreCase("init"))
 					// call listener to initialize the game
 					// The initialize will 100% succeed
 				{
+					Player_use_mis.clear();
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.cancelTasks(this);
 					sender.sendMessage(ChatColor.GREEN+"Initializing Desert Base Defend... Standby.");
@@ -105,6 +114,7 @@ public final class CJFWmain extends JavaPlugin
 					// reset can be done while running
 					// after reset, the status of game will return to stop
 				{
+					Player_use_mis.clear();
 					game.reset();
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.cancelTasks(this);
@@ -119,7 +129,7 @@ public final class CJFWmain extends JavaPlugin
 					if(game.start())
 					{
 						scheduler = Bukkit.getServer().getScheduler();
-				        scheduler.scheduleAsyncRepeatingTask(this, new Runnable() {
+				        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
 				            public void run() {
 				                game.checkdamage();
 				                game.update(1);

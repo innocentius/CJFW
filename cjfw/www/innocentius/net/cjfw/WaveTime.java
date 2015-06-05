@@ -9,4 +9,8 @@ public class WaveTime
 		this.wave = wave;
 		this.time = time;		
 	}
+	public String toString()
+	{
+		return "Wave: " + wave + " Time: " + time;
+	}
 }

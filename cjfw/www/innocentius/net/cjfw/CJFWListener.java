@@ -40,6 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -586,6 +587,34 @@ public class CJFWListener implements Listener
 			{
 				kill.getEntity().remove();
 			}
+		}
+	}
+	@EventHandler
+	public void onPlayerEscape(PlayerChangedWorldEvent a)
+	{
+		if(on)
+		{
+			Player qu = a.getPlayer();
+			if(CJFWmain.innoclass.misstore.containsKey(qu.getName()))
+				{
+					if(qu.getWorld().equals(gameworld))
+					{
+						qu.getInventory().clear();
+						ItemStack s;
+						ArrayList<Map<String, Object>> g = CJFWmain.innoclass.misstore.get(qu.getName());
+						for(Map<String, Object> q: g)
+						{
+							if(q != null)
+							{
+								s = ItemStack.deserialize(q);
+								qu.getInventory().addItem(s);
+							}
+						}
+						CJFWmain.innoclass.misstore.remove(qu.getName());
+						CJFWmain.innoclass.player_class.put(qu.getName(), CJFWmain.innoclass.player_class_beforemis.get(qu.getName()));
+						CJFWmain.innoclass.player_class_beforemis.remove(qu.getName());
+					}
+				}
 		}
 	}
 	@EventHandler

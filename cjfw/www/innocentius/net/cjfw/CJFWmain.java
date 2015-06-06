@@ -216,7 +216,7 @@ public final class CJFWmain extends JavaPlugin
 			                innoclass.returnmis(Bukkit.getServer().getPlayer(args[1]));
 			                //TODO add check if in same world
 			            }
-			        }, 400L);
+			        }, 2400L);
 					return true;
 					}
 					else

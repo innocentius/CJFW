@@ -19,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftZombie;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftGiant;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftSkeleton;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPigZombie;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
@@ -39,6 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -485,7 +487,7 @@ public class CJFWListener implements Listener
 	 */
 	public void droplumencrystal()
 	{
-		if(on)
+		if(on && !finish)
 		{
 			try
 			{
@@ -519,7 +521,7 @@ public class CJFWListener implements Listener
 					}
 				}
 				//System.out.println(count);
-				if(count < 60)
+				if(count < 100)
 				{
 					for(int i = count; i < 60; i++)
 					{
@@ -584,6 +586,34 @@ public class CJFWListener implements Listener
 			{
 				kill.getEntity().remove();
 			}
+		}
+	}
+	@EventHandler
+	public void onPlayerquit(PlayerQuitEvent a)
+	{
+		if(on)
+		{
+			Player qu = a.getPlayer();
+			if(CJFWmain.innoclass.misstore.containsKey(qu.getName()))
+				{
+					if(qu.getWorld().equals(gameworld))
+					{
+						qu.getInventory().clear();
+						ItemStack s;
+						ArrayList<Map<String, Object>> g = CJFWmain.innoclass.misstore.get(qu.getName());
+						for(Map<String, Object> q: g)
+						{
+							if(q != null)
+							{
+								s = ItemStack.deserialize(q);
+								qu.getInventory().addItem(s);
+							}
+						}
+						CJFWmain.innoclass.misstore.remove(qu.getName());
+						CJFWmain.innoclass.player_class.put(qu.getName(), CJFWmain.innoclass.player_class_beforemis.get(qu.getName()));
+						CJFWmain.innoclass.player_class_beforemis.remove(qu.getName());
+					}
+				}
 		}
 	}
 	/**
@@ -1087,6 +1117,13 @@ public class CJFWListener implements Listener
 			case "creeper":
 				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.CREEPER, args[4], spawn_loc.get(Integer.toString(sp)), false);
 				break;
+			case "spider":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.SPIDER, args[4], spawn_loc.get(Integer.toString(sp)), false);
+				break;
+			case "pigzombie":
+				spawned = ch.summonCreatures(baselist, "BLUE", CreatureType.PIG_ZOMBIE, args[4], spawn_loc.get(Integer.toString(sp)), false);
+				WeaponRank.setWeapon(weaponrank, ((CraftPigZombie)spawned).getHandle());
+				ArmorRank.setArmor(armorrank, ((CraftPigZombie)spawned).getHandle());
 			}
 			if(spawned != null)
 			{

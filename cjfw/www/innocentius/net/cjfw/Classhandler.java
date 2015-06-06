@@ -85,7 +85,7 @@ public class Classhandler
 			}
 		}
 		first.put(name, g);
-		
+		a.sendMessage("The Equipment for " + name + "has been set.");
 	}
 	public void setbetween(Player a, String name)
 	{
@@ -100,6 +100,7 @@ public class Classhandler
 			}
 		}
 		betw.put(name, g);
+		a.sendMessage("The Between item for " + name + "has been set.");
 	}
 	public void retrievefirst(String args, String name)
 	{
@@ -128,8 +129,10 @@ public class Classhandler
 		Player a = Bukkit.getServer().getPlayer(args);
 		if(a != null)
 		{
-		  	if(first.containsKey(name))
+		  	if(betw.containsKey(name) && CJFWListener.gameworld != null)
 		  	{
+		  		if(a.getWorld().equals(CJFWListener.gameworld))
+		  		{
 		  		ItemStack s;
 		  		ArrayList<Map<String, Object>> g = betw.get(name);
 		  		for(Map<String, Object> q: g)
@@ -139,6 +142,7 @@ public class Classhandler
 		  			s = ItemStack.deserialize(q);
 		  			a.getInventory().addItem(s);
 		  			}
+		  		}
 		  		}
 		  	}
 		}

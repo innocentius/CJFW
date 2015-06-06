@@ -112,6 +112,7 @@ public class Classhandler
 		  		ItemStack s;
 		  		ArrayList<Map<String, Object>> g = first.get(name);
 		  		a.getInventory().clear();
+		  		a.getInventory().setArmorContents(null);
 		  		for(Map<String, Object> q: g)
 		  		{
 		  			if(q != null)

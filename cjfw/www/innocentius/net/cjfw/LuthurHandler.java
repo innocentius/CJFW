@@ -5,17 +5,17 @@ import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.server.v1_8_R1.Enchantment;
-import net.minecraft.server.v1_8_R1.EntityGiantZombie;
+import net.minecraft.server.v1_8_R1.EntityPigZombie;
 import net.minecraft.server.v1_8_R1.GenericAttributes;
 import net.minecraft.server.v1_8_R1.Item;
 import net.minecraft.server.v1_8_R1.ItemStack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftGiant;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPigZombie;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Giant;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -25,9 +25,9 @@ import org.bukkit.util.Vector;
 
 @SuppressWarnings("deprecation")
 public class LuthurHandler {
-	Giant Luthur;
-	CraftGiant craftluthur;
-	EntityGiantZombie entityluthur;
+	PigZombie Luthur;
+	CraftPigZombie craftluthur;
+	EntityPigZombie entityluthur;
 	CreatureHandler ch;
 	UUID x;
 	Random stdran;
@@ -51,12 +51,12 @@ public class LuthurHandler {
 	{
 		LivingEntity temp_eni;
 		stdran = new Random();
-		temp_eni = a.getWorld().spawnCreature(a, CreatureType.GIANT);
+		temp_eni = a.getWorld().spawnCreature(a, CreatureType.PIG_ZOMBIE);
 		temp_eni.setRemoveWhenFarAway(false);
 		temp_eni.setCustomName("ダークファルス・ルーサー");
 		temp_eni.setCustomNameVisible(true);
-		Luthur = (Giant)temp_eni;
-		craftluthur = (CraftGiant)Luthur;
+		Luthur = (PigZombie)temp_eni;
+		craftluthur = (CraftPigZombie)Luthur;
 		entityluthur = craftluthur.getHandle();
 		ItemStack weapon = new ItemStack(Item.getById(276));
 		weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);

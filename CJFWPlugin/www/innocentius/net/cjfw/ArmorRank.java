@@ -1,11 +1,5 @@
 package innocentius.net.cjfw;
 
-import net.minecraft.server.v1_8_R1.Enchantment;
-import net.minecraft.server.v1_8_R1.EntityCreature;
-import net.minecraft.server.v1_8_R1.EntitySkeleton;
-import net.minecraft.server.v1_8_R1.Item;
-import net.minecraft.server.v1_8_R1.ItemStack;
-
 public class ArmorRank {
 //	armor rank 0: none
 //	armor rank 1: fur helmet --DEF+1 -- 96%

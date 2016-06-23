@@ -1,13 +1,8 @@
 package innocentius.net.cjfw;
 
-import net.minecraft.server.v1_8_R1.Enchantment;
-import net.minecraft.server.v1_8_R1.EntityGiantZombie;
-import net.minecraft.server.v1_8_R1.EntityPigZombie;
-import net.minecraft.server.v1_8_R1.EntitySkeleton;
-import net.minecraft.server.v1_8_R1.EntityZombie;
-import net.minecraft.server.v1_8_R1.Item;
-import net.minecraft.server.v1_8_R1.ItemStack;
-
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.*;
 public class WeaponRank {
 //	weapon rank 0: none
 //	weapon rank 1: wooden shovel -- ATK+1

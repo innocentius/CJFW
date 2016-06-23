@@ -1,5 +1,11 @@
 package innocentius.net.cjfw;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+
 public class ArmorRank {
 //	armor rank 0: none
 //	armor rank 1: fur helmet --DEF+1 -- 96%
@@ -47,7 +53,7 @@ public class ArmorRank {
 	 * @param i
 	 * @param e
 	 */
-	public static void setArmor(int i, EntityCreature e)
+	public static void setArmor(int i, Creature e)
 	{
 		ItemStack item;
 		switch(i)
@@ -55,6 +61,8 @@ public class ArmorRank {
 		case 0:
 			return;
 		case 1:
+			//will this work?
+			//e.getEquipment().setBoots(new ItemStack(Material.LEATHER_BOOTS));
 			e.setEquipment(4, new ItemStack(Item.getById(298)));
 			return;
 		case 2:
@@ -127,6 +135,7 @@ public class ArmorRank {
 			e.setEquipment(1, item);
 			return;
 		case 12:
+			item = new ItemStack();
 			item = new ItemStack(Item.getById(310));
 			item.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
 			e.setEquipment(4, item);

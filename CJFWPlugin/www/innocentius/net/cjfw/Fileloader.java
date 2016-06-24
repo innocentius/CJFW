@@ -87,16 +87,16 @@ public class Fileloader {
 		 catch(Exception E)
 		 {
 			 System.out.println("PANIC: Input File Error, Abort Loading.");
-			 File a = new File("CJFWdata.txt");
-			 if(!a.exists())
-			 {
-				 try {
-					a.createNewFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			 }
+//			 File a = new File("CJFWdata.txt");
+//			 if(!a.exists())
+//			 {
+//				 try {
+//					a.createNewFile();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			 }
 			 success = false;
 		 }
 		

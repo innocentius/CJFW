@@ -79,8 +79,12 @@ public class CreatureHandler {
 	}
 	public void sethealth(Damageable a, double b)
 	{
-		a.setMaxHealth(b);
-		a.setHealth(b);
+		//max health < 2048
+		if(b < 2048 && b > 0)
+		{
+			a.setMaxHealth(b);
+			a.setHealth(b);
+		}
 	}
 	public boolean checkentitydata(Map<String, Location> baselist) 
 	{
@@ -103,6 +107,14 @@ public class CreatureHandler {
         	
         }
         temp_dat = getNearbyEntities(baselist.get("PURPLE"), 70);
+        for(Entity ent:temp_dat)
+        {
+        	if(ent instanceof Monster || ent instanceof EnderDragon)
+        	{
+        		return false;
+        	}
+        }
+        temp_dat = getNearbyEntities(baselist.get("GREEN"), 70);
         for(Entity ent:temp_dat)
         {
         	if(ent instanceof Monster || ent instanceof EnderDragon)

@@ -82,7 +82,7 @@ public final class CJFWmain extends JavaPlugin
 					Player_use_mis.clear();
 					scheduler = Bukkit.getServer().getScheduler();
 					scheduler.cancelTasks(this);
-					sender.sendMessage(ChatColor.GREEN+"Initializing Desert Base Defend... Standby.");
+					sender.sendMessage(ChatColor.GREEN+"Initializing Resonant Defend... Standby.");
 					game.init();
 					sender.sendMessage(ChatColor.GOLD+"Successfully initialized!");
 					sender.sendMessage("Total Player : " + Bukkit.getOnlinePlayers().size());

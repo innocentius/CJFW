@@ -3933,6 +3933,13 @@ public class CJFWListener implements Listener
 				((Monster) ent).setHealth(0D);
 			}
 		}
+		for(Entity ent:ch.getNearbyEntities(baselist.get("GREEN"), 70))
+		{
+			if(ent instanceof Monster || ent instanceof EnderDragon)
+			{
+				((Monster) ent).setHealth(0D);
+			}
+		}
 	}
 	private void gettop()
 	{

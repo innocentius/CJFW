@@ -1323,23 +1323,29 @@ public class CJFWListener implements Listener
 		{
 			brok ++;
 		}
-		if(fin > 0.97 * full)
+		//calculation represent the lowest available situation
+		if(fin > 0.97 * full) 
+			//if total HP is >97%
 		{
 			rank = "SS";
 		}
-		if(fin > 0.80 * full && fin < 0.97 * full)
+		if(fin > 0.80 * full && fin < 0.97 * full) 
+			// if total HP is 80% ~ 97%
 		{
 			rank = "S";
 		}
 		if(fin > 0.60 * full && fin < 0.8 * full)
+			// if total HP is 60% ~ 80%
 		{
 			rank = "A";
 		}
 		if((fin > 0.4 * full && fin < 0.6 * full) || brok == 2)
+			//if total HP is 40% ~ 60%, or if 2 towers down
 		{
 			rank = "B";
 		}
 		if((fin < 0.4 * full) || brok == 3)
+			//if total HP is < 40%, or if only 1 tower remains
 		{
 			rank = "C";
 		}
@@ -1348,6 +1354,7 @@ public class CJFWListener implements Listener
 	}
 	private void wavefinalremove()
 	{
+		//called at wave finish. remove all nearby enemy in all towers.
 		for(Entity ent:ch.getNearbyEntities(baselist.get("BLUE"), 70))
 		{
 			if(ent instanceof Monster || ent instanceof EnderDragon)
@@ -1515,14 +1522,28 @@ public class CJFWListener implements Listener
 	public void setwave(String string) {
 		if(init)
 		{
-			wave = Integer.parseInt(string);
+			try
+			{
+				wave = Integer.parseInt(string);
+			}
+			catch(Exception e)
+			{
+				
+			}
 		}
 		
 	}
 	public void settime(String string) {
 		if(init)
 		{
-			wave_time = Integer.parseInt(string);
+			try
+			{
+				wave_time = Integer.parseInt(string);
+			}
+			catch(Exception e)
+			{
+				
+			}
 		}
 		
 	}

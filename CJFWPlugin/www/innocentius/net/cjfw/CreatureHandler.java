@@ -36,18 +36,20 @@ public class CreatureHandler {
 	 * summon a creature
 	 * Automatically set remove when far off
 	 * automatically change range to 60
+	 * @param <T>
 	 * @param baselist
 	 * @param base_name
 	 * @param x
 	 * @param name
 	 * @param spawnarea
 	 * @param namevisible
+	 * @return 
 	 * @return
 	 */
-	public LivingEntity summonCreatures(Map<String, Location> baselist, String base_name, CreatureType x, String name, Location spawnarea, boolean namevisible)
+	public <T extends LivingEntity> LivingEntity summonCreatures(Map<String, Location> baselist, String base_name, Class<T> creatureclass, String name, Location spawnarea, boolean namevisible)
 	{
 			LivingEntity temp_eni;
-			temp_eni = baselist.get(base_name).getWorld().spawnCreature(spawnarea, x);
+			temp_eni = baselist.get(base_name).getWorld().spawn(spawnarea, creatureclass);
 			temp_eni.setRemoveWhenFarAway(false);
 			temp_eni.setCustomName(name);
 			temp_eni.setCustomNameVisible(namevisible);

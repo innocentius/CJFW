@@ -16,11 +16,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Jukebox;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftZombie;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftGiant;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftSkeleton;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPigZombie;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -409,7 +405,7 @@ public class CJFWListener implements Listener
 				gameworld = i.getWorld();
 				basekey = "BLUE";
 				baselist.put(basekey, i);
-				e = ch.summonCreatures(baselist, "BLUE", CreatureType.VILLAGER, ChatColor.GOLD+"蓝塔守护者", i, false);
+				e = ch.summonCreatures(baselist, "BLUE", Villager.class, ChatColor.GOLD+"蓝塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
 				if(!Base_defender.containsKey(basekey))
@@ -427,7 +423,7 @@ public class CJFWListener implements Listener
 			{
 				basekey = "AQUA";
 				baselist.put(basekey, i);
-				e = ch.summonCreatures(baselist, "AQUA", CreatureType.VILLAGER, ChatColor.GOLD+"青塔守护者", i, false);
+				e = ch.summonCreatures(baselist, "AQUA", Villager.class, ChatColor.GOLD+"青塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
 				if(!Base_defender.containsKey(basekey))
@@ -445,7 +441,7 @@ public class CJFWListener implements Listener
 			{
 				basekey = "PURPLE";
 				baselist.put(basekey, i);
-				e = ch.summonCreatures(baselist, "PURPLE", CreatureType.VILLAGER, ChatColor.GOLD+"紫塔守护者", i, false);
+				e = ch.summonCreatures(baselist, "PURPLE", Villager.class, ChatColor.GOLD+"紫塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
 				if(!Base_defender.containsKey(basekey))
@@ -463,7 +459,7 @@ public class CJFWListener implements Listener
 			{
 				basekey = "GREEN";
 				baselist.put(basekey, i);
-				e = ch.summonCreatures(baselist, "GREEN", CreatureType.VILLAGER, ChatColor.GOLD+"绿塔守护者", i, false);
+				e = ch.summonCreatures(baselist, "GREEN", Villager.class, ChatColor.GOLD+"绿塔守护者", i, false);
 				ch.sethealth(e, 1000);
 				e.setNoDamageTicks(999999999);
 				if(!Base_defender.containsKey(basekey))
@@ -697,6 +693,8 @@ public class CJFWListener implements Listener
 		
 		}
 	}
+	//weapon eventhandlers
+	//TODO create a new class for these handlers.
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent a)
 	{
@@ -779,27 +777,6 @@ public class CJFWListener implements Listener
 			dodamage("AQUA");
 			dodamage("PURPLE");
 			dodamage("GREEN");
-//			if(Base_HP.get("BLUE") == 0)
-//			{
-//				baselist.put("BLUE", baselist.get("PURPLE").clone());
-//			}
-//			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") != 0)
-//			{
-//				baselist.put("AQUA", baselist.get("BLUE").clone());
-//			}
-//			if(Base_HP.get("AQUA") == 0 && Base_HP.get("BLUE") == 0)
-//			{
-//				baselist.put("AQUA", baselist.get("PURPLE").clone());
-//			}
-//			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") != 0)
-//			{
-//				baselist.put("PURPLE", baselist.get("BLUE").clone());
-//			}
-//			if(Base_HP.get("PURPLE") == 0 && Base_HP.get("BLUE") == 0)
-//			{
-//				baselist.put("PURPLE", baselist.get("AQUA").clone());
-//				baselist.put("BLUE", baselist.get("AQUA").clone());
-//			}
 		}
 	}
 	private void dodamage(String key)
@@ -979,35 +956,9 @@ public class CJFWListener implements Listener
 		}
 		if(wave_time == -25)
 		{
-			switch(wave)
+			if(wave >= 2 && wave <= 10)
 			{
-			case 2:
 				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 3:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 4:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 5:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 6:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 7:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 8:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 9:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
-			case 10:
-				CJFWmain.innoclass.retrievebetweenall();
-				break;
 			}
 		}
 		if(wave_time == -1)
@@ -1129,7 +1080,7 @@ public class CJFWListener implements Listener
 			String a = gameevent.spawnmobevent.get(ti.toString());
 			String[] args = a.split(" ");
 			int sp = random.nextInt(8) + 1;
-			LivingEntity spawned = null;
+			Creature spawned = null;
 			int weaponrank = Integer.parseInt(args[2]);
 			int armorrank = Integer.parseInt(args[3]);
 			double modifier = Double.parseDouble(args[1]);

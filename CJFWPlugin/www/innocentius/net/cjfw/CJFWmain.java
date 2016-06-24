@@ -39,7 +39,6 @@ public final class CJFWmain extends JavaPlugin
 	{
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, final String[] args)
 	{
 		//class command

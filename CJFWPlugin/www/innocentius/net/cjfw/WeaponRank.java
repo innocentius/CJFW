@@ -1,7 +1,11 @@
 package innocentius.net.cjfw;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.*;
 public class WeaponRank {
 //	weapon rank 0: none
@@ -23,7 +27,75 @@ public class WeaponRank {
 	 * @param a
 	 * @param e
 	 */
-	public static void setWeapon(int a, EntityZombie e)
+	public static void setWeapon(int a, Zombie e)
+	{
+		ItemStack weapon;
+		switch(a)
+		{
+		case 0:
+			return;
+		case 1:
+			e.setEquipment(0, new ItemStack(Material.WOOD_SPADE));
+			return;
+		case 2:
+			e.setEquipment(0, new ItemStack(Material.WOOD_AXE));
+			return;
+		case 3:
+			e.setEquipment(0, new ItemStack(Material.WOOD_SWORD));
+			return;
+		case 4:
+			e.setEquipment(0, new ItemStack(Material.STONE_SWORD));
+			return;
+		case 5:
+			e.setEquipment(0, new ItemStack(Material.IRON_SWORD));
+			return;
+		case 6:
+			weapon = new ItemStack(Material.DIAMOND_AXE);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 7:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 8:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+			e.setEquipment(0, weapon);
+			return;
+		case 9:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 10:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 4);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			e.setEquipment(0, weapon);
+			return;
+		case 11:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			weapon.addEnchantment(Enchantment.KNOCKBACK, 1);
+			e.setEquipment(0, weapon);
+			return;
+		case 12:
+			weapon = new ItemStack(Material.DIAMOND_SWORD);
+			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
+			weapon.addEnchantment(Enchantment.KNOCKBACK, 2);
+			weapon.addEnchantment(Enchantment.DURABILITY, 10);
+			e.setEquipment(0, weapon);
+			return;
+		default:
+			return;
+		}
+	}
+	public static void setWeapon(int a, PigZombie e)
 	{
 		ItemStack weapon;
 		switch(a)
@@ -91,75 +163,8 @@ public class WeaponRank {
 			return;
 		}
 	}
-	public static void setWeapon(int a, EntityPigZombie e)
-	{
-		ItemStack weapon;
-		switch(a)
-		{
-		case 0:
-			return;
-		case 1:
-			e.setEquipment(0, new ItemStack(Item.getById(269)));
-			return;
-		case 2:
-			e.setEquipment(0, new ItemStack(Item.getById(271)));
-			return;
-		case 3:
-			e.setEquipment(0, new ItemStack(Item.getById(268)));
-			return;
-		case 4:
-			e.setEquipment(0, new ItemStack(Item.getById(272)));
-			return;
-		case 5:
-			e.setEquipment(0, new ItemStack(Item.getById(267)));
-			return;
-		case 6:
-			weapon = new ItemStack(Item.getById(279));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			e.setEquipment(0, weapon);
-			return;
-		case 7:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-			e.setEquipment(0, weapon);
-			return;
-		case 8:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 2);
-			e.setEquipment(0, weapon);
-			return;
-		case 9:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 3);
-			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 1);
-			e.setEquipment(0, weapon);
-			return;
-		case 10:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 4);
-			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-			e.setEquipment(0, weapon);
-			return;
-		case 11:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
-			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-			weapon.addEnchantment(Enchantment.KNOCKBACK, 1);
-			e.setEquipment(0, weapon);
-			return;
-		case 12:
-			weapon = new ItemStack(Item.getById(276));
-			weapon.addEnchantment(Enchantment.DAMAGE_ALL, 5);
-			weapon.addEnchantment(Enchantment.FIRE_ASPECT, 2);
-			weapon.addEnchantment(Enchantment.KNOCKBACK, 2);
-			weapon.addEnchantment(Enchantment.DURABILITY, 10);
-			e.setEquipment(0, weapon);
-			return;
-		default:
-			return;
-		}
-	}
-	public static void setWeapon(int a, EntityGiantZombie e)
+	//No GiantZombie AI available...
+	public static void setWeapon(int a, GiantZombie e)
 	{
 		ItemStack weapon;
 		switch(a)
@@ -248,7 +253,7 @@ public class WeaponRank {
 	 * @param a
 	 * @param e
 	 */
-	public static void setWeapon(int a, EntitySkeleton e)
+	public static void setWeapon(int a, Skeleton e)
 	{
 		ItemStack weapon;
 		switch(a)

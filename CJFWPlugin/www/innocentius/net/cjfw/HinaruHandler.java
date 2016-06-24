@@ -54,16 +54,19 @@ public class HinaruHandler {
 	int cdt;
 	public HinaruHandler(Location a)
 	{
-		LivingEntity temp_eni;
-		temp_eni = a.getWorld().spawnCreature(a, CreatureType.ZOMBIE);
-		temp_eni.setRemoveWhenFarAway(false);
-		temp_eni.setCustomName("ファルス・ヒューナル");
-		temp_eni.setCustomNameVisible(true);
-		hinaru = (Zombie)temp_eni;
+//		LivingEntity temp_eni;
+//		temp_eni = a.getWorld().spawn(a, Zombie.class);
+//		temp_eni.setRemoveWhenFarAway(false);
+//		temp_eni.setCustomName("ファルス・ヒューナル");
+//		temp_eni.setCustomNameVisible(true);
+		hinaru = a.getWorld().spawn(a, Zombie.class);
+		hinaru.setRemoveWhenFarAway(false);
+		hinaru.setCustomName("ファルス・ヒューナル");
+		hinaru.setCustomNameVisible(true);
 		crafthinaru = (CraftZombie)hinaru;
 		entityhinaru = crafthinaru.getHandle();
-		WeaponRank.setWeapon(1, entityhinaru);
-		ArmorRank.setArmor(14, entityhinaru);
+		WeaponRank.setWeapon(1, hinaru);
+		ArmorRank.setArmor(14, hinaru);
 		entityhinaru.getAttributeInstance(GenericAttributes.c).setValue(0.9);
 		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) temp_eni).getHandle();
 		AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.b);

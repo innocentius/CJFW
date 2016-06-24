@@ -8,6 +8,7 @@ public class Jumpboard {
 	public static void Jump(Player a, Vector z)
 	{
 		a.setVelocity(z);
+		a.setNoDamageTicks(100);
 		//TODO find a way to give player 5 second of invulnerable time, or just ignore it.
 	}
 }
